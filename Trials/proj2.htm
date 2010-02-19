@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Trial</title>
+<script type="text/javascript">
+patchSize=256;
+zoomlevel=0;
+imageSize= Math.pow(2, zoomlevel)*patchSize;
+
+function change()
+{ 
+document.getElementById("VW").style.height=document.getElementById("text1").value;
+document.getElementById("VW").style.width=document.getElementById("text2").value;
+ var height=document.getElementById("text1").value;
+ var width=document.getElementById("text2").value;
+ var left=0;
+ var top=0;
+ // zoomlevel=document.getElementById("text3").value + "px";
+  document.getElementById("patchGrid").style.clip="rect(" + top + "px " + width + "px " + height + "px " + left + "px)";
+}
+
+function gridFormation()
+{
+//     number = Math.pow(4, zoomlevel);
+//     row = col = Math.pow(2, zoomlevel);
+ //document.getElementById("VW").style.height%patchSize;
+  //document.getElementById("VW").style.height%patchSize;
+for (j=1;j<=1;j++)
+{
+i=document.createElement("img");
+i.height=patchSize;
+i.width=patchSize;
+i.src="http://wonko.via.cornell.edu/bigimgs/test1/foo.0.0.0.0.jpeg";
+document.getElementById("patchGrid").appendChild(i);
+}
+
+}
+
+</script>
+
+
+</head>
+
+<body onload="gridFormation();change()">
+<div  id="patchGrid" style="border: thin #000000 none; position: absolute; width: 512px; height: 512px; z-index: 1; left: 200px; top: 150px">
+</div>
+
+<form method="post">
+	<input onchange="change()" id="text1" name="Height" type="text" value="73" />
+	<input onchange="change()"id="text2" name="Width" type="text" value="73" /> </form>
+
+<div  id="VW" style="border: thin #FF00FF solid; position: absolute; width: 50px; height: 50px; z-index: 1; left: 200px; top: 150px" id="layer1">
+</div>
+
+</body>
+
+</html>
