@@ -11,8 +11,8 @@ imageSize= Math.pow(2, zoomlevel)*patchSize;
 
 function change()
 { 
-document.getElementById("VW").style.height=document.getElementById("text1").value + "px";
-document.getElementById("VW").style.width=document.getElementById("text2").value + "px";
+	document.getElementById("VW").style.height=document.getElementById("text1").value + "px";
+	document.getElementById("VW").style.width=document.getElementById("text2").value + "px";
 }
 
 function gridFormation()
@@ -21,13 +21,13 @@ function gridFormation()
 //     row = col = Math.pow(2, zoomlevel);
 //document.getElementById("VW").style.height%patchSize;
   //document.getElementById("VW").style.height%patchSize;
-for (j=1;j<=16;j++)
-{
-i=document.createElement("img");
-i.height=patchSize/2;
-i.width=patchSize/2;
-document.getElementById("patchGrid").appendChild(i);
-}
+	for (j=1;j<=16;j++)
+	{
+		i=document.createElement("img");
+		i.height=patchSize/2;
+		i.width=patchSize/2;
+		document.getElementById("patchGrid").appendChild(i);
+	}
 
 }
 
@@ -43,7 +43,7 @@ document.getElementById("patchGrid").appendChild(i);
 <form method="post">
 	<input id="text1"name="Height" type="text" onchange="change()" value="73"/>
 	<input id="text2" name="Width" type="text"  onchange="change()" value="73"/>
-	</form>
+</form>
 
 <div  id="VW" style="border: thin #FF00FF solid; position: absolute; width: 73px; height: 73px; z-index: 1; left: 200px; top: 150px" id="layer1">
 </div>

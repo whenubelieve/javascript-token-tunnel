@@ -11,14 +11,14 @@ imageSize= Math.pow(2, zoomlevel)*patchSize;
 
 function change()
 { 
-document.getElementById("VW").style.height=document.getElementById("text1").value;
-document.getElementById("VW").style.width=document.getElementById("text2").value;
- var height=document.getElementById("text1").value;
- var width=document.getElementById("text2").value;
- var left=0;
- var top=0;
+document.getElementById("VW").style.height=document.getElementById("text1").value + "px";
+document.getElementById("VW").style.width=document.getElementById("text2").value + "px";
+ //var height=document.getElementById("text1").value;
+ //var width=document.getElementById("text2").value;
+// var left=0;
+ //var top=0;
  // zoomlevel=document.getElementById("text3").value + "px";
-  document.getElementById("patchGrid").style.clip="rect(" + top + "px " + width + "px " + height + "px " + left + "px)";
+  //document.getElementById("patchGrid").style.clip="rect(" + top + "px " + width + "px " + height + "px " + left + "px)";
 }
 
 function gridFormation()
@@ -27,19 +27,18 @@ function gridFormation()
 //     row = col = Math.pow(2, zoomlevel);
 //document.getElementById("VW").style.height%patchSize;
 //document.getElementById("VW").style.height%patchSize;
-for (j=1;j<=1;j++)
-{
-i=document.createElement("img");
-i.height=patchSize;
-i.width=patchSize;
-i.src="http://wonko.via.cornell.edu/bigimgs/test1/foo.0.0.0.0.jpeg";
-document.getElementById("patchGrid").appendChild(i);
-}
+	for (j=1;j<=1;j++)
+	{
+	i=document.createElement("img");
+	i.height=patchSize;
+	i.width=patchSize;
+	i.src="http://wonko.via.cornell.edu/bigimgs/test1/foo.0.0.0.0.jpeg";
+	document.getElementById("patchGrid").appendChild(i);
+	}
 
 }
 
 </script>
-
 
 </head>
 
@@ -48,8 +47,8 @@ document.getElementById("patchGrid").appendChild(i);
 </div>
 
 <form method="post">
-	<input onchange="change()" id="text1" name="Height" type="text" value="73" />
-	<input onchange="change()"id="text2" name="Width" type="text" value="73" /> </form>
+	<input onchange="change()" id="text1" name="Height" type="text" value="80" />
+	<input onchange="change()" id="text2" name="Width"  type="text" value="73" /> </form>
 
 <div  id="VW" style="border: thin #FF00FF solid; position: absolute; width: 50px; height: 50px; z-index: 1; left: 200px; top: 150px" id="layer1">
 </div>
