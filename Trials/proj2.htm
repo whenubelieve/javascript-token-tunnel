@@ -11,14 +11,14 @@ imageSize= Math.pow(2, zoomlevel)*patchSize;
 
 function change()
 { 
-document.getElementById("VW").style.height=document.getElementById("text1").value + "px";
-document.getElementById("VW").style.width=document.getElementById("text2").value + "px";
- //var height=document.getElementById("text1").value;
- //var width=document.getElementById("text2").value;
-// var left=0;
- //var top=0;
- // zoomlevel=document.getElementById("text3").value + "px";
-  //document.getElementById("patchGrid").style.clip="rect(" + top + "px " + width + "px " + height + "px " + left + "px)";
+	document.getElementById("VW").style.height=document.getElementById("text1").value + "px";
+	document.getElementById("VW").style.width=document.getElementById("text2").value + "px";
+	var height=document.getElementById("text1").value;
+	var width=document.getElementById("text2").value;
+	var left=0;
+	var top=0;
+	//zoomlevel=document.getElementById("text3").value + "px";
+	document.getElementById("patchGrid").style.clip="rect(" + top + "px " + width + "px " + height + "px " + left + "px)";
 }
 
 function gridFormation()
