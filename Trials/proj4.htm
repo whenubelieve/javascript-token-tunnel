@@ -94,7 +94,7 @@ function ViewPoint( vw, xloc, yloc) {
 }
 
 
-// Initilizations 
+// Initializations 
 //
 //
 
@@ -139,44 +139,43 @@ var dy = 0;
 var YGridNumber = 1; 
 var XGridNumber = 1;
 
-
-function change() //change happens to viewing window and grid patches.
-{ 
-document.getElementById("VW").style.height=document.getElementById("text1").value + "px";
-document.getElementById("VW").style.width=document.getElementById("text2").value + "px";
- bottom=document.getElementById("text1").value;
- right=document.getElementById("text2").value;
- document.getElementById("patchGrid").style.height=Math.ceil(bottom/256)*256;
- document.getElementById("patchGrid").style.width=Math.ceil(right/256)*256;
- document.getElementById("patchGrid").style.clip="rect(" + top + "px " + right + "px " + bottom + "px " + left + "px)";
+function change() {//change happens to viewing window and grid patches. 
+	document.getElementById("VW").style.height=document.getElementById("text1").value + "px";
+	document.getElementById("VW").style.width=document.getElementById("text2").value + "px";
+ 	bottom=document.getElementById("text1").value;
+ 	right=document.getElementById("text2").value;
+ 	document.getElementById("patchGrid").style.height=Math.ceil(bottom/256)*256;
+ 	document.getElementById("patchGrid").style.width=Math.ceil(right/256)*256;
+ 	document.getElementById("patchGrid").style.clip="rect(" + top + "px " + right + "px " + bottom + "px " + left + "px)";
 }
 
 var row=0;
 var col=0;
-function gridFormation()
-{
+
+function gridFormation() {
 //     number = Math.pow(4, zoomlevel);
 //     row = col = Math.pow(2, zoomlevel);
  row=Math.ceil(bottom/patchSize);
  col=Math.ceil(right/patchSize);
  zoomlevel=document.getElementById("text3").value;
-
-for (i=1;i<=row;i++)
-{ 
-for (j=1;j<=col;j++)
-{
-dummy=document.createElement("img");
-dummy.id="img"+i+j;
-dummy.height=patchSize;
-dummy.width=patchSize;
-dummy.src="http://wonko.via.cornell.edu/bigimgs/test1/foo."+ zoomlevel + "." +( j -1)+ "." + (i-1) + ".0.jpeg";
-document.getElementById("patchGrid").appendChild(dummy);
+ 
+	for (i=1;i<=row;i++)
+	{ 
+		for (j=1;j<=col;j++)
+		{
+		dummy=document.createElement("img");
+		dummy.id="img"+i+j;
+		dummy.height=patchSize;
+		dummy.width=patchSize;
+		dummy.src="http://wonko.via.cornell.edu/bigimgs/test1/foo."+ zoomlevel + "." +( j -1)+ "." + (i-1) + ".0.jpeg";
+		document.getElementById("patchGrid").appendChild(dummy);
+		}
+	}
 }
+
+function ResetGridFormation() {
+	//document.getElementById('patchGrid').reset();
 }
-
-}
-
-
 
 function trial_ondragstart(event) {
     CooX0 = event.clientX;
@@ -203,44 +202,40 @@ function trial_ondragend() {
     dy = 0;
 }
 function CommitMove() {
- if(dx<=256&&dy<=256)  // if dx or dy >256, first load new images and than "simulate" a panning
-{                           // since we only have one extra padding image layer.
-    right = right - dx;
-    left = left - dx;
-    top = top - dy;
-    bottom = bottom - dy;
-
-    tleft = parseInt(document.getElementById('patchGrid').style.left) + dx;
-    document.getElementById('patchGrid').style.left = tleft + 'px';
-    ttop = parseInt(document.getElementById('patchGrid').style.top) + dy;
-    document.getElementById('patchGrid').style.top = ttop + 'px';
-
-    document.getElementById('patchGrid').style.clip = "rect(" + top + "px " + right + "px " + bottom + "px " + left + "px)";
-}
+	if(dx<=256&&dy<=256)  // if dx or dy >256, first load new images and than "simulate" a panning
+	{                           // since we only have one extra padding image layer.
+		right = right - dx;
+		left = left - dx;
+	    top = top - dy;
+	    bottom = bottom - dy;
+	
+	    tleft = parseInt(document.getElementById('patchGrid').style.left) + dx;
+	    document.getElementById('patchGrid').style.left = tleft + 'px';
+	    ttop = parseInt(document.getElementById('patchGrid').style.top) + dy;
+	    document.getElementById('patchGrid').style.top = ttop + 'px';
+	
+	    document.getElementById('patchGrid').style.clip = "rect(" + top + "px " + right + "px " + bottom + "px " + left + "px)";
+	}
 }
 
 </script>
-
-
 </head>
 
-<body >
+<body>
 <div  id="patchGrid" style="border: thin none #000000; position: absolute; width: 512px; height: 512px; z-index: 1; left: 200px; top: 150px"
         ondragstart="trial_ondragstart(event)"
         ondrag="trial_ondrag(event,patchGrid)"
         ondragend="trial_ondragend()"
 >
-
 </div>
 
 <form method="post">
 	<input id="text1"name="Height" type="text" />
 	<input id="text2" name="Width" type="text"  onchange="change()"/>
-	<input  id="text3" name="Zoomlevel" type="text" onchange="gridFormation()"/></form>
+	<input id="text3" name="Zoomlevel" type="text" onchange="ResetGridFormation();gridFormation()"/>
+</form>
 
 <div  id="VW" style="border: thin #FF00FF solid; position: absolute; width: 50px; height: 50px; z-index: 1; left: 200px; top: 150px" id="layer1">
 </div>
-
 </body>
-
 </html>
