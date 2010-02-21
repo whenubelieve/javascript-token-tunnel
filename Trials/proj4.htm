@@ -142,8 +142,8 @@ var XGridNumber = 1;
 
 function change() //change happens to viewing window and grid patches.
 { 
-document.getElementById("VW").style.height=document.getElementById("text1").value;
-document.getElementById("VW").style.width=document.getElementById("text2").value;
+document.getElementById("VW").style.height=document.getElementById("text1").value + "px";
+document.getElementById("VW").style.width=document.getElementById("text2").value + "px";
  bottom=document.getElementById("text1").value;
  right=document.getElementById("text2").value;
  document.getElementById("patchGrid").style.height=Math.ceil(bottom/256)*256;
