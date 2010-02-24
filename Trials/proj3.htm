@@ -11,14 +11,14 @@ imageSize= Math.pow(2, zoomlevel)*patchSize;
 
 function change()
 { 
-document.getElementById("VW").style.height=document.getElementById("text1").value;
-document.getElementById("VW").style.width=document.getElementById("text2").value;
- var height=document.getElementById("text1").value;
- var width=document.getElementById("text2").value;
- var left=0;
- var top=0;
-  zoomlevel=document.getElementById("text3").value + "px";
-  document.getElementById("patchGrid").style.clip="rect(" + top + "px " + width + "px " + height + "px " + left + "px)";
+	document.getElementById("VW").style.height=document.getElementById("text1").value + "px";
+	document.getElementById("VW").style.width=document.getElementById("text2").value + "px";
+	var height=document.getElementById("text1").value;
+	var width=document.getElementById("text2").value;
+	var left=0;
+	var top=0;
+	zoomlevel=document.getElementById("text3").value + "px";
+	document.getElementById("patchGrid").style.clip="rect(" + top + "px " + width + "px " + height + "px " + left + "px)";
 }
 
 function gridFormation()
@@ -27,42 +27,45 @@ function gridFormation()
 //     row = col = Math.pow(2, zoomlevel);
  //document.getElementById("VW").style.height%patchSize;
   //document.getElementById("VW").style.height%patchSize;
-for (j=1;j<=1;j++)
-{
-i=document.createElement("img");
-i.id="img1";
-i.height=patchSize;
-i.width=patchSize;
-document.getElementById("patchGrid").appendChild(i);
-}
-
+	for (j=1;j<=1;j++)
+	{
+		i=document.createElement("img");
+		i.id="img1";
+		i.height=patchSize;
+		i.width=patchSize;
+		document.getElementById("patchGrid").appendChild(i);
+	}
 }
 
 function loadPatch()
 {
-zoomlevel=document.getElementById("text3").value;
-document.getElementById("img1").src="http://wonko.via.cornell.edu/bigimgs/test1/foo." +zoomlevel+ ".0.0.0.jpeg";
-
+	zoomlevel=document.getElementById("text3").value;
+	document.getElementById("img1").src="http://wonko.via.cornell.edu/bigimgs/test1/foo." +zoomlevel+ ".0.0.0.jpeg";
 }
-
-
 </script>
-
 
 </head>
 
 <body onload="change();gridFormation();loadPatch()">
+<script type="text/javascript" src="wz_dragdrop.js"></script> 
 <div  id="patchGrid" style="border: thin #000000 none; position: absolute; width: 512px; height: 512px; z-index: 1; left: 200px; top: 150px">
 </div>
-
+<img name="name1" src="testimages/buttermilkfalls.jpg" width="240" height="135">
 <form method="post">
 	<input onchange="change()"id="text1"name="Height" type="text" value="73" />
 	<input onchange="change();gridFormation()"id="text2" name="Width" type="text" value="73" />
 	<input onchange="loadPatch()" id="text3" name="Zoomlevel" type="text" value="0" /></form>
-
+hello2
 <div  id="VW" style="border: thin #FF00FF solid; position: absolute; width: 50px; height: 50px; z-index: 1; left: 200px; top: 150px" id="layer1">
 </div>
+hello3
+<script type="text/javascript">
+<!--
 
+SET_DHTML("patchGrid");
+
+//-->
+</script> 
 </body>
 
 </html>
