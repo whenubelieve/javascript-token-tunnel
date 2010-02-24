@@ -47,14 +47,25 @@ function loadPatch()
 </head>
 
 <body onload="change();gridFormation();loadPatch()">
+<script type="text/javascript" src="wz_dragdrop.js"></script> 
 <div  id="patchGrid" style="border: thin #000000 none; position: absolute; width: 512px; height: 512px; z-index: 1; left: 200px; top: 150px">
 </div>
+<img name="name1" src="testimages/buttermilkfalls.jpg" width="240" height="135">
 <form method="post">
 	<input onchange="change()"id="text1"name="Height" type="text" value="73" />
 	<input onchange="change();gridFormation()"id="text2" name="Width" type="text" value="73" />
 	<input onchange="loadPatch()" id="text3" name="Zoomlevel" type="text" value="0" /></form>
+hello2
 <div  id="VW" style="border: thin #FF00FF solid; position: absolute; width: 50px; height: 50px; z-index: 1; left: 200px; top: 150px" id="layer1">
 </div>
+hello3
+<script type="text/javascript">
+<!--
+
+SET_DHTML("name1");
+
+//-->
+</script> 
 </body>
 
 </html>
