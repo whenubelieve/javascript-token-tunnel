@@ -120,7 +120,7 @@ var patch = new SVImagePatch;
 patch.xind = 1;
 patch.yind = 1;
 
-
+var zIndex=0;
 var zoomlevel = 0;
 var MaxZoom = 4; /*  0,1,2,3,4*/
 var row=0;
@@ -266,6 +266,7 @@ resetGrid();
    col=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
 
    zoomlevel=document.getElementById("Zoomlevel").value;
+   zIndex=document.getElementById("zIndex").value;
    var table = document.getElementById("patchGrid");
 	
 	 table.style.height=row*patchSize;
@@ -283,7 +284,7 @@ resetGrid();
 				dummy.width=patchSize;
 				img=document.createElement("img");
 				img.id="img"+i+j;
-				img.src="http://wonko.via.cornell.edu/bigimgs/test1/foo."+ zoomlevel + "." +( j -1)+ "." + (i-1) + ".0.jpeg";
+				img.src="http://wonko.via.cornell.edu/bigimgs/test2/bar."+ zoomlevel + "." +( j -1)+ "." + (i-1) + "."+ zIndex + ".jpeg";
                       dummy.appendChild(img);
 				tr.appendChild(dummy);
 			
@@ -323,9 +324,7 @@ function trial_ondragend() {
 function CommitMove() {
 
 
- if((vw.imgpnt.x-dx)>=0&&(vw.imgpnt.y-dy)>=0&&
-(vw.imgpnt.x-dx+width)<=patchSize*row
-&&(vw.imgpnt.y-dy+height)<=patchSize*col) // if dx or dy >256, first load new images and than "simulate" a panning
+if((vw.imgpnt.x-dx+width)<patchSize*row&&(vw.imgpnt.y-dy+height)<patchSize*col)
 {                           //panning within the buffer zone
      vw.imgpnt.x = vw.imgpnt.x - dx; // Update coordinates of view windox x,y changes with zooming
     vw.imgpnt.y = vw.imgpnt.y - dy;
@@ -348,10 +347,7 @@ function CommitMove() {
 }
 
 //Panning outside the buffer zone
- if((vw.imgpnt.x-dx)>=0&&(vw.imgpnt.y-dy)>=0&&(vw.imgpnt.x-dx+width)<imgage.xs
- &&(vw.imgpnt.y-dy+height)<imgage.ys&&
-((vw.imgpnt.x-dx+width)>patchSize*row
-||(vw.imgpnt.y-dy+height)>patchSize*col))
+ if((vw.imgpnt.x-dx+width)>patchSize*row||(vw.imgpnt.y-dy+height)>patchSize*col)
 {
 
     resetGrid();
@@ -376,7 +372,7 @@ function CommitMove() {
 				dummy.width=patchSize;
 				img=document.createElement("img");
 				img.id="img"+i+j;
-				img.src="http://wonko.via.cornell.edu/bigimgs/test1/foo."+ zoomlevel + "." +( j -1)+ "." + (i-1) + ".0.jpeg";
+				img.src="http://wonko.via.cornell.edu/bigimgs/test2/bar."+ zoomlevel + "." +( j -1)+ "." + (i-1) + "."+ zIndex + ".jpeg";
                       dummy.appendChild(img);
 				tr.appendChild(dummy);
 			
@@ -424,9 +420,9 @@ CommitMove();
 <body onload="ResizeVW();gridFormation()">
 
 <form method="post">
-	<input id="Height"name="Height" type="text" onchange="ResizeVW();gridFormation()"value="250" />
-	<input id="Width" name="Width" type="text"  onchange="ResizeVW();gridFormation()" value="250"/>
-	<input id="Zoomlevel" name="Zoomlevel" type="text" onchange="gridFormation()" value="3"/></form>
+	<input id="Height"name="Height" type="text" onchange="ResizeVW();gridFormation()"value="256" />
+	<input id="Width" name="Width" type="text"  onchange="ResizeVW();gridFormation()" value="256"/>
+	<input id="Zoomlevel" name="Zoomlevel" type="text" onchange="gridFormation()" value="0"/><input id="zIndex"name="Text7" type="text" onchange="gridFormation();" value="0"/></form>
 
 <div  id="VW" style="border: thin #FF00FF solid; position: absolute; width: 256px; height: 256px; z-index: 1; left: 200px; top: 150px" id="layer1">
 </div>
