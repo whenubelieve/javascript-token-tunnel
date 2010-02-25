@@ -23,17 +23,14 @@ function change()
 
 function gridFormation()
 {
-	for (j=1;j<=1;j++)
-	{
-		i=document.createElement("img");
-		i.id="img1";
-		i.height=patchSize;
-		i.width=patchSize;
-		document.getElementById("patchGrid").appendChild(i);
-	}
+	i=document.createElement("img");
+	i.id="img1";
+	i.height=patchSize;
+	i.width=patchSize;
+	document.getElementById("patchGrid").appendChild(i);
 }
 
-function loadPatch()
+function LoadPatch()
 {
 	zoomlevel=document.getElementById("text3").value;
 	document.getElementById("img1").src="http://wonko.via.cornell.edu/bigimgs/test1/foo." +zoomlevel+ ".0.0.0.jpeg";
@@ -42,14 +39,15 @@ function loadPatch()
 
 </head>
 
-<body onload="change();gridFormation();loadPatch()">
+<body onload="change();gridFormation();LoadPatch()">
+	
 <div  id="patchGrid" style="border: thin #000000 none; position: absolute; width: 512px; height: 512px; z-index: 1; left: 200px; top: 150px">
 </div>
 
 <form method="post">
-	<input onchange="change()"id="text1"name="Height" type="text" value="80" />
-	<input onchange="change();gridFormation()"id="text2" name="Width" type="text" value="80" />
-	<input onchange="loadPatch()" id="text3" name="Zoomlevel" type="text" value="0" />
+	<input id="text1" name="Height"		type="text" value="80"	onchange="change()"/>
+	<input id="text2" name="Width"		type="text" value="80"	onchange="change();gridFormation()"/>
+	<input id="text3" name="Zoomlevel"	type="text" value="0" 	onchange="LoadPatch()"/>
 </form>
 
 <p><b>proj3.htm</b> - please press enter key after typing number in text box.</p> 
@@ -61,6 +59,7 @@ function loadPatch()
 
 <div  id="VW" style="border: thin #FF00FF solid; position: absolute; width: 50px; height: 50px; z-index: 1; left: 200px; top: 150px" id="layer1">
 </div>
+
 </body>
 
 </html>
