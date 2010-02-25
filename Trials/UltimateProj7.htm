@@ -269,8 +269,8 @@ function CommitMove() {
 }
 
 //Panning outside the buffer zone
- if((vw.imgpnt.x-dx)>=0&&(vw.imgpnt.y-dy)>=0&&(vw.imgpnt.x-dx+width)<=imgage.xs
- &&(vw.imgpnt.y-dy+height)<=imgage.ys&&
+ if((vw.imgpnt.x-dx)>=0&&(vw.imgpnt.y-dy)>=0&&(vw.imgpnt.x-dx+width)<imgage.xs
+ &&(vw.imgpnt.y-dy+height)<imgage.ys&&
 ((vw.imgpnt.x-dx+width)>=patchSize*row
 ||(vw.imgpnt.y-dy+height)>=patchSize*col))
 {
@@ -325,9 +325,6 @@ function CommitMove() {
 
 }
 
-
-
-// ajust jacent patches
 }
 
 </script>
