@@ -3,7 +3,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Trial</title>
+<title>proj4.htm</title>
 <script type="text/javascript">
 patchSize=256;
 zoomlevel=0;
@@ -230,10 +230,17 @@ function CommitMove() {
 </div>
 
 <form method="post">
-	<input id="text1"name="Height" type="text" />
-	<input id="text2" name="Width" type="text"  onchange="change()"/>
+	<input id="text1"name="Height" type="text" value="80" />
+	<input id="text2" name="Width" type="text"  onchange="change()" value="80" />
 	<input id="text3" name="Zoomlevel" type="text" onchange="ResetGridFormation();gridFormation()"/>
 </form>
+
+<p><b>proj4.htm</b> - please press enter key after typing number in text box.</p> 
+<ul>
+	<li>system defines and manages the number of patches needed to cover the viewing window</li>
+	<li>when zoom > 0 loads patches to fill viewing window</li>
+	<li>[patches are joined together like a single image]</li>
+</ul>
 
 <div  id="VW" style="border: thin #FF00FF solid; position: absolute; width: 50px; height: 50px; z-index: 1; left: 200px; top: 150px" id="layer1">
 </div>
