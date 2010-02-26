@@ -1,0 +1,369 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Trial</title>
+<script type="text/javascript">
+patchSize=256;
+zoomlevel=0;
+imageSize= Math.pow(2, zoomlevel)*patchSize;
+var height=0;
+var width=0;
+
+var imgpsz = { x: 256, y: 256};
+// Image Prototype
+// objects created by:
+// var img = new SVImage( <url>, <xs>, <ys>, <zs>);
+
+function SVImage( url, xs, ys, zs) {
+    this.url = url;
+    this.xs = xs;
+    this.ys = ys;
+    this.zs = zs;
+}
+
+SVImage.prototype.getUrl = function () {
+    return this.url;
+}
+
+SVImage.prototype.getXs = function () {
+    return this.xs;
+}
+SVImage.prototype.getYs = function () {
+    return this.ys;
+}
+SVImage.prototype.getZs = function () {
+    return this.zs;
+}
+
+
+// Image Point Prototype
+// objects created by:
+//     var imgpt = new SVImagePoint( <image>, <x>, <y>, <z>);
+
+function SVImagePoint( img, xloc, yloc, zloc) {
+    this.image = img;
+    this.x = xloc;
+    this.y = yloc;
+    this.z = zloc;
+}
+
+// Viewing Window Prototype
+// objects created by:
+//     var imgpt = new Vieww( <image-point>, <xs>, <ys>, <zs>);
+
+function Vieww( imgpnt, xs, ys, zs) {
+    this.imgpnt = imgpnt;
+    this.xs = xs;
+    this.ys = ys;
+    this.zs = zs;
+}
+
+// Image Patch Prototype
+// objects created by:
+//     var ptch = new SVImagePatch( <image>, <x>, <y>, <z>, <zoom>);
+
+function SVImagePatch( img, xind, yind, zind, zoom) {
+    this.image = img;
+    this.xind = xind;
+    this.yind = yind;
+    this.zind = zind;
+    this.zm = zoom;
+}
+
+// Image Patch Point Prototype
+// objects created by:
+//     var ptch = new PatchPoint( <patch>, <x>, <y>);
+
+function PatchPoint( patch, xloc, yloc) {
+    this.patch = patch;
+    this.x = xloc;
+    this.y = yloc;
+}
+
+
+// Viewing Window Point Prototype
+// objects created by:
+//     var imgpt = new ViewPoint( <view-wnd>, <x>, <y>);
+
+function ViewPoint( vw, xloc, yloc) {
+    this.vw = vw;
+    this.x = xloc;
+    this.y = yloc;
+}
+
+
+// Initilizations 
+//
+//
+
+var imgage = new SVImage;
+imgage.xs=0;
+imgage.ys=0;
+var imagePoint = new SVImagePoint;
+
+var vwcorner=new SVImagePoint;
+var vw = new Vieww;
+vw.imgpnt=vwcorner;
+vw.imgpnt.x = 0;
+vw.imgpnt.y = 0;
+vw.xs=0;
+vw.ys=0;
+
+var patchPoint = new PatchPoint;
+
+var vwPoint0 = new ViewPoint;
+var vwPoint1 = new ViewPoint;
+
+var patch = new SVImagePatch;
+patch.xind = 1;
+patch.yind = 1;
+
+var zIndex=0;
+var zoomlevel = 0;
+var MaxZoom = 4; /*  0,1,2,3,4*/
+var row=0;
+var col=0;
+var number=0;
+//var head="Test%20Images/foo."; /*File name operation */
+//var tail = ".jpeg";
+
+var top = 0;   /*the visible window that cropped, its size affects the Zoomoffset function*/
+var right = 0;
+var bottom = 0;
+var left = 0;
+
+var tleft =200	;
+var ttop =150;
+
+var row=0;
+var col=0;
+var dx = 0;
+var dy = 0;
+
+var YGridNumber = 1; 
+var XGridNumber = 1;
+	
+function ResizeVW() //change happens to viewing window and grid patches.
+{ 
+height=parseInt(document.getElementById("Height").value);// property of viewing window
+width=parseInt(document.getElementById("Width").value); // fixed, once given
+
+   zoomlevel=document.getElementById("Zoomlevel").value;
+			number = Math.pow(4, zoomlevel);
+	imgage.xs = Math.pow(2, zoomlevel) * patchSize;
+     imgage.ys = Math.pow(2, zoomlevel) * patchSize;
+
+document.getElementById("VW").style.height=height+"px";
+document.getElementById("VW").style.width=width+"px";
+
+right=left+width;
+bottom=top+height;
+document.getElementById("patchGrid").style.clip="rect(" + top + "px " + right + "px " + bottom + "px " + left + "px)";
+}
+
+
+function resetGrid()
+{
+for (i=1; i<=row; i++)
+{
+var table = document.getElementById("patchGrid");
+var tr= document.getElementById("tr1");
+table.removeChild(tr);
+}
+}
+
+ function gridFormation()
+{
+resetGrid();
+   row=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
+   col=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
+
+   zoomlevel=document.getElementById("Zoomlevel").value;
+   zIndex=document.getElementById("zIndex").value;
+   var table = document.getElementById("patchGrid");
+	
+	 table.style.height=row*patchSize;
+      table.style.width=col*patchSize;
+		
+	for (i = 1; i <= row; i++) {
+		var tr = document.createElement("tr");
+		tr.height =patchSize ;
+		tr.width=col*patchSize;
+		tr.id="tr1";
+		for(j=1;j<=col;j++){
+		
+				dummy=document.createElement("td");
+				dummy.height=patchSize;
+				dummy.width=patchSize;
+				img=document.createElement("img");
+				img.id="img"+i+j;
+				img.src="http://wonko.via.cornell.edu/bigimgs/test2/bar."+ zoomlevel + "." +( j -1)+ "." + (i-1) + "."+ zIndex + ".jpeg";
+                      dummy.appendChild(img);
+				tr.appendChild(dummy);
+			
+		}
+		table.appendChild(tr);
+	}
+
+}
+
+
+
+function trial_ondragstart(event) {
+    CooX0 = event.clientX;
+    CooY0 = event.clientY;
+    vw.xs=width;
+    vw.ys=height;
+
+}
+function trial_ondrag(event, trial) {
+    CooX1 = event.clientX;
+    CooY1 = event.clientY;
+
+    dx = 2*(CooX1 - CooX0);
+    dy = 2*(CooY1 - CooY0);
+    CooX0 = CooX1;    /*update frame*/
+    CooY0 = CooY1;
+
+    if (dx != 0 || dy != 0)
+    { CommitMove(trial); }
+   
+    imageDimension=patchSize*Math.pow(2, zoomlevel);
+}
+function trial_ondragend() {
+    dx = 0;
+    dy = 0;
+}
+function CommitMove() {
+
+     vw.imgpnt.x = vw.imgpnt.x - dx; // Update coordinates of view windox x,y changes with zooming
+    vw.imgpnt.y = vw.imgpnt.y - dy;
+  
+
+if((vw.imgpnt.x+width)<patchSize*row&&(vw.imgpnt.y+height)<patchSize*col)
+{                           //panning within the buffer zone
+    document.getElementById("X").value=vw.imgpnt.x;  //Display for the sake of debug
+    document.getElementById("Y").value=vw.imgpnt.y;
+    document.getElementById("DiagX").value=vw.imgpnt.x+height;
+    document.getElementById("DiagY").value=vw.imgpnt.y+width;
+
+    right = right - dx; 
+    left = left - dx;
+    top = top - dy;
+    bottom = bottom - dy;
+ 
+    tleft = parseInt(document.getElementById('patchGrid').style.left) + dx;
+    document.getElementById('patchGrid').style.left = tleft + 'px';
+    ttop = parseInt(document.getElementById('patchGrid').style.top) + dy;
+    document.getElementById('patchGrid').style.top = ttop + 'px';
+    document.getElementById('patchGrid').style.clip = "rect(" + top + "px " + right + "px " + bottom + "px " + left + "px)";
+}
+
+//Panning outside the buffer zone
+ if((vw.imgpnt.x+width)>patchSize*row||(vw.imgpnt.y+height)>patchSize*col)
+{
+
+    resetGrid();
+
+   row=row+1;
+   col=col+1;
+   zoomlevel=document.getElementById("Zoomlevel").value;
+   var table = document.getElementById("patchGrid");
+	
+	 table.style.height=row*256;
+      table.style.width=col*256;
+		
+	for (i = 1; i <= row; i++) {
+		var tr = document.createElement("tr");
+		tr.height =patchSize ;
+		tr.width=col*patchSize;
+		tr.id="tr1";
+		for(j=1;j<=col;j++){
+		
+				dummy=document.createElement("td");
+				dummy.height=patchSize;
+				dummy.width=patchSize;
+				img=document.createElement("img");
+				img.id="img"+i+j;
+				img.src="http://wonko.via.cornell.edu/bigimgs/test2/bar."+ zoomlevel + "." +( j -1)+ "." + (i-1) + "."+ zIndex + ".jpeg";
+                      dummy.appendChild(img);
+				tr.appendChild(dummy);
+			
+		}
+		table.appendChild(tr);
+	}
+
+
+ vw.imgpnt.x = vw.imgpnt.x - dx; // Update coordinates of view windox x,y changes with zooming
+    vw.imgpnt.y = vw.imgpnt.y - dy;
+  
+
+    right = right - dx; 
+    left = left - dx;
+    top = top - dy;
+    bottom = bottom - dy;
+ 
+    tleft = parseInt(document.getElementById('patchGrid').style.left) + dx;
+    document.getElementById('patchGrid').style.left = tleft + 'px';
+    ttop = parseInt(document.getElementById('patchGrid').style.top) + dy;
+    document.getElementById('patchGrid').style.top = ttop + 'px';
+    document.getElementById('patchGrid').style.clip = "rect(" + top + "px " + right + "px " + bottom + "px " + left + "px)";
+
+   
+
+}
+}
+
+function InputMove()
+{
+
+    dx=-parseInt(document.getElementById("dx").value);  //Display for the sake of debug
+    dy=-parseInt(document.getElementById("dy").value);
+CommitMove();
+
+}
+
+function CenterOffset()
+{
+
+  zoomlevel=document.getElementById("Zoomlevel").value;
+ centerX = 2*(vw.imgpnt.x+0.5*width);
+ centerY = 2*(vw.imgpnt.y+0.5*height);// center of the viewing window in the zoomed frame
+
+dx=-((centerX-0.5*width)-vw.imgpnt.x);
+dy=-((centerY-0.5*height)-vw.imgpnt.y);
+CommitMove();
+}
+
+
+</script>
+
+
+</head>
+
+<body onload="ResizeVW();gridFormation()">
+
+<form method="post">
+	<input id="Height"name="Height" type="text" onchange="ResizeVW();gridFormation()"value="256" />
+	<input id="Width" name="Width" type="text"  onchange="ResizeVW();gridFormation()" value="256"/>
+	<input id="Zoomlevel" name="Zoomlevel" type="text" onchange="gridFormation();CenterOffset()" value="0"/><input id="zIndex"name="Text7" type="text" onchange="gridFormation();" value="0"/></form>
+
+<div  id="VW" style="border: thin #FF00FF solid; position: absolute; width: 256px; height: 256px; z-index: 1; left: 200px; top: 150px" id="layer1">
+</div>
+
+<table id="patchGrid"cellpadding="0" cellspacing="0" style="width: 512px; height: 512px; position: absolute; left: 200px; top: 150px;"        
+        ondragstart="trial_ondragstart(event)"
+        ondrag="trial_ondrag(event,patchGrid)"
+        ondragend="trial_ondragend()"
+     >
+
+</table>
+
+<form method="post">
+				<input id="X"name="Text1" type="text" /><input id="Y"name="Text2" type="text" /><input id="DiagX"name="Text3" type="text" onchange="CommitMove()"/><input id="DiagY"name="Text4" type="text" onchange="CommitMove()"/><input id="dx"name="Text5" type="text" onchange="InputMove()" value="0"/><input id="dy"name="Text6" type="text" onchange="InputMove()" value="0"/></form>
+
+</body>
+
+</html>
