@@ -25,22 +25,30 @@
             imageSize = Math.pow(2, zoomlevel) * patchSize;
             
             //test of pink coloring of text
-            $(document).ready(function(){
-                $("p").addClass("test");
+            //$(document).ready(function(){
+                //$("p").addClass("test");
 				//$("div").addClass("frame");
                 //setTimeout("$("p").removeClass("test1")",1900);
 				//$("div:last").hide("slow");
-                setTimeout("$(\"div:last\").hide(\"slow\")",2000);
+                
+				//setTimeout("$(\"div:last\").hide(\"slow\")",2000);
                 //blank setTimeout function
 				//setTimeout("",2000);
                 //$("p").addClass("test2");p
-            });
+            //});
 			//this applies a style attribute after a delay
-			setTimeout("$(\"p\").addClass(\"test2\")", 1000);
-			//setTimeout("$(\"div:last\").hide(\"slow\")", 2000);
+			
+			//setTimeout("$(\"p\").addClass(\"test2\")", 1000);
 			
             
             function change(){
+				//var $VW = $('#VW').css('height') + 'px';
+				var $VW = $('#text1').attr('value') + 'px';
+				//alert($VW);
+				//alert($VW.css('height') + 'px');
+				//$('#VW').css("height","$('#text1').value + \"px\"");
+				//$('#VW').css("height",$VW);
+				
                 document.getElementById("VW").style.height = document.getElementById("text1").value + "px";
                 document.getElementById("VW").style.width = document.getElementById("text2").value + "px";
                 var height = document.getElementById("text1").value;
