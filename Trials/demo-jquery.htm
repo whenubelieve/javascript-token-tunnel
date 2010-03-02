@@ -1,18 +1,28 @@
 <!doctype html>
 <html>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.js">
-    </script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $("a").click(function(event){
                 alert("Thanks for visiting!");
                 event.preventDefault();
-				$(this).hide("slow");
-
+                $(this).hide("slow");
             });
+            $("a").addClass("test");
+            
+            
+            
+            
+            
         });
     </script>
     <head>
+        
+		<style type="text/css">
+            a.test {
+                font-weight: bold;
+            }
+        </style>
         <script type="text/javascript">
         </script>
     </head>
