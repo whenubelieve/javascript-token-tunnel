@@ -14,10 +14,10 @@
             p.test2 {
                 color: #000000;
             }
-			
-			div.frame {
-				color: #FF00FF;
-			}
+            
+            div.frame {
+                color: #FF00FF;
+            }
         </style>
         <script type="text/javascript">
             patchSize = 256;
@@ -26,30 +26,30 @@
             
             //test of pink coloring of text
             //$(document).ready(function(){
-                //$("p").addClass("test");
-				//$("div").addClass("frame");
-                //setTimeout("$("p").removeClass("test1")",1900);
-				//$("div:last").hide("slow");
-                
-				//setTimeout("$(\"div:last\").hide(\"slow\")",2000);
-                //blank setTimeout function
-				//setTimeout("",2000);
-                //$("p").addClass("test2");p
+            //$("p").addClass("test");
+            //$("div").addClass("frame");
+            //setTimeout("$("p").removeClass("test1")",1900);
+            //$("div:last").hide("slow");
+            
+            //setTimeout("$(\"div:last\").hide(\"slow\")",2000);
+            //blank setTimeout function
+            //setTimeout("",2000);
+            //$("p").addClass("test2");p
             //});
-			//this applies a style attribute after a delay
-			
-			//setTimeout("$(\"p\").addClass(\"test2\")", 1000);
-			
+            //this applies a style attribute after a delay
+            
+            //setTimeout("$(\"p\").addClass(\"test2\")", 1000);
+            
             
             function change(){
-				//var $VW = $('#VW').css('height') + 'px';
-				var $VW = $('#text1').attr('value') + 'px';
-				//alert($VW);
-				//alert($VW.css('height') + 'px');
-				//$('#VW').css("height","$('#text1').value + \"px\"");
-				//$('#VW').css("height",$VW);
-				
-                document.getElementById("VW").style.height = document.getElementById("text1").value + "px";
+                //var $VW = $('#VW').css('height') + 'px';
+                var $VW = $('#text1').attr('value') + 'px';
+                //alert($VW);
+                //alert($VW.css('height') + 'px');
+                //$('#VW').css("height","$('#text1').value + \"px\"");
+                $('#VW').css("height", $VW);
+                
+                //document.getElementById("VW").style.height = document.getElementById("text1").value + "px";
                 document.getElementById("VW").style.width = document.getElementById("text2").value + "px";
                 var height = document.getElementById("text1").value;
                 var width = document.getElementById("text2").value;
@@ -74,56 +74,54 @@
         </script>
     </head>
     <body onload="change();gridFormation();LoadPatch()">
-        
-        </div>
-        <table border="2">
-            <tr>
-                <td>
-                    <label for="text1" class="hiddenlabel">
-                        Height:
-                    </label>
-                    <form method="post">
-                        <input id="text1" name="Height" type="text" value="80" onchange="change()"/>
-                    </form>
-                </td>
-                <td>
-                    <label for="text2" class="hiddenlabel">
-                        Width:
-                    </label>
-                    <form method="post">
-                        <input id="text2" name="Width" type="text" value="80" onchange="change();gridFormation()"/>
-                    </form>
-                </td>
-                <td>
-                    <label for="text3" class="hiddenlabel">
-                        Zoomlevel:
-                    </label>
-                    <form method="post">
-                        <input id="text3" name="Zoomlevel" type="text" value="0" onchange="LoadPatch()"/>
-                    </form>
-                </td>
-            </tr>
-        </table>
-        <p>
-            <b>proj3.htm</b>
-            - please press enter key after typing number in text box.
-        </p>
-        <ul>
-            <li>
-                load f.0.0.0.jpeg from http://wonko.via.cornell.edu/bigimgs/test1/
-            </li>
-            <li>
-                when x-size or y-size are < 256 then the viewing window clips the image
-            </li>
-            <li>
-                Enter a number into zoom and the “zoomed” image is loaded
-            </li>
-        </ul>
-		<!--The actual image inside the viewing window-->
-        <div id="patchGrid" style="border: thin #000000 none; position: absolute; width: 512px; height: 512px; z-index: 1; left: 200px; top: 200px">
-		</div>
-		<!--The outside pink border-->
-		<div id="VW" style="border: thin #FF00FF solid; position: absolute; width: 50px; height: 50px; z-index: 1; left: 200px; top: 200px">
-        </div>
-    </body>
+    </div>
+    <table border="2">
+        <tr>
+            <td>
+                <label for="text1" class="hiddenlabel">
+                    Height:
+                </label>
+                <br/>
+                <!--<form method="post">--><input id="text1" name="Height" type="text" value="80" onchange="change()"/><!--</form>-->
+            </td>
+            <td>
+                <label for="text2" class="hiddenlabel">
+                    Width:
+                </label>
+                <br/>
+                <!--<form method="post">--><input id="text2" name="Width" type="text" value="80" onchange="change();gridFormation()"/><!--</form>-->
+            </td>
+            <td>
+                <label for="text3" class="hiddenlabel">
+                    Zoomlevel:
+                </label>
+				<br />
+                <!--<form method="post">-->
+                    <input id="text3" name="Zoomlevel" type="text" value="0" onchange="LoadPatch()"/>
+                <!--</form>-->
+            </td>
+        </tr>
+    </table>
+    <p>
+        <b>proj3.htm</b>
+        - please press enter key after typing number in text box.
+    </p>
+    <ul>
+        <li>
+            load f.0.0.0.jpeg from http://wonko.via.cornell.edu/bigimgs/test1/
+        </li>
+        <li>
+            when x-size or y-size are < 256 then the viewing window clips the image
+        </li>
+        <li>
+            Enter a number into zoom and the “zoomed” image is loaded
+        </li>
+    </ul>
+    <!--The actual image inside the viewing window-->
+    <div id="patchGrid" style="border: thin #000000 none; position: absolute; width: 512px; height: 512px; z-index: 1; left: 200px; top: 200px">
+    </div>
+    <!--The outside pink border-->
+    <div id="VW" style="border: thin #FF00FF solid; position: absolute; width: 50px; height: 50px; z-index: 1; left: 200px; top: 200px">
+    </div>
+</body>
 </html>
