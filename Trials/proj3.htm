@@ -34,10 +34,8 @@
             //setTimeout("$(\"div:last\").hide(\"slow\")",2000);
             //blank setTimeout function
             //setTimeout("",2000);
-            //$("p").addClass("test2");p
-            //});
-            //this applies a style attribute after a delay
             
+            //this applies a style attribute after a delay
             //setTimeout("$(\"p\").addClass(\"test2\")", 1000);
             
             
@@ -51,16 +49,16 @@
                 $('#VW').css("height", height + 'px');
                 $('#VW').css("width", width + 'px');
                 zoomlevel = $('#text3').attr('value') + 'px';
-				$('#patchGrid').css("clip", function(){
-					return 'rect(' + top + 'px, ' + width + 'px, ' + height + 'px, ' + left + 'px)'
-				});
-				//or you can do this:
-				//var $clip = 'rect(' + top + 'px, ' + width + 'px, ' + height + 'px, ' + left + 'px)'
+                $('#patchGrid').css("clip", function(){
+                    return 'rect(' + top + 'px, ' + width + 'px, ' + height + 'px, ' + left + 'px)'
+                });
+                //or you can do this:
+                //var $clip = 'rect(' + top + 'px, ' + width + 'px, ' + height + 'px, ' + left + 'px)'
                 //$('#patchGrid').css("clip", function(){
-					//return $clip
-				//});
-                
-                
+                //return $clip
+                //});
+            
+            
                 //var height = document.getElementById("text1").value;
                 //var width = document.getElementById("text2").value;
                 //var left = 0;
@@ -69,7 +67,7 @@
                 //document.getElementById("VW").style.width = document.getElementById("text2").value + "px";  
                 //zoomlevel = document.getElementById("text3").value + "px";
                 //document.getElementById("patchGrid").style.clip = "rect(" + top + "px " + width + "px " + height + "px " + left + "px)";
-                
+            
             }
             
             function gridFormation(){
@@ -89,55 +87,79 @@
                 //zoomlevel = document.getElementById("text3").value;
                 //document.getElementById("img1").src = "http://wonko.via.cornell.edu/bigimgs/test1/foo." + zoomlevel + ".0.0.0.jpeg";
             }
+            
+            function example_ajax_request(){
+                //when is this .load function useful?
+                //$('#example-placeholder').html('<p><img src="http://www.sanbaldo.com/wordpress/wp-content/bigrotation2.gif" width="50" height="50" /></p>');
+                //$('#example-placeholder').load("/examples/ajax-loaded.html");
+                //alert('button');
+                //$('#example-placeholder').empty().load('http://latimesblogs.latimes.com/dailydish/2010/03/eating-and-drinking-on-oscar-sunday.html', function(){
+                //alert('Load was performed.');
+                //});
+            
+            
+            }
+            
+            function preloader(){
+                heavyImage = new Image();
+                heavyImage.src = "heavyimagefile.jpg";
+            }
+			
+			
         </script>
     </head>
     <body onload="change();gridFormation();LoadPatch()">
-    </div>
-    <table border="2">
-        <tr>
-            <td>
-                <label for="text1" class="hiddenlabel">
-                    Height:
-                </label>
-                <br/>
-                <!--<form method="post">--><input id="text1" name="Height" type="text" value="80" onchange="change()"/><!--</form>-->
-            </td>
-            <td>
-                <label for="text2" class="hiddenlabel">
-                    Width:
-                </label>
-                <br/>
-                <!--<form method="post">--><input id="text2" name="Width" type="text" value="80" onchange="change();gridFormation()"/><!--</form>-->
-            </td>
-            <td>
-                <label for="text3" class="hiddenlabel">
-                    Zoomlevel:
-                </label>
-                <br/>
-                <!--<form method="post">--><input id="text3" name="Zoomlevel" type="text" value="0" onchange="LoadPatch()"/><!--</form>-->
-            </td>
-        </tr>
-    </table>
-    <p>
-        <b>proj3.htm</b>
-        - please press enter key after typing number in text box.
-    </p>
-    <ul>
-        <li>
-            load f.0.0.0.jpeg from http://wonko.via.cornell.edu/bigimgs/test1/
-        </li>
-        <li>
-            when x-size or y-size are < 256 then the viewing window clips the image
-        </li>
-        <li>
-            Enter a number into zoom and the “zoomed” image is loaded
-        </li>
-    </ul>
-    <!--The actual image inside the viewing window-->
-    <div id="patchGrid" style="border: thin #000000 none; position: absolute; width: 512px; height: 512px; z-index: 1; left: 200px; top: 200px">
-    </div>
-    <!--The outside pink border-->
-    <div id="VW" style="border: thin #FF00FF solid; position: absolute; width: 50px; height: 50px; z-index: 1; left: 200px; top: 200px">
-    </div>
-</body>
+        <input type="button" onclick="example_ajax_request()" value="Click Me!" />
+        <div id="example-placeholder">
+            <p>
+                Placeholding text
+            </p>
+        </div>
+        <table border="2">
+            <tr>
+                <td>
+                    <label for="text1" class="hiddenlabel">
+                        Height:
+                    </label>
+                    <br/>
+                    <!--<form method="post">--><input id="text1" name="Height" type="text" value="80" onchange="change()"/><!--</form>-->
+                </td>
+                <td>
+                    <label for="text2" class="hiddenlabel">
+                        Width:
+                    </label>
+                    <br/>
+                    <!--<form method="post">--><input id="text2" name="Width" type="text" value="80" onchange="change();gridFormation()"/><!--</form>-->
+                </td>
+                <td>
+                    <label for="text3" class="hiddenlabel">
+                        Zoomlevel:
+                    </label>
+                    <br/>
+                    <!--<form method="post">--><input id="text3" name="Zoomlevel" type="text" value="0" onchange="LoadPatch()"/><!--</form>-->
+                </td>
+            </tr>
+        </table>
+        <p>
+            <b>proj3.htm</b>
+            - please press enter key after typing number in text box.
+        </p>
+        <ul>
+            <li>
+                load f.0.0.0.jpeg from http://wonko.via.cornell.edu/bigimgs/test1/
+            </li>
+            <li>
+                when x-size or y-size are < 256 then the viewing window clips the image
+            </li>
+            <li>
+                Enter a number into zoom and the “zoomed” image is loaded
+            </li>
+        </ul>
+        <!--The actual image inside the viewing window-->
+        <div id="patchGrid" style="border: thin #000000 none; position: absolute; width: 512px; height: 512px; z-index: 1; left: 200px; top: 200px">
+        </div>
+        <!--The outside pink border-->
+        <div id="VW" style="border: thin #FF00FF solid; position: absolute; width: 50px; height: 50px; z-index: 1; left: 200px; top: 200px">
+        </div>
+    </body>
 </html>
