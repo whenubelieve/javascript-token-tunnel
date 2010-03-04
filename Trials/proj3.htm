@@ -80,28 +80,55 @@
             
             function LoadPatch(){
                 zoomlevel = $('#text3').attr("value");
-				
-				
-                $('#img1').attr('src', function(){
-                    return 'http://wonko.via.cornell.edu/bigimgs/test1/foo.' + zoomlevel + '.0.0.0.jpeg'
-                });
                 
+                LoadImage();
+                //$('#img1').attr('src', function(){
+                //return 'http://wonko.via.cornell.edu/bigimgs/test1/foo.' + zoomlevel + '.0.0.0.jpeg'
+                //});
+            
                 //zoomlevel = document.getElementById("text3").value;
                 //document.getElementById("img1").src = "http://wonko.via.cornell.edu/bigimgs/test1/foo." + zoomlevel + ".0.0.0.jpeg";
             }
             
-            
+            function LoadImage(){
+                // when the DOM is ready
+                //alert("yello!");
+                var img = new Image();
+                
+                // wrap our new image in jQuery, then:
+                $(img).load(function(){// once the image has loaded, execute this code
+                    // set the image hidden by default    
+                    $(img).hide();
+                    
+                    // with the holding div #loader, apply:
+                    //$('#loader').removeClass('loading') // remove the loading class (so no background spinner), 
+                    // then insert our image
+                    $('#patchGrid').empty().append(img);
+                    
+                    // fade our image in to create a nice effect
+                    //$(img).show();
+					$(img).fadeIn();
+                
+                }) // if there was an error loading the image, react accordingly
+            .error(function(){
+                    alert(zoomlevel);// notify the user that the image could not be loaded
+                }) //.attr('src','http://www.ajaxload.info/cache/FF/FF/FF/00/00/00/19-0.gif')
+                //delaying this step so that we can see the loading image
+                
+                //.delay(3000) // *finally*, set the src attribute of the new image to our image      
+                //.attr('src', 'http://www.sanbaldo.com/wordpress/wp-content/bigrotation2.gif')
+                .attr('src', function(){
+                    return 'http://wonko.via.cornell.edu/bigimgs/test1/foo.' + zoomlevel + '.0.0.0.jpeg';
+                });
+            }
             
             function preloader(){
                 heavyImage = new Image();
                 heavyImage.src = "heavyimagefile.jpg";
             }
-			
-			
         </script>
     </head>
     <body onload="change();gridFormation();LoadPatch()">
-        
         <table border="2">
             <tr>
                 <td>
@@ -109,21 +136,21 @@
                         Height:
                     </label>
                     <br/>
-                    <input id="text1" name="Height" type="text" value="80" onkeypress="if(event.keyCode == 13 || event.keyCode == 9) change()" />
+                    <input id="text1" name="Height" type="text" value="300" onkeypress="if(event.keyCode == 13 || event.keyCode == 9) change()"/>
                 </td>
                 <td>
                     <label for="text2" class="hiddenlabel">
                         Width:
                     </label>
                     <br/>
-                    <input id="text2" name="Width" type="text" value="80" onkeyup="if(event.keyCode == 13 || event.keyCode == 9) {change();gridFormation()}"/>
+                    <input id="text2" name="Width" type="text" value="300" onkeyup="if(event.keyCode == 13 || event.keyCode == 9) {change();gridFormation()}"/>
                 </td>
                 <td>
                     <label for="text3" class="hiddenlabel">
                         Zoomlevel:
                     </label>
                     <br/>
-                    <input id="text3" name="Zoomlevel" type="text" value="0" onkeyup="if(event.keyCode == 13 || event.keyCode == 9) LoadPatch()" />
+                    <input id="text3" name="Zoomlevel" type="text" value="0" onkeyup="if(event.keyCode == 13 || event.keyCode == 9) LoadPatch()"/>
                 </td>
             </tr>
         </table>
