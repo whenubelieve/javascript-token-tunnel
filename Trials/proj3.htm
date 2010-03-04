@@ -80,6 +80,8 @@
             
             function LoadPatch(){
                 zoomlevel = $('#text3').attr("value");
+				
+				
                 $('#img1').attr('src', function(){
                     return 'http://wonko.via.cornell.edu/bigimgs/test1/foo.' + zoomlevel + '.0.0.0.jpeg'
                 });
@@ -107,27 +109,27 @@
                         Height:
                     </label>
                     <br/>
-                    <input id="text1" name="Height" type="text" value="80" onkeyup="if (event.keyCode == 13) change()" />
+                    <input id="text1" name="Height" type="text" value="80" onkeypress="if(event.keyCode == 13 || event.keyCode == 9) change()" />
                 </td>
                 <td>
                     <label for="text2" class="hiddenlabel">
                         Width:
                     </label>
                     <br/>
-                    <input id="text2" name="Width" type="text" value="80" onkeyup="if (event.keyCode == 13) change();gridFormation()"/>
+                    <input id="text2" name="Width" type="text" value="80" onkeyup="if(event.keyCode == 13 || event.keyCode == 9) {change();gridFormation()}"/>
                 </td>
                 <td>
                     <label for="text3" class="hiddenlabel">
                         Zoomlevel:
                     </label>
                     <br/>
-                    <input id="text3" name="Zoomlevel" type="text" value="0" onkeyup="if (event.keyCode == 13) LoadPatch()" />
+                    <input id="text3" name="Zoomlevel" type="text" value="0" onkeyup="if(event.keyCode == 13 || event.keyCode == 9) LoadPatch()" />
                 </td>
             </tr>
         </table>
         <p>
             <b>proj3.htm</b>
-            - please press enter key after typing number in text box.
+            - please press the enter key after typing number in text box.
         </p>
         <ul>
             <li>
