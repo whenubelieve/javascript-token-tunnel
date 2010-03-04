@@ -88,17 +88,7 @@
                 //document.getElementById("img1").src = "http://wonko.via.cornell.edu/bigimgs/test1/foo." + zoomlevel + ".0.0.0.jpeg";
             }
             
-            function example_ajax_request(){
-                //when is this .load function useful?
-                //$('#example-placeholder').html('<p><img src="http://www.sanbaldo.com/wordpress/wp-content/bigrotation2.gif" width="50" height="50" /></p>');
-                //$('#example-placeholder').load("/examples/ajax-loaded.html");
-                //alert('button');
-                //$('#example-placeholder').empty().load('http://latimesblogs.latimes.com/dailydish/2010/03/eating-and-drinking-on-oscar-sunday.html', function(){
-                //alert('Load was performed.');
-                //});
             
-            
-            }
             
             function preloader(){
                 heavyImage = new Image();
@@ -109,12 +99,7 @@
         </script>
     </head>
     <body onload="change();gridFormation();LoadPatch()">
-        <input type="button" onclick="example_ajax_request()" value="Click Me!" />
-        <div id="example-placeholder">
-            <p>
-                Placeholding text
-            </p>
-        </div>
+        
         <table border="2">
             <tr>
                 <td>
@@ -122,21 +107,21 @@
                         Height:
                     </label>
                     <br/>
-                    <!--<form method="post">--><input id="text1" name="Height" type="text" value="80" onchange="change()"/><!--</form>-->
+                    <input id="text1" name="Height" type="text" value="80" onkeyup="if (event.keyCode == 13) change()" />
                 </td>
                 <td>
                     <label for="text2" class="hiddenlabel">
                         Width:
                     </label>
                     <br/>
-                    <!--<form method="post">--><input id="text2" name="Width" type="text" value="80" onchange="change();gridFormation()"/><!--</form>-->
+                    <input id="text2" name="Width" type="text" value="80" onkeyup="if (event.keyCode == 13) change();gridFormation()"/>
                 </td>
                 <td>
                     <label for="text3" class="hiddenlabel">
                         Zoomlevel:
                     </label>
                     <br/>
-                    <!--<form method="post">--><input id="text3" name="Zoomlevel" type="text" value="0" onchange="LoadPatch()"/><!--</form>-->
+                    <input id="text3" name="Zoomlevel" type="text" value="0" onkeyup="if (event.keyCode == 13) LoadPatch()" />
                 </td>
             </tr>
         </table>
