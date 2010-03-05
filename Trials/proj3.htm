@@ -18,6 +18,8 @@
             div.frame {
                 color: #FF00FF;
             }
+			
+			
         </style>
         <script type="text/javascript">
             patchSize = 256;
@@ -153,14 +155,14 @@
                         Width:
                     </label>
                     <br/>
-                    <input id="text2" name="Width" type="text" value="300" onkeyup="if(event.keyCode == 13 || event.keyCode == 9) {change();gridFormation()}"/>
+                    <input id="text2" name="Width" type="text" value="300" onkeypress="if(event.keyCode == 13 || event.keyCode == 9) {change();gridFormation()}"/>
                 </td>
                 <td>
                     <label for="text3" class="hiddenlabel">
                         Zoomlevel:
                     </label>
                     <br/>
-                    <input id="text3" name="Zoomlevel" type="text" value="0" onkeyup="if(event.keyCode == 13 || event.keyCode == 9) LoadPatch()"/>
+                    <input id="text3" name="Zoomlevel" type="text" value="0" onkeypress="if(event.keyCode == 13 || event.keyCode == 9) LoadPatch()"/>
                 </td>
             </tr>
         </table>
@@ -185,8 +187,8 @@
         <!--The outside pink border-->
         <div id="VW" style="border: thin #FF00FF solid; position: absolute; width: 50px; height: 50px; z-index: 1; left: 200px; top: 200px">
         </div>
-        <div id="container">
+        <!--<div id="container">
             <img src="http://wonko.via.cornell.edu/bigimgs/test1/foo.0.0.0.0.jpeg"/>
-        </div>
+        </div>-->
     </body>
 </html>
