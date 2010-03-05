@@ -107,8 +107,8 @@
                     
                     // fade our image in to create a nice effect
                     //$(img).show();
-					$(img).fadeIn();
-                
+                    $(img).fadeIn();
+                    
                 }) // if there was an error loading the image, react accordingly
             .error(function(){
                     alert(zoomlevel);// notify the user that the image could not be loaded
@@ -120,12 +120,24 @@
                 .attr('src', function(){
                     return 'http://wonko.via.cornell.edu/bigimgs/test1/foo.' + zoomlevel + '.0.0.0.jpeg';
                 });
+				
+				
+				$("#container").empty().image("http://www.sanbaldo.com/wordpress/wp-content/bigrotation2.gif", function(){
+                alert("Image OK !");
+            });
+			//document ready ends here
             }
             
-            function preloader(){
-                heavyImage = new Image();
-                heavyImage.src = "heavyimagefile.jpg";
+            $.fn.image = function(src, f){
+                return this.each(function(){
+                    $("<img />").appendTo(this).each(function(){
+                        this.src = src;
+                        this.onload = f;
+                    });
+                });
             }
+            
+            
         </script>
     </head>
     <body onload="change();gridFormation();LoadPatch()">
@@ -174,6 +186,9 @@
         </div>
         <!--The outside pink border-->
         <div id="VW" style="border: thin #FF00FF solid; position: absolute; width: 50px; height: 50px; z-index: 1; left: 200px; top: 200px">
+        </div>
+        <div id="container">
+            <img src="http://wonko.via.cornell.edu/bigimgs/test1/foo.0.0.0.0.jpeg"/>
         </div>
     </body>
 </html>
