@@ -172,7 +172,7 @@
                     table.removeChild(tr);
                 }
             }
-            
+            //this is where all the images are originally created
             function gridFormation(){
                 resetGrid();
                 row = Math.ceil((vw.imgpnt.x - dx + width) / patchSize) + 1;
@@ -377,7 +377,7 @@
             <input id="X"name="Text1" type="text" />
 			<input id="Y"name="Text2" type="text" />
 			<input id="DiagX" name="Text3" type="text" onchange="CommitMove()" />
-			<input id="DiagX" name="Text4" type="text" onchange="CommitMove()" />
+			<input id="DiagY" name="Text4" type="text" onchange="CommitMove()" />
 			<input id="dx" name="Text5" type="text" onchange=InputMove() value="0"/>
 			<input id="dy" name="Text6" type="text" onchange=InputMove() value="0"/>
         </form>
