@@ -120,12 +120,12 @@
                 .attr('src', function(){
                     return 'http://wonko.via.cornell.edu/bigimgs/test1/foo.' + zoomlevel + '.0.0.0.jpeg';
                 });
-				
-				
-				$("#container").empty().image("http://www.sanbaldo.com/wordpress/wp-content/bigrotation2.gif", function(){
-                alert("Image OK !");
-            });
-			//document ready ends here
+                
+                
+                //$("#container").empty().image("http://www.sanbaldo.com/wordpress/wp-content/bigrotation2.gif", function(){
+                    //alert("Image OK !");
+                //});
+                //document ready ends here
             }
             
             $.fn.image = function(src, f){
@@ -136,8 +136,6 @@
                     });
                 });
             }
-            
-            
         </script>
     </head>
     <body onload="change();gridFormation();LoadPatch()">
