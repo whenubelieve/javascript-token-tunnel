@@ -266,7 +266,6 @@
             }
             
             function CommitMove(){
-            
                 vw.imgpnt.x = vw.imgpnt.x - dx; // Update coordinates of view windox x,y changes with zooming
                 vw.imgpnt.y = vw.imgpnt.y - dy;
                 
@@ -344,7 +343,6 @@
             }
             
             function InputMove(){
-            
                 dx = -parseInt(document.getElementById("dx").value); //Display for the sake of debug
                 dy = -parseInt(document.getElementById("dy").value);
                 CommitMove();
@@ -352,7 +350,6 @@
             }
             
             function CenterOffset(){
-            
                 zoomlevel = document.getElementById("Zoomlevel").value;
                 centerX = 2 * (vw.imgpnt.x + 0.5 * width);
                 centerY = 2 * (vw.imgpnt.y + 0.5 * height);// center of the viewing window in the zoomed frame

@@ -32,6 +32,8 @@
         </style>
         <title>proj4.htm</title>
         <script type="text/javascript">
+            
+            
             patchSize = 256;
             zoomlevel = 0;
             imageSize = Math.pow(2, zoomlevel) * patchSize;
@@ -172,41 +174,62 @@
             
             //change happens to viewing window and grid patches. 
             function change(){
-                document.getElementById("VW").style.height = document.getElementById("text1").value + "px";
-                document.getElementById("VW").style.width = document.getElementById("text2").value + "px";
-                bottom = document.getElementById("text1").value;
-                right = document.getElementById("text2").value;
-                document.getElementById("patchGrid").style.height = Math.ceil(bottom / 256) * 256;
-                document.getElementById("patchGrid").style.width = Math.ceil(right / 256) * 256;
-                document.getElementById("patchGrid").style.clip = "rect(" + top + "px " + right + "px " + bottom + "px " + left + "px)";
+                $(document).ready(function(){
+                    document.getElementById("VW").style.height = document.getElementById("text1").value + "px";
+                    document.getElementById("VW").style.width = document.getElementById("text2").value + "px";
+                    bottom = document.getElementById("text1").value;
+                    right = document.getElementById("text2").value;
+                    document.getElementById("patchGrid").style.height = Math.ceil(bottom / 256) * 256;
+                    document.getElementById("patchGrid").style.width = Math.ceil(right / 256) * 256;
+                    document.getElementById("patchGrid").style.clip = "rect(" + top + "px " + right + "px " + bottom + "px " + left + "px)";
+                });
             }
             
             var row = 0;
             var col = 0;
             
             function gridFormation(){
-                //number = Math.pow(4, zoomlevel);
-                //row = col = Math.pow(2, zoomlevel);
-                row = Math.ceil(bottom / patchSize);
-                col = Math.ceil(right / patchSize);
-				//alert(patchSize);
-                zoomlevel = document.getElementById("text3").value;
-                //clear out patchGrid
-                $('#patchGrid').empty();
-                for (i = 1; i <= row; i++) {
-                    for (j = 1; j <= col; j++) {
-                        dummy = document.createElement("img");
-                        dummy.id = "img" + i + j;
-                        dummy.height = patchSize;
-                        dummy.width = patchSize;
-                        dummy.src = "http://wonko.via.cornell.edu/bigimgs/test1/foo." + zoomlevel + "." + (j - 1) + "." + (i - 1) + ".0.jpeg";
-						
-                        $('#patchGrid').append(function(){
-                            return dummy;
-                        });
-                        //document.getElementById("patchGrid").appendChild(dummy);
+                $(document).ready(function(){
+                    //number = Math.pow(4, zoomlevel);
+                    //row = col = Math.pow(2, zoomlevel);
+                    row = Math.ceil(bottom / patchSize);
+                    col = Math.ceil(right / patchSize);
+                    //alert(patchSize);
+                    zoomlevel = document.getElementById("text3").value;
+                    //clear out patchGrid
+                    $('#patchGrid').empty();
+                    for (i = 1; i <= row; i++) {
+                        for (j = 1; j <= col; j++) {
+                            dummy = document.createElement("img");
+							$('dummy').hide();
+                            dummy.id = "img" + i + j;
+                            dummy.height = patchSize;
+                            dummy.width = patchSize;
+                            dummy.src = "http://wonko.via.cornell.edu/bigimgs/test1/foo." + zoomlevel + "." + (j - 1) + "." + (i - 1) + ".0.jpeg";
+                            
+                            $('#patchGrid').append(dummy);
+                            
+                            //document.getElementById("patchGrid").appendChild(dummy);
+                            /*
+                            var dummy = new Image();
+                            $(dummy).load(function(){
+                                //$(dummy).hide();
+                                $('#patchGrid').append(dummy);
+                                $(dummy).fadeIn();
+                            }).attr('id', function(){
+                                return 'img' + i + j;
+                            }).attr('height', patchSize
+                            ).attr('width', function(){
+                                return patchSize;
+                            }).error(function(){
+                                //alert('Image could not be loaded!');// notify the user that the image could not be loaded
+                            }).attr('src', function(){
+                                return 'http://wonko.via.cornell.edu/bigimgs/test1/foo.' + zoomlevel + '.' + (j - 1) + '.' + (i - 1) + '.0.jpeg';
+                            });*/
+                            
+                        }
                     }
-                }
+                });
             }
             
             //try not to use this
@@ -269,7 +292,6 @@
                     document.getElementById('patchGrid').style.clip = "rect(" + top + "px " + right + "px " + bottom + "px " + left + "px)";
                 }
             }
-            
         </script>
     </head>
     <body onload="change();gridFormation()">
