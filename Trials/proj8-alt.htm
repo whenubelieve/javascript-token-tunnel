@@ -2,7 +2,31 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Trial</title>
+        <!--CSS Style Sheet-->
+        <style type="text/css">
+            div.frame {
+                color: #FF00FF;
+            }
+            
+            #VW {
+                border: thin #FF00FF solid;
+                position: absolute;
+                width: 256px;
+                height: 256px;
+                z-index: 1;
+                left: 200px;
+                top: 230px;
+            }
+            
+            #patchGrid {
+                width: 512px;
+                height: 512px;
+                position: absolute;
+                left: 200px;
+                top: 230px;
+            }
+        </style>
+        <title>proj8</title>
         <script type="text/javascript">
             patchSize = 256;
             zoomlevel = 0;
@@ -171,10 +195,13 @@
                     var tr = document.getElementById("tr1");
                     table.removeChild(tr);
                 }
+				$('#patchGrid').empty();
             }
+            
             //this is where all the images are originally created
             function gridFormation(){
                 resetGrid();
+				//$('')
                 row = Math.ceil((vw.imgpnt.x - dx + width) / patchSize) + 1;
                 col = Math.ceil((vw.imgpnt.x - dx + width) / patchSize) + 1;
                 
@@ -343,43 +370,89 @@
                         Height:
                     </label>
                     <br/>
-                    <input id="Height"name="Height" type="text" onchange="ResizeVW();gridFormation()"value="256" />
+                    <input id="Height"name="Height" type="text" value="256" onkeyup="if(event.keyCode == 13 || event.keyCode == 9) {ResizeVW();gridFormation()}"/>
                 </td>
-				<td>
+                <td>
                     <label for="Width" class="hiddenlabel">
                         Width:
                     </label>
                     <br/>
-                    <input id="Width" name="Width" type="text"  onchange="ResizeVW();gridFormation()" value="256"/>
+                    <input id="Width" name="Width" type="text" value="256" onkeyup="if(event.keyCode == 13 || event.keyCode == 9) {ResizeVW();gridFormation()}"/>
                 </td>
-				<td>
+                <td>
                     <label for="Zoomlevel" class="hiddenlabel">
                         Zoomlevel:
                     </label>
                     <br/>
-                    <input id="Zoomlevel" name="Zoomlevel" type="text" onchange="gridFormation();CenterOffset()" value="0"/>
+                    <input id="Zoomlevel" name="Zoomlevel" type="text" value="0" onkeyup="if(event.keyCode == 13 || event.keyCode == 9) {gridFormation();CenterOffset()}"/>
                 </td>
-				<td>
-                    <label for="Zoomlevel" class="hiddenlabel">
-                        Zoomlevel:
+                <td>
+                    <label for="zIndex" class="hiddenlabel">
+                        zIndex:
                     </label>
                     <br/>
-                    <input id="zIndex" name="Text7" type="text" onchange="gridFormation()" value="0"/>
+                    <input id="zIndex" name="Text7" type="text" value="0" onkeyup="if(event.keyCode == 13 || event.keyCode == 9) gridFormation()"/>
                 </td>
             </tr>
         </table>
-        
-        <div id="VW" style="border: thin #FF00FF solid; position: absolute; width: 256px; height: 256px; z-index: 1; left: 200px; top: 150px;" id="layer1">
+        <div id="VW">
         </div>
-        <table id="patchGrid" cellpadding="0" cellspacing="0" style="width: 512px; height: 512px; position: absolute; left: 200px; top: 150px;" ondragstart="trial_ondragstart(event)" ondrag=trial_ondrag(event,patchGrid) ondragend=trial_ondragend()>
+		<!--The main table for where all the images are mapped onto-->
+        <table id="patchGrid" cellpadding="0" cellspacing="0" ondragstart="trial_ondragstart(event)" ondrag=trial_ondrag(event,patchGrid) ondragend=trial_ondragend()>
         </table>
         <form method="post">
-            <input id="X"name="Text1" type="text" />
-			<input id="Y"name="Text2" type="text" />
-			<input id="DiagX" name="Text3" type="text" onchange="CommitMove()" />
-			<input id="DiagY" name="Text4" type="text" onchange="CommitMove()" />
-			<input id="dx" name="Text5" type="text" onchange=InputMove() value="0"/>
-			<input id="dy" name="Text6" type="text" onchange=InputMove() value="0"/>
+            <table border="2">
+                <tr>
+                    <td>
+                        <label for="X" class="hiddenlabel">
+                            X:
+                        </label>
+                        <input id="X"name="Text1" type="text" />
+                        <br/>
+                        <label for="Y" class="hiddenlabel">
+                            Y:
+                        </label>
+                        <input id="Y"name="Text2" type="text" />
+                    </td>
+                    <td>
+                        <label for="DiagX" class="hiddenlabel">
+                            DiagX:
+                        </label>
+                        <input id="DiagX" name="Text3" type="text" onchange="CommitMove()"/>
+                        <br/>
+                        <label for="DiagY" class="hiddenlabel">
+                            DiagY:
+                        </label>
+                        <input id="DiagY" name="Text4" type="text" onchange="CommitMove()"/>
+                    </td>
+                    <td>
+                        <label for="dx" class="hiddenlabel">
+                            dx:
+                        </label>
+                        <input id="dx" name="Text5" type="text" onchange=InputMove() value="0"/>
+                        <br/>
+                        <label for="dy" class="hiddenlabel">
+                            dy:
+                        </label>
+                        <input id="dy" name="Text6" type="text" onchange=InputMove() value="0"/>
+                    </td>
+                </tr>
+            </table>
         </form>
+        <p>
+            <b>proj8.htm</b>
+            - please press the enter key after typing number in text box.
+        </p>
+        <ul>
+            <li>
+                1
+            </li>
+            <li>
+                2
+            </li>
+            <li>
+                3
+            </li>
+        </ul>
     </body>
 </html>
