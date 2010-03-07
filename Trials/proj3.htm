@@ -44,7 +44,8 @@
             function change(){
                 //the following is the jQuery code
                 //the $ is just by convention
-                var height = $('#text1').attr('value');
+                /*
+				var height = $('#text1').attr('value');
                 var width = $('#text2').attr('value');
                 var left = 0;
                 var top = 0;
@@ -53,22 +54,22 @@
                 zoomlevel = $('#text3').attr('value') + 'px';
                 $('#patchGrid').css("clip", function(){
                     return 'rect(' + top + 'px, ' + width + 'px, ' + height + 'px, ' + left + 'px)'
-                });
+                });*/
                 //or you can do this:
-                //var $clip = 'rect(' + top + 'px, ' + width + 'px, ' + height + 'px, ' + left + 'px)'
-                //$('#patchGrid').css("clip", function(){
-                //return $clip
-                //});
-            
-            
-                //var height = document.getElementById("text1").value;
-                //var width = document.getElementById("text2").value;
-                //var left = 0;
-                //var top = 0;
-                //document.getElementById("VW").style.height = document.getElementById("text1").value + "px";
-                //document.getElementById("VW").style.width = document.getElementById("text2").value + "px";  
-                //zoomlevel = document.getElementById("text3").value + "px";
-                //document.getElementById("patchGrid").style.clip = "rect(" + top + "px " + width + "px " + height + "px " + left + "px)";
+                var $clip = 'rect(' + top + 'px, ' + width + 'px, ' + height + 'px, ' + left + 'px)'
+                
+				$('#patchGrid').css("clip", function(){
+                return $clip
+                });
+                    
+                var height = document.getElementById("text1").value;
+                var width = document.getElementById("text2").value;
+                var left = 0;
+                var top = 0;
+                document.getElementById("VW").style.height = document.getElementById("text1").value + "px";
+                document.getElementById("VW").style.width = document.getElementById("text2").value + "px";  
+                zoomlevel = document.getElementById("text3").value + "px";
+                document.getElementById("patchGrid").style.clip = "rect(" + top + "px " + width + "px " + height + "px " + left + "px)";
             
             }
             
@@ -81,17 +82,17 @@
             }
             
             function LoadPatch(){
-                zoomlevel = $('#text3').attr("value");
-                
-                LoadImage();
+                //zoomlevel = $('#text3').attr("value");
+                //LoadImage();
                 //$('#img1').attr('src', function(){
                 //return 'http://wonko.via.cornell.edu/bigimgs/test1/foo.' + zoomlevel + '.0.0.0.jpeg'
                 //});
             
-                //zoomlevel = document.getElementById("text3").value;
-                //document.getElementById("img1").src = "http://wonko.via.cornell.edu/bigimgs/test1/foo." + zoomlevel + ".0.0.0.jpeg";
+                zoomlevel = document.getElementById("text3").value;
+                document.getElementById("img1").src = "http://wonko.via.cornell.edu/bigimgs/test1/foo." + zoomlevel + ".0.0.0.jpeg";
             }
             
+			//not used.
             function LoadImage(){
                 // when the DOM is ready
                 //alert("yello!");
