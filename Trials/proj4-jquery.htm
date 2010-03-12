@@ -1,11 +1,11 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.js">
-    </script>
+    <!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.js">
+    </script>-->
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <!--CSS Style Sheet-->
-        <style type="text/css">     
+        <style type="text/css">
             div.frame {
                 color: #FF00FF;
             }
@@ -18,38 +18,78 @@
                 z-index: 1;
                 left: 100px;
                 top: 230px;
-                /*background: #fff url('http://www.sanbaldo.com/wordpress/wp-content/bigrotation2.gif') 50% 50%;
-                 }*/
-            #patchGrid {
-            
-            border:thin
-                    #000000 none;
-            
-            position:absolute;
-            
-            z-index:
-                    1;
-            
-            width:
-                    512px;
-            
-            height:
-                    512px;
-            
-            left:
-                    100px;
-            
-            top:
-                    230px;
             }
             
-                /*#imageholder {
-                 background: #fff url('http://www.sanbaldo.com/wordpress/wp-content/bigrotation2.gif') 50% 50%;
-                 }*/
+            #patchGrid {
+                border: thin #000000 none;
+                position: absolute;
+                z-index: 1;
+                width: 512px;
+                height: 512px;
+                left: 100px;
+                top: 230px;
+            }
+            
+            /*the following is for making sliders*/
+            #controls dl.col {
+                background: none repeat scroll 0 0 #202020;
+                border: 1px solid #1C1C1C;
+                display: inline;
+                float: left;
+                height: 12.4em;
+                margin: 0 1em 0 0;
+                padding: 0.75em;
+                position: relative;
+            }
+            
+            #controls .control .bar {
+                background: url("http://www.schillmania.com/projects/fireworks/demo-only/slider-bar.gif") no-repeat scroll 0 9px transparent;
+                cursor: pointer;
+                height: 20px;
+                left: 0;
+                position: absolute;
+                top: 0;
+                width: 214px;
+            }
+            
+            #controls .control .slider {
+                position: absolute;
+                left: 0px;
+                top: 0px;
+                width: 20px;
+                height: 20px;
+                background: transparent url(http://www.schillmania.com/projects/fireworks/demo-only/slider.png) no-repeat 0px 0px;
+                /*background:none;*/
+                /*filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,sizingMethod=crop,src='http://www.schillmania.com/projects/fireworks/demo-only/slider.png');*/
+                cursor: pointer;
+                cursor: hand;
+            }
+            
+            #controls dd {
+                color: #6699CC;
+                font-size: 0.9em;
+            }
+            
+            #controls dl {
+                width: 21em;
+            }
+            
+            #controls {
+                font-size: 0.85em;
+            }
+            
+            #site {
+                border-style: non dashed;
+                text-align: left;
+            }
+            
+            body {
+                color: #BBBBBB;
+                font: 76% verdana, arial, tahoma, helvetica;
+            }
         </style>
         <title>proj4.htm</title>
         <script type="text/javascript">
-            
             
             patchSize = 256;
             zoomlevel = 0;
@@ -85,7 +125,6 @@
             SVImage.prototype.getZs = function(){
                 return this.zs;
             }
-            
             
             // Image Point Prototype
             // objects created by:
@@ -189,7 +228,7 @@
             var XGridNumber = 1;
             
             
-            //change happens to viewing window and grid patches. 
+            //both the viewing window and grid patches are changed 
             function change(){
                 document.getElementById("VW").style.height = document.getElementById("text1").value + "px";
                 document.getElementById("VW").style.width = document.getElementById("text2").value + "px";
@@ -197,6 +236,7 @@
                 right = document.getElementById("text2").value;
                 document.getElementById("patchGrid").style.height = Math.ceil(bottom / 256) * 256;
                 document.getElementById("patchGrid").style.width = Math.ceil(right / 256) * 256;
+                //maybe moving to a style sheet was the problem?
                 document.getElementById("patchGrid").style.clip = "rect(" + top + "px " + right + "px " + bottom + "px " + left + "px)";
             }
             
@@ -204,6 +244,7 @@
             var col = 0;
             
             function gridFormation(){
+                change();
                 //$(document).ready(function(){
                 //number = Math.pow(4, zoomlevel);
                 //row = col = Math.pow(2, zoomlevel);
@@ -213,35 +254,47 @@
                 zoomlevel = document.getElementById("text3").value;
                 
                 //clear out patchGrid
-                $('#patchGrid').empty();
+                //$('#patchGrid').empty();
                 
                 //clear out patchGrid
-                //document.getElementById("patchGrid").innerHTML = "";//might be buggy on mac?
+                document.getElementById("patchGrid").innerHTML = "";//might be buggy on mac?
                 for (i = 1; i <= row; i++) {
                     for (j = 1; j <= col; j++) {
-						//dummy is an image tag
+                        //dummy is an image tag
                         dummy = document.createElement("img");
+                        
+                        document.getElementById("patchGrid").appendChild(dummy);
+                        
                         //$('dummy').hide();
                         dummy.id = "img" + i + j;
                         dummy.height = patchSize;
                         dummy.width = patchSize;
                         //dummy.style.visibility = "hidden";
+                        imageId = dummy.id;
+                        image = document.getElementById(imageId);
+                        //after the dummy image is loaded
+                        dummy.onload = function(){
+                            //alert("hello");
+                            setOpacity(image, 0);
+                            image.style.visibility = "visible";
+                            
+                        }
+                        fadeIn(imageId, 0);
+                        
                         dummy.src = "http://wonko.via.cornell.edu/bigimgs/test1/foo." + zoomlevel + "." + (j - 1) + "." + (i - 1) + ".0.jpeg";
                         
                         //$('#patchGrid').append(dummy);
-                        document.getElementById("patchGrid").appendChild(dummy);
                         
+                        
+                        //for some reason this seems to hang...
                         window.onload = function(){
-                        imageId = dummy.id;
-                        image = document.getElementById(imageId);
-                        setOpacity(image, 0);
-                        image.style.visibility = 'visible';
-						dummy.style.visibility = "visible";
-                        fadeIn(imageId, 0);
                         }
                         
                         
-                        
+                        //dummy.style.visibility = 'visible';
+                    
+                    
+                    
                         /*
                          var dummy = new Image();
                          $(dummy).load(function(){
@@ -300,7 +353,6 @@
                     }
                 }
             }
-            
             
             //currently not in use
             /*
@@ -364,8 +416,7 @@
             }
         </script>
     </head>
-    <body onload="gridFormation();change()">
-        
+    <body onload="gridFormation()">
         <table border="2">
             <tr>
                 <td>
@@ -387,7 +438,7 @@
                         Zoomlevel:
                     </label>
                     <br/>
-                    <input id="text3" name="Zoomlevel" type="text" value="0" onkeypress="if(event.keyCode == 13 || event.keyCode == 9) {gridFormation();change()}"/>
+                    <input id="text3" name="Zoomlevel" type="text" value="2" onkeypress="if(event.keyCode == 13 || event.keyCode == 9) gridFormation()"/>
                 </td>
             </tr>
         </table>
@@ -406,8 +457,72 @@
                 [patches are joined together like a single image]
             </li>
         </ul>
-		<!-- div where images are appended to-->
-        <div id="patchGrid" style = "left: 100px; top: 230px"; ondragstart="trial_ondragstart(event)" ondrag="trial_ondrag(event,patchGrid)" ondragend="trial_ondragend()">
+        <!--added in dl element for sliders-->
+        <div id="controls">
+            <dl class="col">
+                <dt>
+                    Blast Radius
+                </dt>
+                <dd class="title">
+                    % of window size
+                </dd>
+                <dd>
+                    17
+                </dd>
+                <dd class="control">
+                    <div title="Click to move here" class="bar">
+                    </div>
+                    <div title="Size of the explosion" class="slider" style="margin-left: 33px;">
+                    </div>
+                </dd>
+                <dt>
+                    Particles
+                </dt>
+                <dd class="title">
+                    Explosion elements
+                </dd>
+                <dd>
+                    137
+                </dd>
+                <dd class="control">
+                    <div title="Click to move here" class="bar">
+                    </div>
+                    <div title="Number of elements - more means slower" class="slider" style="margin-left: 140px;">
+                    </div>
+                </dd>
+                <dt>
+                    Circles
+                </dt>
+                <dd class="title">
+                    ..per explosion
+                </dd>
+                <dd>
+                    2
+                </dd>
+                <dd class="control">
+                    <div title="Click to move here" class="bar">
+                    </div>
+                    <div title="Number of concentric circles" class="slider" style="margin-left: 31px;">
+                    </div>
+                </dd>
+                <dt>
+                    Burst Type
+                </dt>
+                <dd class="title">
+                    (Base colour)
+                </dd>
+                <dd>
+                    1
+                </dd>
+                <dd class="control">
+                    <div title="Click to move here" class="bar">
+                    </div>
+                    <div title="Primary (inner circle) colour" class="slider" style="margin-left: 6px;">
+                    </div>
+                </dd>
+            </dl>
+        </div>
+        <div id="patchGrid" ondragstart="trial_ondragstart(event)" ondrag="trial_ondrag(event,patchGrid)" ondragend="trial_ondragend()">
         </div>
         <!--Main viewing window div-->
         <div id="VW">
