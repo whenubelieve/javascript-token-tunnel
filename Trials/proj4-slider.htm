@@ -5,10 +5,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <!--CSS Style Sheet-->
-        <style type="text/css">
-            div.frame {
+        <style type="text/css"> 
+            /*div.frame {
                 color: #FF00FF;
-            }
+            }*/
             
             #VW {
                 border: thin #FF00FF solid;
@@ -30,7 +30,7 @@
                 top: 230px;
             }
             
-            /*the following is for making sliders*/
+            /*the following is for making sliders
             #controls dl.col {
                 background: none repeat scroll 0 0 #202020;
                 border: 1px solid #1C1C1C;
@@ -50,8 +50,8 @@
                 position: absolute;
                 top: 0;
                 width: 214px;
-            }
-            
+            }*/
+            /*
             #controls .control .slider {
                 position: absolute;
                 left: 0px;
@@ -61,9 +61,9 @@
                 background: transparent url(http://www.schillmania.com/projects/fireworks/demo-only/slider.png) no-repeat 0px 0px;
                 /*background:none;*/
                 /*filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,sizingMethod=crop,src='http://www.schillmania.com/projects/fireworks/demo-only/slider.png');*/
-                cursor: pointer;
+                /*cursor: pointer;
                 cursor: hand;
-            }
+            }*/
             
             #controls dd {
                 color: #6699CC;
@@ -83,23 +83,16 @@
                 text-align: left;
             }
             
-            body {
-                color: #BBBBBB;
-                font: 76% verdana, arial, tahoma, helvetica;
-            }
+            /*
+             body {
+             color: #BBBBBB;
+             font: 76% verdana, arial, tahoma, helvetica;
+             }*/
         </style>
         <title>proj4.htm</title>
         <script type="text/javascript">
             
-            
-            // Title: tigra slider control
-            // Description: See the demo at url
-            // URL: http://www.softcomplex.com/products/tigra_slider_control/
-            // Version: 1.0.2 (commented source)
-            // Date: 08/21/2008
-            // Tech. Support: http://www.softcomplex.com/forum/
-            // Notes: This script is free. Visit official site for further details.
-            
+            //calling this function places a slider on the page
             function slider(a_init, a_tpl){
             
                 this.f_setValue = f_sliderSetValue;
@@ -162,6 +155,7 @@
                 this.e_slider.style.visibility = 'visible';
             }
             
+            //logic is implemented to smooth out the action of the slider
             function f_sliderSetValue(n_value, b_noInputCheck){
                 if (n_value == null) 
                     n_value = this.n_value == null ? this.n_minValue : this.n_value;
@@ -188,6 +182,7 @@
                     this.e_slider.style.left = (this.n_pathLeft + Math.round((n_value - this.n_minValue) * this.n_pix2value)) + 'px';
                 
                 // save new value
+                //the final location may not be the same as where the mouse cursor is
                 var e_input;
                 if (this.s_form == null) {
                     e_input = get_element(this.s_name);
@@ -203,6 +198,9 @@
                         return b_noInputCheck ? null : f_sliderError(this.n_id, "Can not find the input with NAME='" + this.s_name + "'.");
                 }
                 e_input.value = n_value;
+                //make the update to the input element (the text box) for zoom
+                document.getElementById('text3').value = e_input.value;
+                //gridFormation();
             }
             
             // get absolute position of the element in the document
@@ -245,6 +243,7 @@
                     return window.f_savedMouseUp(e_event);
             }
             
+            //this part controls the behavior of the slider while being clicked and dragged
             function f_sliderMouseMove(e_event){
             
                 if (!e_event && window.event) 
@@ -475,6 +474,7 @@
             var row = 0;
             var col = 0;
             
+            
             function gridFormation(){
                 change();
                 //$(document).ready(function(){
@@ -546,10 +546,13 @@
                          */
                     }
                 }
+                
+                
                 //});
             }
-            
-            
+            //this also seems to hang indefinitely
+            document.onload = function(){
+                    }
             /*
              function initImage(){
              imageId = 'img' + i + j;
@@ -656,21 +659,21 @@
                         Height:
                     </label>
                     <br/>
-                    <input id="text1" name="Height" type="text" value="1000" onkeypress="if(event.keyCode == 13 || event.keyCode == 9) change()"/>
+                    <input id="text1" name="Height" size="5" type="text" value="1000" onkeypress="if(event.keyCode == 13 || event.keyCode == 9) change()"/>
                 </td>
                 <td>
                     <label for="text2" class="hiddenlabel">
                         Width:
                     </label>
                     <br/>
-                    <input id="text2" name="Width" type="text" value="1000" onkeypress="if(event.keyCode == 13 || event.keyCode == 9) change()"/>
+                    <input id="text2" name="Width" size="5" type="text" value="1000" onkeypress="if(event.keyCode == 13 || event.keyCode == 9) change()"/>
                 </td>
                 <td>
                     <label for="text3" class="hiddenlabel">
                         Zoomlevel:
                     </label>
                     <br/>
-                    <input id="text3" name="Zoomlevel" type="text" value="2" onkeypress="if(event.keyCode == 13 || event.keyCode == 9) gridFormation()"/>
+                    <!--<input id="text3" name="Zoomlevel" size="5" type="text" value="1" onkeypress="if(event.keyCode == 13 || event.keyCode == 9) {gridFormation()}" onpropertychange="gridFormation" onchange="gridFormation"/>--><input id="text3" name="Zoomlevel" size="5" type="text" value="1" onchange="gridFormation()"/>
                 </td>
             </tr>
         </table>
@@ -691,7 +694,7 @@
         </ul>
         <!--added form element for slider demo-->
         <form action="single_slider_demo.html" method="get" name="demoForm">
-            <input name="sliderValue" id="sliderValue" type="Text" size="3">
+            <input name="sliderValue" id="sliderValue" type="Text" size="3" onpropertychange="gridFormation()">
             <script language="JavaScript">
                 var A_TPL = {
                     'b_vertical': true,
@@ -703,22 +706,24 @@
                     'n_pathLeft': 1,
                     'n_pathTop': 1,
                     'n_pathLength': 103,
-                    's_imgControl': 'img/bluev_bg.gif',
-                    's_imgSlider': 'img/bluev_sl.gif',
+                    //this is the long slider bar
+                    's_imgControl': 'http://www.schillmania.com/projects/fireworks/demo-only/slider-bar.gif',
+                    //this is the slider button
+                    's_imgSlider': 'http://www.schillmania.com/projects/fireworks/demo-only/slider.png',
                     'n_zIndex': 1
                 }
                 var A_INIT = {
                     's_form': 0,
                     's_name': 'sliderValue',
                     'n_minValue': 0,
-                    'n_maxValue': 100,
-                    'n_value': 20,
+                    'n_maxValue': 3,
+                    'n_value': 1,
                     'n_step': 1
                 }
                 
                 new slider(A_INIT, A_TPL);
             </script>
-            <input name="Submit" type="Submit" value="Submit">
+            <!--<input name="Submit" type="Submit" value="Submit" >-->
         </form>
         <div id="patchGrid" ondragstart="trial_ondragstart(event)" ondrag="trial_ondrag(event,patchGrid)" ondragend="trial_ondragend()">
         </div>
