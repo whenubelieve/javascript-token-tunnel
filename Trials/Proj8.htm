@@ -200,14 +200,12 @@ resetGrid();
 				dummy.width=patchSize;
 				img=document.createElement("img");
 			      img.id="img["+i+"]["+j+"]";
-			  //img.src="http://wonko.via.cornell.edu/bigimgs/test2/bar."+ zoomlevel + "." +( j -1)+ "." + (i-1) + "."+ zIndex + ".jpeg";
-                      dummy.appendChild(img);
+			      img.style.display="none";
+                     dummy.appendChild(img);
 				tr.appendChild(dummy);		
 		}
 		table.appendChild(tr);
 	}
-	//    clearInterval();
-
 }
 
 function CreatePathLoadingProcess()
@@ -222,12 +220,18 @@ function PatchLoadingX()
    zoomlevel=document.getElementById("Zoomlevel").value;
    zIndex=document.getElementById("zIndex").value;
 
-//if (row>Math.pow(2, zoomlevel))
-//{}
+if (row>Math.pow(2, zoomlevel))
+{row=Math.pow(2, zoomlevel);}
+if (col>Math.pow(2, zoomlevel))
+{col=Math.pow(2, zoomlevel);}
+
+
+
 for(I=1;I<=row;I++)
 {
  for (J=1;J<=col;J++) // img[i][j], the naming system
- {document.getElementById("img["+I+"]["+J+"]").src="http://wonko.via.cornell.edu/bigimgs/test2/bar."+ zoomlevel + "." +( J -1)+ "." + (I-1) + "."+ zIndex + ".jpeg";
+ {document.getElementById("img["+I+"]["+J+"]").style.display="";
+ document.getElementById("img["+I+"]["+J+"]").src="http://wonko.via.cornell.edu/bigimgs/test2/bar."+ zoomlevel + "." +( J -1)+ "." + (I-1) + "."+ zIndex + ".jpeg";
  }
  }
 clearInterval;
