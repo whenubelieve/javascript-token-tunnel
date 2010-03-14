@@ -134,8 +134,8 @@ var right = 0;
 var bottom = 0;
 var left = 0;
 
-var tleft =200	;
-var ttop =150;
+var tleft =20	;
+var ttop =70;
 
 var row=0;
 var col=0;
@@ -177,9 +177,10 @@ table.removeChild(tr);
  function gridFormation()
 {
 resetGrid();
-   row=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
-   col=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
-
+   row=col=20; // Fixed number of grids, but load according to the size of viewing window
+   //row=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
+   //col=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
+   
    zoomlevel=document.getElementById("Zoomlevel").value;
    zIndex=document.getElementById("zIndex").value;
    var table = document.getElementById("patchGrid");
@@ -198,17 +199,39 @@ resetGrid();
 				dummy.height=patchSize;
 				dummy.width=patchSize;
 				img=document.createElement("img");
-				img.id="img"+i+j;
-				img.src="http://wonko.via.cornell.edu/bigimgs/test2/bar."+ zoomlevel + "." +( j -1)+ "." + (i-1) + "."+ zIndex + ".jpeg";
+			      img.id="img["+i+"]["+j+"]";
+			  //img.src="http://wonko.via.cornell.edu/bigimgs/test2/bar."+ zoomlevel + "." +( j -1)+ "." + (i-1) + "."+ zIndex + ".jpeg";
                       dummy.appendChild(img);
-				tr.appendChild(dummy);
-			
+				tr.appendChild(dummy);		
 		}
 		table.appendChild(tr);
 	}
+	//    clearInterval();
 
 }
 
+function CreatePathLoadingProcess()
+
+{ setInterval("PatchLoadingX()",90);}
+
+
+function PatchLoadingX()
+{
+  row=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
+   col=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
+   zoomlevel=document.getElementById("Zoomlevel").value;
+   zIndex=document.getElementById("zIndex").value;
+
+//if (row>Math.pow(2, zoomlevel))
+//{}
+for(I=1;I<=row;I++)
+{
+ for (J=1;J<=col;J++) // img[i][j], the naming system
+ {document.getElementById("img["+I+"]["+J+"]").src="http://wonko.via.cornell.edu/bigimgs/test2/bar."+ zoomlevel + "." +( J -1)+ "." + (I-1) + "."+ zIndex + ".jpeg";
+ }
+ }
+clearInterval;
+}
 
 
 function trial_ondragstart(event) {
@@ -218,7 +241,9 @@ function trial_ondragstart(event) {
     vw.ys=height;
 
 }
+    
 function trial_ondrag(event, trial) {
+    imageDimension=patchSize*Math.pow(2, zoomlevel);
     CooX1 = event.clientX;
     CooY1 = event.clientY;
 
@@ -228,22 +253,23 @@ function trial_ondrag(event, trial) {
     CooY0 = CooY1;
 
     if (dx != 0 || dy != 0)
-    { CommitMove(trial); }
-   
-    imageDimension=patchSize*Math.pow(2, zoomlevel);
+    { CommitMove(trial); }//Panning outside the buffer zone
+
+  if((vw.imgpnt.x+width)>patchSize*row||(vw.imgpnt.y+height)>patchSize*col)
+{CreatePathLoadingProcess();}
+
+
 }
+
 function trial_ondragend() {
     dx = 0;
-    dy = 0;
+    dy = 0;   
 }
+
 function CommitMove() {
-
-     vw.imgpnt.x = vw.imgpnt.x - dx; // Update coordinates of view windox x,y changes with zooming
-    vw.imgpnt.y = vw.imgpnt.y - dy;
-  
-
-if((vw.imgpnt.x+width)<patchSize*row&&(vw.imgpnt.y+height)<patchSize*col)
-{                           //panning within the buffer zone
+   vw.imgpnt.x = vw.imgpnt.x - dx; // Update coordinates of view windox x,y changes with zooming
+   vw.imgpnt.y = vw.imgpnt.y - dy;
+                         //panning within the buffer zone
     document.getElementById("X").value=vw.imgpnt.x;  //Display for the sake of debug
     document.getElementById("Y").value=vw.imgpnt.y;
     document.getElementById("DiagX").value=vw.imgpnt.x+height;
@@ -261,109 +287,56 @@ if((vw.imgpnt.x+width)<patchSize*row&&(vw.imgpnt.y+height)<patchSize*col)
     document.getElementById('patchGrid').style.clip = "rect(" + top + "px " + right + "px " + bottom + "px " + left + "px)";
 }
 
-//Panning outside the buffer zone
- if((vw.imgpnt.x+width)>patchSize*row||(vw.imgpnt.y+height)>patchSize*col)
-{
-
-    resetGrid();
-
-   row=row+1;
-   col=col+1;
-   zoomlevel=document.getElementById("Zoomlevel").value;
-   var table = document.getElementById("patchGrid");
-	
-	 table.style.height=row*256;
-      table.style.width=col*256;
-		
-	for (i = 1; i <= row; i++) {
-		var tr = document.createElement("tr");
-		tr.height =patchSize ;
-		tr.width=col*patchSize;
-		tr.id="tr1";
-		for(j=1;j<=col;j++){
-		
-				dummy=document.createElement("td");
-				dummy.height=patchSize;
-				dummy.width=patchSize;
-				img=document.createElement("img");
-				img.id="img"+i+j;
-				img.src="http://wonko.via.cornell.edu/bigimgs/test2/bar."+ zoomlevel + "." +( j -1)+ "." + (i-1) + "."+ zIndex + ".jpeg";
-                      dummy.appendChild(img);
-				tr.appendChild(dummy);
-			
-		}
-		table.appendChild(tr);
-	}
-
-
- vw.imgpnt.x = vw.imgpnt.x - dx; // Update coordinates of view windox x,y changes with zooming
-    vw.imgpnt.y = vw.imgpnt.y - dy;
-  
-
-    right = right - dx; 
-    left = left - dx;
-    top = top - dy;
-    bottom = bottom - dy;
- 
-    tleft = parseInt(document.getElementById('patchGrid').style.left) + dx;
-    document.getElementById('patchGrid').style.left = tleft + 'px';
-    ttop = parseInt(document.getElementById('patchGrid').style.top) + dy;
-    document.getElementById('patchGrid').style.top = ttop + 'px';
-    document.getElementById('patchGrid').style.clip = "rect(" + top + "px " + right + "px " + bottom + "px " + left + "px)";
-
-   
-
-}
-}
-
 function InputMove()
 {
-
     dx=-parseInt(document.getElementById("dx").value);  //Display for the sake of debug
     dy=-parseInt(document.getElementById("dy").value);
 CommitMove();
+    if((vw.imgpnt.x+width)>patchSize*row||(vw.imgpnt.y+height)>patchSize*col)
+{//PatchLoading();//Panning outside the buffer zone
+gridFormation();}
 
 }
 
 function CenterOffset()
 {
-
-  zoomlevel=document.getElementById("Zoomlevel").value;
+ zoomlevel=document.getElementById("Zoomlevel").value;
  centerX = 2*(vw.imgpnt.x+0.5*width);
  centerY = 2*(vw.imgpnt.y+0.5*height);// center of the viewing window in the zoomed frame
 
 dx=-((centerX-0.5*width)-vw.imgpnt.x);
 dy=-((centerY-0.5*height)-vw.imgpnt.y);
 CommitMove();
+    if((vw.imgpnt.x+width)>patchSize*row||(vw.imgpnt.y+height)>patchSize*col)
+{//PatchLoading();//Panning outside the buffer zone
+gridFormation();}
+
 }
 
 
 </script>
-
-
 </head>
 
-<body onload="ResizeVW();gridFormation()">
+<body onload="ResizeVW();gridFormation();CreatePathLoadingProcess()">
 
 <form method="post">
-	<input id="Height"name="Height" type="text" onchange="ResizeVW();gridFormation()"value="256" />
-	<input id="Width" name="Width" type="text"  onchange="ResizeVW();gridFormation()" value="256"/>
-	<input id="Zoomlevel" name="Zoomlevel" type="text" onchange="gridFormation();CenterOffset()" value="0"/><input id="zIndex"name="Text7" type="text" onchange="gridFormation();" value="0"/></form>
+	<input id="Height" name="Height" type="text" onchange="ResizeVW();CreatePathLoadingProcess()" value="400" />
+	<input id="Width" name="Width" type="text"  onchange="ResizeVW();CreatePathLoadingProcess()" value="400"/>
+	<input id="Zoomlevel" name="Zoomlevel" type="text" onchange="CreatePathLoadingProcess()
+" value="4"/><input id="zIndex"name="Text7" type="text" onchange="CreatePathLoadingProcess()
+" value="0"/></form>
 
-<div  id="VW" style="border: thin #FF00FF solid; position: absolute; width: 256px; height: 256px; z-index: 1; left: 200px; top: 150px" id="layer1">
+<div  id="VW" style="border: thin #FF00FF solid; position: absolute; width: 256px; height: 256px; z-index: 1; left: 20px; top: 70px" id="layer1">
 </div>
 
-<table id="patchGrid"cellpadding="0" cellspacing="0" style="width: 512px; height: 512px; position: absolute; left: 200px; top: 150px;"        
+<table id="patchGrid"cellpadding="0" cellspacing="0" style="width: 512px; height: 512px; position: absolute; left: 20px; top: 70px; right: 1157px;"        
         ondragstart="trial_ondragstart(event)"
         ondrag="trial_ondrag(event,patchGrid)"
-        ondragend="trial_ondragend()"
-     >
-
+        ondragend="trial_ondragend()">
 </table>
 
 <form method="post">
 				<input id="X"name="Text1" type="text" /><input id="Y"name="Text2" type="text" /><input id="DiagX"name="Text3" type="text" onchange="CommitMove()"/><input id="DiagY"name="Text4" type="text" onchange="CommitMove()"/><input id="dx"name="Text5" type="text" onchange="InputMove()" value="0"/><input id="dy"name="Text6" type="text" onchange="InputMove()" value="0"/></form>
-
 </body>
 
 </html>
