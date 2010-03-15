@@ -164,19 +164,31 @@ document.getElementById("patchGrid").style.clip="rect(" + top + "px " + right + 
 }
 
 
+//function resetGrid()
+//{
+//for (i=1; i<=row; i++)
+//{
+//var table = document.getElementById("patchGrid");
+//var tr= document.getElementById("tr1");
+//table.removeChild(tr);
+//}
+//}
 function resetGrid()
 {
-for (i=1; i<=row; i++)
+for (i=1; i<=20; i++)// A priori number set
+{for (j=1; j<=20; j++)
 {
-var table = document.getElementById("patchGrid");
-var tr= document.getElementById("tr1");
-table.removeChild(tr);
+document.getElementById("img["+i+"]["+j+"]").style.display="none";//hide contents;
 }
 }
 
+}
+
+
+
  function gridFormation()
 {
-resetGrid();
+//resetGrid();
    row=col=20; // Fixed number of grids, but load according to the size of viewing window
    //row=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
    //col=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
@@ -256,7 +268,8 @@ function trial_ondrag(event, trial) {
     CooX0 = CooX1;    /*update frame*/
     CooY0 = CooY1;
 
-    if (dx != 0 || dy != 0)
+    if ((vw.imgpnt.x - dx)>0&&(vw.imgpnt.y - dy)>0
+    &&(vw.imgpnt.x-dx+height)<patchSize*Math.pow(2, zoomlevel)&&(vw.imgpnt.x-dy+width)<patchSize*Math.pow(2, zoomlevel))
     { CommitMove(trial); }//Panning outside the buffer zone
 
   if((vw.imgpnt.x+width)>patchSize*row||(vw.imgpnt.y+height)>patchSize*col)
@@ -324,10 +337,10 @@ gridFormation();}
 <body onload="ResizeVW();gridFormation();CreatePathLoadingProcess()">
 
 <form method="post">
-	<input id="Height" name="Height" type="text" onchange="ResizeVW();CreatePathLoadingProcess()" value="400" />
-	<input id="Width" name="Width" type="text"  onchange="ResizeVW();CreatePathLoadingProcess()" value="400"/>
-	<input id="Zoomlevel" name="Zoomlevel" type="text" onchange="CreatePathLoadingProcess()
-" value="4"/><input id="zIndex"name="Text7" type="text" onchange="CreatePathLoadingProcess()
+	<input id="Height" name="Height" type="text" onchange="ResizeVW();resetGrid();CreatePathLoadingProcess()" value="400" />
+	<input id="Width" name="Width" type="text"  onchange="ResizeVW();resetGrid();CreatePathLoadingProcess()" value="400"/>
+	<input id="Zoomlevel" name="Zoomlevel" type="text" onchange="resetGrid();CreatePathLoadingProcess()
+" value="4"/><input id="zIndex"name="Text7" type="text" onchange="resetGrid();CreatePathLoadingProcess()
 " value="0"/></form>
 
 <div  id="VW" style="border: thin #FF00FF solid; position: absolute; width: 256px; height: 256px; z-index: 1; left: 20px; top: 70px" id="layer1">
