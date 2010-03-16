@@ -1,16 +1,15 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Trial</title>
 <script type="text/javascript">
+
 patchSize=256;
 zoomlevel=0;
 imageSize= Math.pow(2, zoomlevel)*patchSize;
 var height=0;
 var width=0;
-
 var imgpsz = { x: 256, y: 256};
 // Image Prototype
 // objects created by:
@@ -95,8 +94,6 @@ function ViewPoint( vw, xloc, yloc) {
 
 
 // Initilizations 
-//
-//
 
 var imgage = new SVImage;
 imgage.xs=0;
@@ -141,22 +138,33 @@ var row=0;
 var col=0;
 var dx = 0;
 var dy = 0;
-
+var MaxZoom=4;
 var YGridNumber = 1; 
 var XGridNumber = 1;
 	
 function ResizeVW() //change happens to viewing window and grid patches.
 { 
-height=parseInt(document.getElementById("Height").value);// property of viewing window
-width=parseInt(document.getElementById("Width").value); // fixed, once given
+  height=parseInt(document.getElementById("Height").value);// property of viewing window
+  width=parseInt(document.getElementById("Width").value); // fixed, once given
+  zoomlevel=document.getElementById("Zoomlevel").value;
 
-   zoomlevel=document.getElementById("Zoomlevel").value;
-			number = Math.pow(4, zoomlevel);
-	imgage.xs = Math.pow(2, zoomlevel) * patchSize;
+var boundaryCheckY=vw.imgpnt.y+height-patchSize*Math.pow(2, zoomlevel);
+var boundaryCheckX=vw.imgpnt.x+width-patchSize*Math.pow(2, zoomlevel);
+
+
+
+ if(boundaryCheckX>0) //resize on the edge of boundary
+ {dx=boundaryCheckX; dy=0; CommitMove();}
+  if( boundaryCheckY>0) 
+ {dx=0; dy=boundaryCheckY;CommitMove();}
+
+ 
+     number = Math.pow(4, zoomlevel);
+     imgage.xs = Math.pow(2, zoomlevel) * patchSize;
      imgage.ys = Math.pow(2, zoomlevel) * patchSize;
-
-document.getElementById("VW").style.height=height+"px";
-document.getElementById("VW").style.width=width+"px";
+ 
+  document.getElementById("VW").style.height=height+"px";
+  document.getElementById("VW").style.width=width+"px";
 
 right=left+width;
 bottom=top+height;
@@ -192,6 +200,12 @@ document.getElementById("img["+i+"]["+j+"]").style.display="none";//hide content
    row=col=20; // Fixed number of grids, but load according to the size of viewing window
    //row=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
    //col=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
+    X=parseInt(document.getElementById("X").value);  //Initial offset
+    Y=parseInt(document.getElementById("Y").value);
+    dx=-(X-vw.imgpnt.x);
+    dy=-(Y-vw.imgpnt.y);
+    CommitMove();
+   
    
    zoomlevel=document.getElementById("Zoomlevel").value;
    zIndex=document.getElementById("zIndex").value;
@@ -227,16 +241,15 @@ function CreatePathLoadingProcess()
 
 function PatchLoadingX()
 {
-  row=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
-   col=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
-   zoomlevel=document.getElementById("Zoomlevel").value;
+  col=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
+   row=Math.ceil((vw.imgpnt.y-dy+height)/patchSize)+1;
+  zoomlevel=document.getElementById("Zoomlevel").value;
    zIndex=document.getElementById("zIndex").value;
 
 if (row>Math.pow(2, zoomlevel))
 {row=Math.pow(2, zoomlevel);}
 if (col>Math.pow(2, zoomlevel))
 {col=Math.pow(2, zoomlevel);}
-
 
 
 for(I=1;I<=row;I++)
@@ -269,7 +282,8 @@ function trial_ondrag(event, trial) {
     CooY0 = CooY1;
 
     if ((vw.imgpnt.x - dx)>0&&(vw.imgpnt.y - dy)>0
-    &&(vw.imgpnt.x-dx+height)<patchSize*Math.pow(2, zoomlevel)&&(vw.imgpnt.x-dy+width)<patchSize*Math.pow(2, zoomlevel))
+    &&(vw.imgpnt.x-dx+width)<patchSize*Math.pow(2, zoomlevel)&&
+    (vw.imgpnt.y-dy+height)<patchSize*Math.pow(2, zoomlevel))
     { CommitMove(trial); }//Panning outside the buffer zone
 
   if((vw.imgpnt.x+width)>patchSize*row||(vw.imgpnt.y+height)>patchSize*col)
@@ -279,18 +293,22 @@ function trial_ondrag(event, trial) {
 }
 
 function trial_ondragend() {
-    dx = 0;
-    dy = 0;   
+   //  dx = 0;
+   //  dy = 0;
 }
 
 function CommitMove() {
    vw.imgpnt.x = vw.imgpnt.x - dx; // Update coordinates of view windox x,y changes with zooming
    vw.imgpnt.y = vw.imgpnt.y - dy;
+   //vw.imgpnt.x = -vw.imgpnt.x +dx; 
+    //  vw.imgpnt.y = -vw.imgpnt.y + dy;
+
+   
                          //panning within the buffer zone
     document.getElementById("X").value=vw.imgpnt.x;  //Display for the sake of debug
     document.getElementById("Y").value=vw.imgpnt.y;
-    document.getElementById("DiagX").value=vw.imgpnt.x+height;
-    document.getElementById("DiagY").value=vw.imgpnt.y+width;
+    document.getElementById("DiagX").value=vw.imgpnt.x+width;
+    document.getElementById("DiagY").value=vw.imgpnt.y+height;
 
     right = right - dx; 
     left = left - dx;
@@ -302,34 +320,123 @@ function CommitMove() {
     ttop = parseInt(document.getElementById('patchGrid').style.top) + dy;
     document.getElementById('patchGrid').style.top = ttop + 'px';
     document.getElementById('patchGrid').style.clip = "rect(" + top + "px " + right + "px " + bottom + "px " + left + "px)";
+    dx = 0;// Attention !!!
+    dy = 0;//  Attention !!! It was moved from ondragend() 
+
 }
 
 function InputMove()
 {
-    dx=-parseInt(document.getElementById("dx").value);  //Display for the sake of debug
-    dy=-parseInt(document.getElementById("dy").value);
-CommitMove();
-    if((vw.imgpnt.x+width)>patchSize*row||(vw.imgpnt.y+height)>patchSize*col)
-{//PatchLoading();//Panning outside the buffer zone
-gridFormation();}
+    X=parseInt(document.getElementById("X").value);  //Display for the sake of debug
+    Y=parseInt(document.getElementById("Y").value);
+    
+    dx=-(X-vw.imgpnt.x);
+    dy=-(Y-vw.imgpnt.y);
+
+ if ((vw.imgpnt.x - dx)>0&&(vw.imgpnt.y - dy)>0
+    &&(vw.imgpnt.x-dx+width)<patchSize*Math.pow(2, zoomlevel)&&
+    (vw.imgpnt.y-dy+height)<patchSize*Math.pow(2, zoomlevel))
+    { CommitMove(); }//Panning outside the buffer zone
+
+  if((vw.imgpnt.x+width)>patchSize*row||(vw.imgpnt.y+height)>patchSize*col)
+{CreatePathLoadingProcess();}
 
 }
 
-function CenterOffset()
+
+
+function CenterOffsetIn(imagePoint) //CenterOffset(Zfactor,imagePoint)
 {
- zoomlevel=document.getElementById("Zoomlevel").value;
- centerX = 2*(vw.imgpnt.x+0.5*width);
- centerY = 2*(vw.imgpnt.y+0.5*height);// center of the viewing window in the zoomed frame
 
-dx=-((centerX-0.5*width)-vw.imgpnt.x);
-dy=-((centerY-0.5*height)-vw.imgpnt.y);
-CommitMove();
-    if((vw.imgpnt.x+width)>patchSize*row||(vw.imgpnt.y+height)>patchSize*col)
-{//PatchLoading();//Panning outside the buffer zone
-gridFormation();}
+ //zoomlevel=document.getElementById("Zoomlevel").value;
+  zoomlevel=parseInt(document.getElementById("Zoomlevel").value);
+if (zoomlevel < MaxZoom && zoomlevel >= 0)
+{
+ zoomlevel=zoomlevel+1;
+ document.getElementById("Zoomlevel").value=zoomlevel;
+
+ var centerX = (vw.imgpnt.x+0.5*width);
+ var centerY = (vw.imgpnt.y+0.5*height);// center of the viewing window in the zoomed frame
+
+X=2*centerX-0.5*width;  //Zoom from center
+Y=2*centerY-0.5*height;
+//X=Zfactor*imagePoint.x-0.5*width;
+//Y=Zfactor*imagePoint.y-0.5*height;
+
+    dx=-(X-vw.imgpnt.x);
+    dy=-(Y-vw.imgpnt.y);
+
+ if ((vw.imgpnt.x - dx)>0&&(vw.imgpnt.y - dy)>0
+    &&(vw.imgpnt.x-dx+width)<patchSize*Math.pow(2, zoomlevel)&&
+    (vw.imgpnt.y-dy+height)<patchSize*Math.pow(2, zoomlevel))
+    { CommitMove(); }//Panning outside the buffer zone
+
+  if((vw.imgpnt.x+width)>patchSize*row||(vw.imgpnt.y+height)>patchSize*col)
+{CreatePathLoadingProcess();}
 
 }
+}
 
+
+function CenterOffsetOut(imagePoint) //CenterOffset(Zfactor,imagePoint)
+{
+
+ //zoomlevel=document.getElementById("Zoomlevel").value;
+  zoomlevel=parseInt(document.getElementById("Zoomlevel").value);
+if (zoomlevel <=MaxZoom && zoomlevel > 0)
+{
+ zoomlevel=zoomlevel-1;
+ document.getElementById("Zoomlevel").value=zoomlevel;
+
+ var centerX = (vw.imgpnt.x+0.5*width);
+ var centerY = (vw.imgpnt.y+0.5*height);// center of the viewing window in the zoomed frame
+
+X=0.5*centerX-0.5*width;  //Zoom from center
+Y=0.5*centerY-0.5*height;
+//X=Zfactor*imagePoint.x-0.5*width;
+//Y=Zfactor*imagePoint.y-0.5*height;
+
+    dx=-(X-vw.imgpnt.x);
+    dy=-(Y-vw.imgpnt.y);
+
+ if ((vw.imgpnt.x - dx)>0&&(vw.imgpnt.y - dy)>0
+    &&(vw.imgpnt.x-dx+width)<patchSize*Math.pow(2, zoomlevel)&&
+    (vw.imgpnt.y-dy+height)<patchSize*Math.pow(2, zoomlevel))
+    { CommitMove(); }//Panning outside the buffer zone
+
+  if((vw.imgpnt.x+width)>patchSize*row||(vw.imgpnt.y+height)>patchSize*col)
+{CreatePathLoadingProcess();}
+
+}
+}
+
+function ImageZoom()
+{
+ zoomlevel=parseInt(document.getElementById("Zoomlevel").value);
+   patchPoint.x = event.clientX;  //coordinates within a patch,from 0,0 to the dimension of the patch
+   patchPoint.y = event.clientY;  //event.offsetX
+		if (patchPoint.x==0)   //deals with points on the corners or edges
+		{patchPoint.x=1;}
+		if (patchPoint.y==0)
+		{patchPoint.y=1;}
+        imagePoint.x = patchPoint.x + vw.imgpnt.x;// imagePoint on whole image coordinates,under current zoom level
+        imagePoint.y = patchPoint.y + vw.imgpnt.y;
+
+if (event.wheelDelta > 0 && zoomlevel < MaxZoom && zoomlevel >= 0)
+ { /* Zoom limit */
+		zoomlevel = zoomlevel + 1;/* ZoomIn, load images */
+		document.getElementById("Zoomlevel").value=zoomlevel;
+		var Zfactor=2;
+resetGrid();CreatePathLoadingProcess();CenterOffset(Zfactor,imagePoint)}
+
+  if (event.wheelDelta < 0 && zoomlevel <= MaxZoom && zoomlevel > 0 ) 
+  { /* ZoomOut, clearOut images */
+		zoomlevel = zoomlevel - 1;
+		document.getElementById("Zoomlevel").value=zoomlevel;
+		var Zfactor=0.5;
+resetGrid();CreatePathLoadingProcess();CenterOffset(Zfactor,imagePoint)}
+
+}
 
 </script>
 </head>
@@ -337,11 +444,10 @@ gridFormation();}
 <body onload="ResizeVW();gridFormation();CreatePathLoadingProcess()">
 
 <form method="post">
-	<input id="Height" name="Height" type="text" onchange="ResizeVW();resetGrid();CreatePathLoadingProcess()" value="400" />
-	<input id="Width" name="Width" type="text"  onchange="ResizeVW();resetGrid();CreatePathLoadingProcess()" value="400"/>
-	<input id="Zoomlevel" name="Zoomlevel" type="text" onchange="resetGrid();CreatePathLoadingProcess()
-" value="4"/><input id="zIndex"name="Text7" type="text" onchange="resetGrid();CreatePathLoadingProcess()
-" value="0"/></form>
+	<input id="Width" name="Width" type="text" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" value="400" />
+	<input id="Height" name="Height" type="text"   onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" value="400"/>
+	<input id="Zoomlevel"name="zoomlevel" type="text" onchange="resetGrid();CreatePathLoadingProcess();CenterOffset()"value="1" /><input id="zIndex" name="zIndex" type="text"type="text" onchange="resetGrid();CreatePathLoadingProcess()
+"   value="0" /><input name="ZoomIn" type="button" value="ZoomIn" onclick="resetGrid();CreatePathLoadingProcess();CenterOffsetIn()"/><input name="ZoomOut" type="button" value="ZoomOut" onclick="resetGrid();CreatePathLoadingProcess();CenterOffsetOut()"/></form>
 
 <div  id="VW" style="border: thin #FF00FF solid; position: absolute; width: 256px; height: 256px; z-index: 1; left: 20px; top: 70px" id="layer1">
 </div>
@@ -349,11 +455,12 @@ gridFormation();}
 <table id="patchGrid"cellpadding="0" cellspacing="0" style="width: 512px; height: 512px; position: absolute; left: 20px; top: 70px; right: 1157px;"        
         ondragstart="trial_ondragstart(event)"
         ondrag="trial_ondrag(event,patchGrid)"
-        ondragend="trial_ondragend()">
+        ondragend="trial_ondragend()"
+        onmousewheel="ImageZoom(event)" >
 </table>
 
 <form method="post">
-				<input id="X"name="Text1" type="text" /><input id="Y"name="Text2" type="text" /><input id="DiagX"name="Text3" type="text" onchange="CommitMove()"/><input id="DiagY"name="Text4" type="text" onchange="CommitMove()"/><input id="dx"name="Text5" type="text" onchange="InputMove()" value="0"/><input id="dy"name="Text6" type="text" onchange="InputMove()" value="0"/></form>
+				<input id="X"name="Text1" type="text" onchange="InputMove()" value="100"/><input id="Y"name="Text2" type="text"onchange="InputMove()" value="100" /><input id="DiagX"name="Text3" type="text"/><input id="DiagY"name="Text4" type="text" /></form>
 </body>
 
 </html>
