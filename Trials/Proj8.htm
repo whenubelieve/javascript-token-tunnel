@@ -153,9 +153,9 @@ var boundaryCheckX=vw.imgpnt.x+width-patchSize*Math.pow(2, zoomlevel);
 
 
 
- if(boundaryCheckX>0) //resize on the edge of boundary
+ if(boundaryCheckX>0&&(vw.imgpnt.x-boundaryCheckX>0)) //resize on the edge of boundary
  {dx=boundaryCheckX; dy=0; CommitMove();}
-  if( boundaryCheckY>0) 
+  if( boundaryCheckY>0&&(vw.imgpnt.y-boundaryCheckY>0)) 
  {dx=0; dy=boundaryCheckY;CommitMove();}
 
  
@@ -363,10 +363,10 @@ Y=2*centerY-0.5*height;
 //X=Zfactor*imagePoint.x-0.5*width;
 //Y=Zfactor*imagePoint.y-0.5*height;
 
-    dx=-(X-vw.imgpnt.x);
-    dy=-(Y-vw.imgpnt.y);
+    dx=-Math.round((X-vw.imgpnt.x));
+    dy=-Math.round((Y-vw.imgpnt.y));
 
- if ((vw.imgpnt.x - dx)>0&&(vw.imgpnt.y - dy)>0
+ if ((vw.imgpnt.x - dx)>=0&&(vw.imgpnt.y - dy)>=0
     &&(vw.imgpnt.x-dx+width)<patchSize*Math.pow(2, zoomlevel)&&
     (vw.imgpnt.y-dy+height)<patchSize*Math.pow(2, zoomlevel))
     { CommitMove(); }//Panning outside the buffer zone
@@ -396,10 +396,10 @@ Y=0.5*centerY-0.5*height;
 //X=Zfactor*imagePoint.x-0.5*width;
 //Y=Zfactor*imagePoint.y-0.5*height;
 
-    dx=-(X-vw.imgpnt.x);
-    dy=-(Y-vw.imgpnt.y);
+    dx=-Math.round((X-vw.imgpnt.x));
+    dy=-Math.round((Y-vw.imgpnt.y));
 
- if ((vw.imgpnt.x - dx)>0&&(vw.imgpnt.y - dy)>0
+ if ((vw.imgpnt.x - dx)>=0&&(vw.imgpnt.y - dy)>=0
     &&(vw.imgpnt.x-dx+width)<patchSize*Math.pow(2, zoomlevel)&&
     (vw.imgpnt.y-dy+height)<patchSize*Math.pow(2, zoomlevel))
     { CommitMove(); }//Panning outside the buffer zone
@@ -444,8 +444,8 @@ resetGrid();CreatePathLoadingProcess();CenterOffset(Zfactor,imagePoint)}
 <body onload="ResizeVW();gridFormation();CreatePathLoadingProcess()">
 
 <form method="post">
-	<input id="Width" name="Width" type="text" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" value="400" />
-	<input id="Height" name="Height" type="text"   onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" value="400"/>
+	<input id="Width" name="Width" type="text" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" value="800" />
+	<input id="Height" name="Height" type="text"   onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" value="800"/>
 	<input id="Zoomlevel"name="zoomlevel" type="text" onchange="resetGrid();CreatePathLoadingProcess();CenterOffset()"value="1" /><input id="zIndex" name="zIndex" type="text"type="text" onchange="resetGrid();CreatePathLoadingProcess()
 "   value="0" /><input name="ZoomIn" type="button" value="ZoomIn" onclick="resetGrid();CreatePathLoadingProcess();CenterOffsetIn()"/><input name="ZoomOut" type="button" value="ZoomOut" onclick="resetGrid();CreatePathLoadingProcess();CenterOffsetOut()"/></form>
 
@@ -456,11 +456,11 @@ resetGrid();CreatePathLoadingProcess();CenterOffset(Zfactor,imagePoint)}
         ondragstart="trial_ondragstart(event)"
         ondrag="trial_ondrag(event,patchGrid)"
         ondragend="trial_ondragend()"
-        onmousewheel="ImageZoom(event)" >
+        >
 </table>
 
 <form method="post">
-				<input id="X"name="Text1" type="text" onchange="InputMove()" value="100"/><input id="Y"name="Text2" type="text"onchange="InputMove()" value="100" /><input id="DiagX"name="Text3" type="text"/><input id="DiagY"name="Text4" type="text" /></form>
+				<input id="X"name="Text1" type="text" onchange="InputMove()" value="0"/><input id="Y"name="Text2" type="text"onchange="InputMove()" value="0" /><input id="DiagX"name="Text3" type="text"/><input id="DiagY"name="Text4" type="text" /></form>
 </body>
 
 </html>
