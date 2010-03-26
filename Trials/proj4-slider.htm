@@ -7,82 +7,73 @@
         <!--CSS Style Sheet-->
         <style type="text/css"> 
             /*div.frame {
-                color: #FF00FF;
-            }*/
-            
+             color: #FF00FF;
+             }*/
             #VW {
                 border: thin #FF00FF solid;
                 position: absolute;
                 width: 50px;
                 height: 50px;
                 z-index: 1;
-                left: 100px;
-                top: 230px;
+                left: 120px;
+                top: 160px;
             }
-            
             #patchGrid {
                 border: thin #000000 none;
                 position: absolute;
                 z-index: 1;
                 width: 512px;
                 height: 512px;
-                left: 100px;
-                top: 230px;
+                left: 120px;
+                top: 160px;
             }
-            
             /*the following is for making sliders
-            #controls dl.col {
-                background: none repeat scroll 0 0 #202020;
-                border: 1px solid #1C1C1C;
-                display: inline;
-                float: left;
-                height: 12.4em;
-                margin: 0 1em 0 0;
-                padding: 0.75em;
-                position: relative;
-            }
-            
-            #controls .control .bar {
-                background: url("http://www.schillmania.com/projects/fireworks/demo-only/slider-bar.gif") no-repeat scroll 0 9px transparent;
-                cursor: pointer;
-                height: 20px;
-                left: 0;
-                position: absolute;
-                top: 0;
-                width: 214px;
-            }*/
+             #controls dl.col {
+             background: none repeat scroll 0 0 #202020;
+             border: 1px solid #1C1C1C;
+             display: inline;
+             float: left;
+             height: 12.4em;
+             margin: 0 1em 0 0;
+             padding: 0.75em;
+             position: relative;
+             }
+             #controls .control .bar {
+             background: url("http://www.schillmania.com/projects/fireworks/demo-only/slider-bar.gif") no-repeat scroll 0 9px transparent;
+             cursor: pointer;
+             height: 20px;
+             left: 0;
+             position: absolute;
+             top: 0;
+             width: 214px;
+             }*/
             /*
-            #controls .control .slider {
-                position: absolute;
-                left: 0px;
-                top: 0px;
-                width: 20px;
-                height: 20px;
-                background: transparent url(http://www.schillmania.com/projects/fireworks/demo-only/slider.png) no-repeat 0px 0px;
-                /*background:none;*/
-                /*filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,sizingMethod=crop,src='http://www.schillmania.com/projects/fireworks/demo-only/slider.png');*/
-                /*cursor: pointer;
-                cursor: hand;
-            }*/
-            
+             #controls .control .slider {
+             position: absolute;
+             left: 0px;
+             top: 0px;
+             width: 20px;
+             height: 20px;
+             background: transparent url(http://www.schillmania.com/projects/fireworks/demo-only/slider.png) no-repeat 0px 0px;
+             /*background:none;*/
+            /*filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,sizingMethod=crop,src='http://www.schillmania.com/projects/fireworks/demo-only/slider.png');*/
+            /*cursor: pointer;
+             cursor: hand;
+             }*/
             #controls dd {
                 color: #6699CC;
                 font-size: 0.9em;
             }
-            
             #controls dl {
                 width: 21em;
             }
-            
             #controls {
                 font-size: 0.85em;
             }
-            
             #site {
                 border-style: none dashed;
                 text-align: left;
             }
-            
             /*
              body {
              color: #BBBBBB;
@@ -195,8 +186,9 @@
                         return b_noInputCheck ? null : f_sliderError(this.n_id, "Can not find the input with NAME='" + this.s_name + "'.");
                 }
                 e_input.value = n_value;
-                //make the update to the input element (the text box) for zoom
-                document.getElementById('text3').value = e_input.value;
+                //make the update to the input element (the text box) for zoomlevel
+				//alert(e_input.id + "," + n_value);
+                document.getElementById(e_input.id).value = e_input.value;
                 //gridFormation();
             }
             
@@ -293,6 +285,7 @@
             function f_scrollLeft(){
                 return f_filterResults(window.pageXOffset ? window.pageXOffset : 0, document.documentElement ? document.documentElement.scrollLeft : 0, document.body ? document.body.scrollLeft : 0);
             }
+            
             function f_scrollTop(){
                 return f_filterResults(window.pageYOffset ? window.pageYOffset : 0, document.documentElement ? document.documentElement.scrollTop : 0, document.body ? document.body.scrollTop : 0);
             }
@@ -317,10 +310,10 @@
             };
             
             //end slider script
-			//---------------------
-			//---------------------
-			//---------------------
-			//---------------------
+            //---------------------
+            //---------------------
+            //---------------------
+            //---------------------
             
             patchSize = 256;
             zoomlevel = 0;
@@ -458,13 +451,26 @@
             var YGridNumber = 1;
             var XGridNumber = 1;
             
-            
+            //NOTE
+			//sliderValue is text3
+			//sliderValue2 is text2
+			//sliderValue1 is text1
             //both the viewing window and grid patches are changed 
             function change(){
-                document.getElementById("VW").style.height = document.getElementById("text1").value + "px";
-                document.getElementById("VW").style.width = document.getElementById("text2").value + "px";
-                bottom = document.getElementById("text1").value;
-                right = document.getElementById("text2").value;
+                //document.getElementById("VW").style.height = document.getElementById("text1").value + "px";
+                //document.getElementById("VW").style.width = document.getElementById("text2").value + "px";
+				//devpoint
+				//VW.onload = function(){
+					document.getElementById("VW").style.height = document.getElementById("sliderValue3").value + "px";
+                	document.getElementById("VW").style.width = document.getElementById("sliderValue2").value + "px";
+				//}
+				
+				
+                //bottom = document.getElementById("text1").value;
+                //right = document.getElementById("text2").value;
+				//dev
+				bottom = document.getElementById("sliderValue3").value;
+                right = document.getElementById("sliderValue2").value;
                 document.getElementById("patchGrid").style.height = Math.ceil(bottom / 256) * 256;
                 document.getElementById("patchGrid").style.width = Math.ceil(right / 256) * 256;
                 //maybe moving to a style sheet was the problem?
@@ -477,14 +483,15 @@
             
             function gridFormation(){
                 change();
-                //$(document).ready(function(){
-                //number = Math.pow(4, zoomlevel);
-                //row = col = Math.pow(2, zoomlevel);
                 row = Math.ceil(bottom / patchSize);
                 col = Math.ceil(right / patchSize);
                 //alert(patchSize);
-                zoomlevel = document.getElementById("text3").value;
-                
+                //zoomlevel = document.getElementById("text3").value;
+				//maybe try to change all 'text3' references to 'sliderValue'
+				//this changes the value of the input element.
+				//our goal is to remove the orignal input altogether.
+				//we remove them because we need to introduce forms in order to use the sliders.
+                zoomlevel = document.getElementById("sliderValue").value;
                 //clear out patchGrid
                 //$('#patchGrid').empty();
                 
@@ -505,28 +512,23 @@
                         imageId = dummy.id;
                         image = document.getElementById(imageId);
                         //after the dummy image is loaded
+						//the following was used for a fadein effect
                         dummy.onload = function(){
                             //alert("hello");
-                            setOpacity(image, 0);
-                            image.style.visibility = "visible";
-                            
+                            //setOpacity(image, 0);
+                            //image.style.visibility = "visible";
                         }
-						//take out fadein effect for now
+                        //take out fadein effect for now
                         //fadeIn(imageId, 0);
-                        
                         
                         document.getElementById("patchGrid").appendChild(dummy);
                         //$('#patchGrid').append(dummy);
-                        
                         
                         //for some reason this seems to hang...
                         window.onload = function(){
                         }
                         
-                        
                         //dummy.style.visibility = 'visible';
-                    
-                    
                     
                         /*
                          var dummy = new Image();
@@ -547,13 +549,12 @@
                          */
                     }
                 }
-                
-                
-                //});
+				//change();
             }
+            
             //this also seems to hang indefinitely
             document.onload = function(){
-                    }
+            }
             /*
              function initImage(){
              imageId = 'img' + i + j;
@@ -563,6 +564,7 @@
              fadeIn(imageId, 0);
              }
              */
+			/*
             function setOpacity(obj, opacity){
                 opacity = (opacity == 100) ? 99.999 : opacity;
                 
@@ -578,7 +580,8 @@
                 // Safari 1.2, newer Firefox and Mozilla, CSS3
                 obj.style.opacity = opacity / 100;
             }
-            
+            */
+			/*
             function fadeIn(objId, opacity){
                 if (document.getElementById) {
                     obj = document.getElementById(objId);
@@ -589,7 +592,7 @@
                     }
                 }
             }
-            
+            */
             //currently not in use
             /*
              function ResetGridFormation(){
@@ -652,7 +655,8 @@
             }
         </script>
     </head>
-    <body onload="gridFormation()">
+    <body >
+    	<!--
         <table border="2">
             <tr>
                 <td>
@@ -674,10 +678,12 @@
                         Zoomlevel:
                     </label>
                     <br/>
-                    <!--<input id="text3" name="Zoomlevel" size="5" type="text" value="1" onkeypress="if(event.keyCode == 13 || event.keyCode == 9) {gridFormation()}" onpropertychange="gridFormation" onchange="gridFormation"/>--><input id="text3" name="Zoomlevel" size="5" type="text" value="1" onchange="gridFormation()"/>
+                    <input id="text3" name="Zoomlevel" size="5" type="text" value="1" onkeypress="if(event.keyCode == 13 || event.keyCode == 9) {gridFormation()}" onpropertychange="gridFormation" onchange="gridFormation"/>
+					<input id="text3" name="Zoomlevel" size="5" type="text" value="1" onchange="gridFormation()"/>
                 </td>
             </tr>
         </table>
+		-->
         <p>
             <b>proj4.htm</b>
             - please press enter key after typing number in text box.
@@ -693,8 +699,15 @@
                 [patches are joined together like a single image]
             </li>
         </ul>
+		<!--main div where the images are appended-->
+		<div id="patchGrid" ondragstart="trial_ondragstart(event)" ondrag="trial_ondrag(event,patchGrid)" ondragend="trial_ondragend()">
+        </div>
+		<!--Main viewing window div-->
+        <div id="VW">
+        </div>
         <!--added form element for slider demo-->
         <form name="demoForm">
+        	Zoom
             <input name="sliderValue" id="sliderValue" type="Text" size="3" onpropertychange="gridFormation()">
             <script language="JavaScript">
                 var A_TPL = {
@@ -714,7 +727,7 @@
                     'n_zIndex': 1
                 }
                 var A_INIT = {
-					//maybe this refers to the form number?
+                    //maybe this refers to the form number?
                     's_form': 0,
                     's_name': 'sliderValue',
                     'n_minValue': 0,
@@ -722,12 +735,14 @@
                     'n_value': 1,
                     'n_step': 1
                 }
-                
                 new slider(A_INIT, A_TPL);
             </script>
             <!--<input name="Submit" type="Submit" value="Submit" >this was added originally-->
-			<input name="sliderValue2" id="sliderValue2" type="Text" size="3" onpropertychange="gridFormation()">
-			<script language="JavaScript">
+        </form>
+        <form name="demoForm2">
+        	Width
+            <input name="sliderValue2" id="sliderValue2" type="Text" size="3" onpropertychange="gridFormation()">
+            <script language="JavaScript">
                 var A_TPL = {
                     'b_vertical': true,
                     'b_watch': true,
@@ -745,22 +760,51 @@
                     'n_zIndex': 1
                 }
                 var A_INIT = {
-					//maybe this refers to the form number?
-                    's_form': 0,
+                    //this refers to the form number. The first form in the document is form number 0, next is 1, etc.
+                    's_form': 1,
                     's_name': 'sliderValue2',
-                    'n_minValue': 0,
-                    'n_maxValue': 3,
-                    'n_value': 1,
-                    'n_step': 1
+                    'n_minValue': 200,
+                    'n_maxValue': 1000,
+                    'n_value': 500,
+                    'n_step': 100
                 }
-                
                 new slider(A_INIT, A_TPL);
             </script>
         </form>
-        <div id="patchGrid" ondragstart="trial_ondragstart(event)" ondrag="trial_ondrag(event,patchGrid)" ondragend="trial_ondragend()">
-        </div>
-        <!--Main viewing window div-->
-        <div id="VW">
-        </div>
+		</form>
+        <form name="demoForm3">
+        	Height
+            <input name="sliderValue3" id="sliderValue3" type="Text" size="3" onpropertychange="gridFormation()">
+            <script language="JavaScript">
+                var A_TPL = {
+                    'b_vertical': true,
+                    'b_watch': true,
+                    'n_controlWidth': 16,
+                    'n_controlHeight': 120,
+                    'n_sliderWidth': 15,
+                    'n_sliderHeight': 16,
+                    'n_pathLeft': 1,
+                    'n_pathTop': 1,
+                    'n_pathLength': 103,
+                    //this is the long slider bar
+                    's_imgControl': 'http://www.schillmania.com/projects/fireworks/demo-only/slider-bar.gif',
+                    //this is the slider button
+                    's_imgSlider': 'http://www.schillmania.com/projects/fireworks/demo-only/slider.png',
+                    'n_zIndex': 1
+                }
+                var A_INIT = {
+                    //this refers to the form number. The first form in the document is form number 0, next is 1, etc.
+                    's_form': 2,
+                    's_name': 'sliderValue3',
+                    'n_minValue': 200,
+                    'n_maxValue': 1000,
+                    'n_value': 500,
+                    'n_step': 100
+                }
+                new slider(A_INIT, A_TPL);
+            </script>
+        </form>
+        
+        
     </body>
 </html>
