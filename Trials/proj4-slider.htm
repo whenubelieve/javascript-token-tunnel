@@ -91,10 +91,8 @@
         </style>
         <title>proj4.htm</title>
         <script type="text/javascript">
-            
             //calling this function places a slider on the page
             function slider(a_init, a_tpl){
-            
                 this.f_setValue = f_sliderSetValue;
                 this.f_getPos = f_sliderGetPos;
                 
@@ -111,7 +109,6 @@
                         this[s_key] = a_tpl[s_key];
                 for (s_key in a_init) 
                     this[s_key] = a_init[s_key];
-                
                 this.n_pix2value = this.n_pathLength / (this.n_maxValue - this.n_minValue);
                 if (this.n_value == null) 
                     this.n_value = this.n_minValue;
@@ -296,7 +293,6 @@
             function f_scrollLeft(){
                 return f_filterResults(window.pageXOffset ? window.pageXOffset : 0, document.documentElement ? document.documentElement.scrollLeft : 0, document.body ? document.body.scrollLeft : 0);
             }
-            
             function f_scrollTop(){
                 return f_filterResults(window.pageYOffset ? window.pageYOffset : 0, document.documentElement ? document.documentElement.scrollTop : 0, document.body ? document.body.scrollTop : 0);
             }
@@ -321,6 +317,10 @@
             };
             
             //end slider script
+			//---------------------
+			//---------------------
+			//---------------------
+			//---------------------
             
             patchSize = 256;
             zoomlevel = 0;
@@ -511,6 +511,7 @@
                             image.style.visibility = "visible";
                             
                         }
+						//take out fadein effect for now
                         //fadeIn(imageId, 0);
                         
                         
@@ -693,7 +694,7 @@
             </li>
         </ul>
         <!--added form element for slider demo-->
-        <form action="single_slider_demo.html" method="get" name="demoForm">
+        <form name="demoForm">
             <input name="sliderValue" id="sliderValue" type="Text" size="3" onpropertychange="gridFormation()">
             <script language="JavaScript">
                 var A_TPL = {
@@ -713,6 +714,7 @@
                     'n_zIndex': 1
                 }
                 var A_INIT = {
+					//maybe this refers to the form number?
                     's_form': 0,
                     's_name': 'sliderValue',
                     'n_minValue': 0,
@@ -723,7 +725,37 @@
                 
                 new slider(A_INIT, A_TPL);
             </script>
-            <!--<input name="Submit" type="Submit" value="Submit" >-->
+            <!--<input name="Submit" type="Submit" value="Submit" >this was added originally-->
+			<input name="sliderValue2" id="sliderValue2" type="Text" size="3" onpropertychange="gridFormation()">
+			<script language="JavaScript">
+                var A_TPL = {
+                    'b_vertical': true,
+                    'b_watch': true,
+                    'n_controlWidth': 16,
+                    'n_controlHeight': 120,
+                    'n_sliderWidth': 15,
+                    'n_sliderHeight': 16,
+                    'n_pathLeft': 1,
+                    'n_pathTop': 1,
+                    'n_pathLength': 103,
+                    //this is the long slider bar
+                    's_imgControl': 'http://www.schillmania.com/projects/fireworks/demo-only/slider-bar.gif',
+                    //this is the slider button
+                    's_imgSlider': 'http://www.schillmania.com/projects/fireworks/demo-only/slider.png',
+                    'n_zIndex': 1
+                }
+                var A_INIT = {
+					//maybe this refers to the form number?
+                    's_form': 0,
+                    's_name': 'sliderValue2',
+                    'n_minValue': 0,
+                    'n_maxValue': 3,
+                    'n_value': 1,
+                    'n_step': 1
+                }
+                
+                new slider(A_INIT, A_TPL);
+            </script>
         </form>
         <div id="patchGrid" ondragstart="trial_ondragstart(event)" ondrag="trial_ondrag(event,patchGrid)" ondragend="trial_ondragend()">
         </div>
