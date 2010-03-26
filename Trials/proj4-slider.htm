@@ -460,9 +460,11 @@
                 //document.getElementById("VW").style.height = document.getElementById("text1").value + "px";
                 //document.getElementById("VW").style.width = document.getElementById("text2").value + "px";
 				//devpoint
-				//VW.onload = function(){
-					document.getElementById("VW").style.height = document.getElementById("sliderValue3").value + "px";
+				//alert(sliderValue2);
+				//if (sliderValue2){
+					//alert("hello");
                 	document.getElementById("VW").style.width = document.getElementById("sliderValue2").value + "px";
+					document.getElementById("VW").style.height = document.getElementById("sliderValue3").value + "px";
 				//}
 				
 				
@@ -655,7 +657,7 @@
             }
         </script>
     </head>
-    <body >
+    <body onload="gridFormation()">
     	<!--
         <table border="2">
             <tr>
@@ -774,7 +776,7 @@
 		</form>
         <form name="demoForm3">
         	Height
-            <input name="sliderValue3" id="sliderValue3" type="Text" size="3" onpropertychange="gridFormation()">
+            <input name="sliderValue3" id="sliderValue3" type="Text" size="3" onpropertychange="gridFormation()" onchange="gridFormation">
             <script language="JavaScript">
                 var A_TPL = {
                     'b_vertical': true,
