@@ -17,7 +17,7 @@
                 height: 50px;
                 z-index: 1;
                 left: 100px;
-                top: 250px;
+                top: 230px;
             }
             
             #patchGrid {
@@ -27,7 +27,7 @@
                 width: 512px;
                 height: 512px;
                 left: 100px;
-                top: 250px;
+                top: 230px;
             }
             
             /*the following is for making sliders
@@ -198,9 +198,9 @@
                         return b_noInputCheck ? null : f_sliderError(this.n_id, "Can not find the input with NAME='" + this.s_name + "'.");
                 }
                 e_input.value = n_value;
-                //make the update to the input element (the text box) for zoom-------------------------------------------------------------------
-                document.getElementById('sliderValue').value = e_input.value;
-                
+                //make the update to the input element (the text box) for zoom
+                document.getElementById('text3').value = e_input.value;
+                //gridFormation();
             }
             
             // get absolute position of the element in the document
@@ -327,6 +327,7 @@
             imageSize = Math.pow(2, zoomlevel) * patchSize;
             var height = 0;
             var width = 0;
+            
             var imgpsz = {
                 x: 256,
                 y: 256
@@ -494,6 +495,8 @@
                         //dummy is an image tag
                         dummy = document.createElement("img");
                         
+                        dummy.src = "http://wonko.via.cornell.edu/bigimgs/test1/foo." + zoomlevel + "." + (j - 1) + "." + (i - 1) + ".0.jpeg";
+                        
                         //$('dummy').hide();
                         dummy.id = "img" + i + j;
                         dummy.height = patchSize;
@@ -502,18 +505,18 @@
                         imageId = dummy.id;
                         image = document.getElementById(imageId);
                         //after the dummy image is loaded
-                        
-						//fade in effect----------------------------------<might need this later
-                        //fadeIn(imageId, 0);
-                        
-                        dummy.src = "http://wonko.via.cornell.edu/bigimgs/test1/foo." + zoomlevel + "." + (j - 1) + "." + (i - 1) + ".0.jpeg";
-                        document.getElementById("patchGrid").appendChild(dummy);
-                        //$('#patchGrid').append(dummy);
                         dummy.onload = function(){
                             //alert("hello");
                             setOpacity(image, 0);
                             image.style.visibility = "visible";
+                            
                         }
+                        //fadeIn(imageId, 0);
+                        
+                        
+                        document.getElementById("patchGrid").appendChild(dummy);
+                        //$('#patchGrid').append(dummy);
+                        
                         
                         //for some reason this seems to hang...
                         window.onload = function(){
@@ -670,7 +673,7 @@
                         Zoomlevel:
                     </label>
                     <br/>
-					<input id="text3" name="Zoomlevel" size="5" type="text" value="1" onkeypress="if(event.keyCode == 13 || event.keyCode == 9) gridFormation" onpropertychange="gridFormation" onchange="gridFormation"/>
+                    <!--<input id="text3" name="Zoomlevel" size="5" type="text" value="1" onkeypress="if(event.keyCode == 13 || event.keyCode == 9) {gridFormation()}" onpropertychange="gridFormation" onchange="gridFormation"/>--><input id="text3" name="Zoomlevel" size="5" type="text" value="1" onchange="gridFormation()"/>
                 </td>
             </tr>
         </table>
@@ -689,13 +692,9 @@
                 [patches are joined together like a single image]
             </li>
         </ul>
-		<!--test form, to see if the slider can work for an external form.-->
-		
-		<!--added form element for slider demo-->
-        <form name="demoForm">
-        	Zoom Level
-			<!--<input name="sliderValue" id="sliderValue" size="3" type="Text" value="1" onpropertychange="gridFormation()" onchange="gridFormation()"/>-->
-            <input name="Zoomlevel" id="sliderValue" size="3" type="Text" value="1" onpropertychange="gridFormation" onchange="gridFormation"/> 
+        <!--added form element for slider demo-->
+        <form action="single_slider_demo.html" method="get" name="demoForm">
+            <input name="sliderValue" id="sliderValue" type="Text" size="3" onpropertychange="gridFormation()">
             <script language="JavaScript">
                 var A_TPL = {
                     'b_vertical': true,
@@ -716,19 +715,16 @@
                 var A_INIT = {
                     's_form': 0,
                     's_name': 'sliderValue',
-					//change this for slider minimum value
                     'n_minValue': 0,
-					//change this for slider maximum value
                     'n_maxValue': 3,
-					//change this for size of slider step
                     'n_value': 1,
                     'n_step': 1
                 }
+                
                 new slider(A_INIT, A_TPL);
             </script>
             <!--<input name="Submit" type="Submit" value="Submit" >-->
         </form>
-		
         <div id="patchGrid" ondragstart="trial_ondragstart(event)" ondrag="trial_ondrag(event,patchGrid)" ondragend="trial_ondragend()">
         </div>
         <!--Main viewing window div-->
