@@ -36,6 +36,9 @@
         border-style: none dashed;
         text-align: left;
     }
+	#main {
+		cursor: crosshair;
+	}
 </style>
 <title>proj9 - adding sliders</title>
 <script type="text/javascript">
@@ -494,33 +497,47 @@ var XGridNumber = 1;
 
 var height = 0;
 var width = 0;
+//this variable is used for 'element checking'
+var productElement
 
 //this changes VW and patchGrid
 function ResizeVW() //change happens to viewing window and grid patches.
 { 
-	height = parseInt(document.getElementById("Height").value);// property of viewing window
-  	width = parseInt(document.getElementById("Width").value); // fixed, once given
+	productElement = document.getElementById("Height");
+	if (productElement != null){
+		height = parseInt(document.getElementById("Height").value);// property of viewing window 		
+	}
+	width = parseInt(document.getElementById("Width").value); // fixed, once given
 	
   	zoomlevel = document.getElementById("Zoomlevel").value;
-
-	var boundaryCheckY=vw.imgpnt.y+height-patchSize*Math.pow(2, zoomlevel);
-	var boundaryCheckX=vw.imgpnt.x+width-patchSize*Math.pow(2, zoomlevel);
-
+	
+	productElement = vw;
+	if (productElement != null) {
+		var boundaryCheckY = vw.imgpnt.y + height - patchSize * Math.pow(2, zoomlevel);
+		var boundaryCheckX = vw.imgpnt.x + width - patchSize * Math.pow(2, zoomlevel);
+	}
 	if(boundaryCheckX>0&&(vw.imgpnt.x-boundaryCheckX>0)) //resize on the edge of boundary
 	{dx=boundaryCheckX; dy=0; CommitMove();}
 	if( boundaryCheckY>0&&(vw.imgpnt.y-boundaryCheckY>0)) 
 	{dx=0; dy=boundaryCheckY;CommitMove();}
 
 	number = Math.pow(4, zoomlevel);
-	imgage.xs = Math.pow(2, zoomlevel) * patchSize;
-	imgage.ys = Math.pow(2, zoomlevel) * patchSize;
- 
-  	document.getElementById("VW").style.height = height + "px";
-  	document.getElementById("VW").style.width = width + "px";
-
+	productElement = imgage;
+	if (productElement != null) {
+		imgage.xs = Math.pow(2, zoomlevel) * patchSize;
+		imgage.ys = Math.pow(2, zoomlevel) * patchSize;
+	}
+	productElement = document.getElementById("VW");
+	if (productElement != null) {
+		document.getElementById("VW").style.height = height + "px";
+		document.getElementById("VW").style.width = width + "px";
+	}
 	right=left+width;
 	bottom=top+height;
-	document.getElementById("patchGrid").style.clip="rect(" + top + "px " + right + "px " + bottom + "px " + left + "px)";
+	productElement = document.getElementById("patchGrid");
+	if (productElement != null) {
+		document.getElementById("patchGrid").style.clip = "rect(" + top + "px " + right + "px " + bottom + "px " + left + "px)";
+	}
 }
 
 //function resetGrid()
@@ -538,12 +555,14 @@ function resetGrid()
 	{
 		for (j=1; j<=20; j++)
 		{
-			document.getElementById("img["+i+"]["+j+"]").style.display="none";//hide contents;
+			productElement = document.getElementById("img["+i+"]["+j+"]");
+			//check to see if element exists
+			if (productElement != null){
+				document.getElementById("img["+i+"]["+j+"]").style.display="none";//hide contents;
+			}
 		}
 	}
 }
-
-
 
  function gridFormation()
 {
@@ -556,7 +575,6 @@ function resetGrid()
     dx=-(X-vw.imgpnt.x);
     dy=-(Y-vw.imgpnt.y);
     CommitMove();
-   
    
    zoomlevel=document.getElementById("Zoomlevel").value;
    zIndex=document.getElementById("zIndex").value;
@@ -571,15 +589,14 @@ function resetGrid()
 		tr.width=col*patchSize;
 		tr.id="tr1";
 		for(j=1;j<=col;j++){
-		
 				dummy=document.createElement("td");
 				dummy.height=patchSize;
 				dummy.width=patchSize;
 				img=document.createElement("img");
-			      img.id="img["+i+"]["+j+"]";
-			      img.style.display="none";
-			     // img.style.draggable="true" 
-                     dummy.appendChild(img);
+			    img.id="img["+i+"]["+j+"]";
+			    img.style.display="none";
+			    // img.style.draggable="true" 
+                dummy.appendChild(img);
 				tr.appendChild(dummy);		
 		}
 		table.appendChild(tr);
@@ -602,7 +619,6 @@ function PatchLoadingX(){
 	if (col>Math.pow(2, zoomlevel))
 	{col=Math.pow(2, zoomlevel);}
 
-
 	for(I=1;I<=row;I++)
 	{
 		 for (J=1;J<=col;J++) // img[i][j], the naming system
@@ -611,7 +627,7 @@ function PatchLoadingX(){
 		 	document.getElementById("img["+I+"]["+J+"]").src="http://wonko.via.cornell.edu/bigimgs/test2/bar."+ zoomlevel + "." +( J -1)+ "." + (I-1) + "."+ zIndex+ ".jpeg";
 		 }
 	}
-clearInterval;
+	clearInterval;
 }
 
 
@@ -805,7 +821,7 @@ resetGrid();CreatePathLoadingProcess();}
 </script>
 </head>
 
-<body oncontextmenu=event.returnValue=false onselectstart=event.returnValue=false id="main" style="cursor:   crosshair" onload="ResizeVW();gridFormation();CreatePathLoadingProcess()">
+<body id="main" oncontextmenu=event.returnValue=false onselectstart=event.returnValue=false onload="ResizeVW();gridFormation();CreatePathLoadingProcess()">
 
 <form>
 	<input id="Width" name="Width1" type="text" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" value="400" />
@@ -816,10 +832,10 @@ resetGrid();CreatePathLoadingProcess();}
 	<input name="ZoomOut" type="button" value="ZoomOut" onclick="resetGrid();CreatePathLoadingProcess();CenterOffsetOut()" />
 </form>
 
-<div  id="VW" >
+<div id="VW" >
 </div>
 <!--for some reason, can't pull out the top and left style attributes into a css-->
-<table id="patchGrid" draggable="true"  cellpadding="0" cellspacing="0" style=" left: 160px; top: 100px; right: 1121px;"
+<table id="patchGrid" draggable="true"  cellpadding="0" cellspacing="0" style="left: 160px; top: 100px; right: 1121px;"
         ondragstart="trial_ondragstart(event)"
         ondrag="trial_ondrag(event)"
         ondragend="trial_ondragend(event)"
@@ -827,7 +843,7 @@ resetGrid();CreatePathLoadingProcess();}
         >
 </table>
 
-<form method="post">
+<form>
 	<input id="X"name="Text1" type="text" onchange="InputMove()" value="0"/>
         <input id="Y"name="Text2" type="text"onchange="InputMove()" value="0" />
         <input id="DiagX"name="Text3" type="text"/>
