@@ -228,6 +228,7 @@ document.getElementById("img["+i+"]["+j+"]").style.display="none";//hide content
 				img=document.createElement("img");
 			      img.id="img["+i+"]["+j+"]";
 			      img.style.display="none";
+			      img.unselectable="on";  
 			     // img.style.draggable="true" 
                      dummy.appendChild(img);
 				tr.appendChild(dummy);		
@@ -267,18 +268,32 @@ clearInterval;
 }
 
 
-function trial_ondragstart(event) {
-   //alert("done");
-    event.dataTransfer.effectAllowed = "none"; // do not allow copy
 
+function omniDrag(ele,e) {
+   //alert("done");
+   // event.dataTransfer.effectAllowed = "none"; // do not allow copy
+
+    var event = window.event || e;  //FireFox compatibility
     CooX0 = event.clientX;
     CooY0 = event.clientY;
     vw.xs=width;
     vw.ys=height;
+    document.onmouseup = function voidDrag(){
+		this.onmousemove = null;
+	}
+	if(event.preventDefault){
+		event.preventDefault();
+	}
 
-}
-    
-function trial_ondrag(event) {
+    document.onmousemove = function trial_ondrag(e)
+ {
+    var event = window.event || e;
+
+if(document.all && event.button == 0){
+			this.onmousemove = null;
+			return false;
+		};
+
     imageDimension=patchSize*Math.pow(2, zoomlevel);
     CooX1 = event.clientX;
     CooY1 = event.clientY;
@@ -301,7 +316,16 @@ function trial_ondrag(event) {
 
   if((vw.imgpnt.x+width)>patchSize*row||(vw.imgpnt.y+height)>patchSize*col)
 {CreatePathLoadingProcess();}
+return false
 
+}
+
+}
+
+
+function mouseup()
+{
+mouseover=false
 }
 
 function trial_ondragend(event) {
@@ -469,11 +493,9 @@ resetGrid();CreatePathLoadingProcess();}
 </div>
 
 <table draggable="true" id="patchGrid"cellpadding="0" cellspacing="0" style="width: 512px; height: 512px; position: absolute; left: 20px; top: 70px; right: 1121px;"        
-        ondragstart="trial_ondragstart(event)"
-        ondrag="trial_ondrag(event)"
-        ondragend="trial_ondragend(event)"
-        onmousewheel="zIndexChanging()"
-        >
+       onmousedown="omniDrag(this,event)"
+       onmousewheel="zIndexChanging()"
+         >
 </table>
 
 <form method="post">
