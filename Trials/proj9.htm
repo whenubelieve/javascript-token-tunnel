@@ -43,8 +43,12 @@
 <title>proj9 - adding sliders</title>
 <script type="text/javascript">
 var windowisloaded = 0;
-
-
+window.onload = function(){
+	windowisloaded =1;
+	ResizeVW();
+	gridFormation();
+	CreatePathLoadingProcess();
+}
 //calling this function places a slider on the page
 function slider(a_init, a_tpl){
     this.f_setValue = f_sliderSetValue;
@@ -157,21 +161,20 @@ function f_sliderSetValue(n_value, b_noInputCheck){
 	//alert(e_input.id + "," + n_value);
 
 	document.getElementById(e_input.id).value = e_input.value;
-	window.onload = function() {
-		alert("window loading is complete!");
-		windowisloaded = 1;
-	}
 	//maybe instead of changing the value itself, try changing the attribute directly?
 	//document.getElementById(e_input.id).setAttribute('value', n_value);
 	//document.getElementById("sliderValue3").addEvent('load',function(){ pageisloaded=1; });
 	//ResizeVW();
-	
-	if(windowisloaded == 1) {
-		//alert("windowisloaded!!!");
+	if (document.createEvent){
+		if (windowisloaded==1){
 		resetGrid();
 		CreatePathLoadingProcess();
 		ResizeVW();
+		//needed for the zoomlevel, but it breaks when inserted here. need to ask Tom.
+		//CenterOffset();
+		}
 	}
+	
 	
 }
 
@@ -340,26 +343,8 @@ get_element = document.all ? function(s_id){
         'n_value': 400,
         'n_step': 100
     }
-    document.write('<form name="form2">Width<input name="Width" id="Width" type="Text" size="3" oninputchange="alert(888)" onpropertychange="resetGrid();CreatePathLoadingProcess();ResizeVW()" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" />')
-    function hello() {
-		alert("hello!");
-	}
-	
-		//maybe this needs to be done after the element is loaded?
-		if(document.addEventListener){
-			//document.getElementById("Width").addEventListener('DOMAttrModified', hello, true);
-		}
-		var targetElement = document.getElementById("Width");
-		if (document.createEvent){
-			//alert("firefox");
-			var evt = document.createEvent('HTMLEvents');
-			evt.initEvent('change', true, true);
-			//targetElement.dispatchEvent(evt);
-		}
-	
-	
-	
-	new slider(A_INIT, A_TPL);
+    document.write('<form name="form2">Width<input name="Width" id="Width" type="Text" size="3" onpropertychange="resetGrid();CreatePathLoadingProcess();ResizeVW()" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" />')
+    new slider(A_INIT, A_TPL);
     document.write('</form>');
     //SLIDER3 - height
     var A_TPL = {
@@ -652,8 +637,10 @@ function PatchLoadingX(){
 	if (col>Math.pow(2, zoomlevel))
 	{col=Math.pow(2, zoomlevel);}
 
-	for(I=1;I<=row;I++){
-		 for (J=1;J<=col;J++){ // img[i][j], the naming system
+	for(I=1;I<=row;I++)
+	{
+		 for (J=1;J<=col;J++) // img[i][j], the naming system
+		 {
 		 	document.getElementById("img["+I+"]["+J+"]").style.display="";
 		 	document.getElementById("img["+I+"]["+J+"]").src="http://wonko.via.cornell.edu/bigimgs/test2/bar."+ zoomlevel + "." +( J -1)+ "." + (I-1) + "."+ zIndex+ ".jpeg";
 		 }
@@ -843,11 +830,6 @@ function zIndexChanging()
 		zIndex= zIndex- 1;
 		document.getElementById("zIndex").value = zIndex;resetGrid();CreatePathLoadingProcess();
 	}
-}
-if (windowisloaded == 1){
-	ResizeVW();
-	gridFormation();
-	CreatePathLoadingProcess();
 }
 
 </script>
