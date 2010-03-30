@@ -127,7 +127,8 @@ var number=0;
 //var head="Test%20Images/foo."; /*File name operation */
 //var tail = ".jpeg";
 
-var top = 0;   /*the visible window that cropped, its size affects the Zoomoffset function*/
+var haut = 0;  // top is a reserved word in Chrome and Opera, changed from top to haut 
+/*the visible window that cropped, its size affects the Zoomoffset function*/
 var right = 0;
 var bottom = 0;
 var left = 0;
@@ -168,8 +169,8 @@ var boundaryCheckX=vw.imgpnt.x+width-patchSize*Math.pow(2, zoomlevel);
   document.getElementById("VW").style.width=width+"px";
 
 right=left+width;
-bottom=top+height;
-document.getElementById("patchGrid").style.clip="rect(" + top + "px " + right + "px " + bottom + "px " + left + "px)";
+bottom=haut+height;
+document.getElementById("patchGrid").style.clip="rect(" + haut + "px " + right + "px " + bottom + "px " + left + "px)";
 }
 
 
@@ -343,14 +344,14 @@ function CommitMove() {
 
     right = right - dx; 
     left = left - dx;
-    top = top - dy;
+    haut = haut - dy;
     bottom = bottom - dy;
  
     tleft = parseInt(document.getElementById('patchGrid').style.left) + dx;
     document.getElementById('patchGrid').style.left = tleft + 'px';
     ttop = parseInt(document.getElementById('patchGrid').style.top) + dy;
     document.getElementById('patchGrid').style.top = ttop + 'px';
-    document.getElementById('patchGrid').style.clip = "rect(" + top + "px " + right + "px " + bottom + "px " + left + "px)";
+    document.getElementById('patchGrid').style.clip = "rect(" + haut + "px " + right + "px " + bottom + "px " + left + "px)";
     dx = 0;// Attention !!!
     dy = 0;//  Attention !!! It was moved from ondragend() 
 
@@ -442,15 +443,19 @@ if (Y<0)
     dx=-Math.floor((X-vw.imgpnt.x));
     dy=-Math.floor((Y-vw.imgpnt.y));
     
-if (X!=0&&(vw.imgpnt.x-dx+width)>(patchSize*Math.pow(2, zoomlevel)))
-{dx=vw.imgpnt.x+width-patchSize*Math.pow(2,zoomlevel);}
+//if (X!=0&&(vw.imgpnt.x-dx+width)>(patchSize*Math.pow(2, zoomlevel)))
+//{dx=vw.imgpnt.x+width-patchSize*Math.pow(2,zoomlevel);}
+//if (Y!=0&&(vw.imgpnt.y-dy+height)>(patchSize*Math.pow(2, zoomlevel)))
+//{dy=vw.imgpnt.y+height-patchSize*Math.pow(2,zoomlevel);}
 
-if (Y!=0&&(vw.imgpnt.y-dy+height)>(patchSize*Math.pow(2, zoomlevel)))
-{dy=vw.imgpnt.y+height-patchSize*Math.pow(2,zoomlevel);}
+if (X!=0&&(X-dx+width)>(patchSize*Math.pow(2, zoomlevel)))
+{dx=X+width-patchSize*Math.pow(2,zoomlevel);}
+if (Y!=0&&(Y-dy+height)>(patchSize*Math.pow(2, zoomlevel)))
+{dy=Y+height-patchSize*Math.pow(2,zoomlevel);}
 
- if ((vw.imgpnt.x - dx)>=0&&(vw.imgpnt.y - dy)>=0
-    &&(vw.imgpnt.x-dx+width)<=patchSize*Math.pow(2, zoomlevel)&&
-    (vw.imgpnt.y-dy+height)<=patchSize*Math.pow(2, zoomlevel)||(X==0||Y==0))
+ //if ((vw.imgpnt.x - dx)>=0&&(vw.imgpnt.y - dy)>=0
+   // &&(vw.imgpnt.x-dx+width)<=patchSize*Math.pow(2, zoomlevel)&&
+    //(vw.imgpnt.y-dy+height)<=patchSize*Math.pow(2, zoomlevel)||(X==0||Y==0))
     { CommitMove(); }//Panning outside the buffer zone
 
   if((vw.imgpnt.x+width)>patchSize*row||(vw.imgpnt.y+height)>patchSize*col)
@@ -459,18 +464,20 @@ if (Y!=0&&(vw.imgpnt.y-dy+height)>(patchSize*Math.pow(2, zoomlevel)))
 }
 }
 
-function zIndexChanging()
+function zIndexChanging(event)
 {
  zIndex=parseInt(document.getElementById("zIndex").value);
   
-  if (event.wheelDelta > 0 && zIndex< MaxzIndex&& zIndex>= 0)
+  
+  //event.detail  FireFox
+  if ((event.wheelDelta > 0||event.detail<0 )&& zIndex< MaxzIndex&& zIndex>= 0)
  { /* Zoom limit */
 		zIndex= zIndex+ 1;/* ZoomIn, load images */
 		document.getElementById("zIndex").value=zIndex;
 		resetGrid();CreatePathLoadingProcess();
 }
 
-  if (event.wheelDelta < 0 && zIndex<=  MaxzIndex&&zIndex> 0 ) 
+  if ((event.wheelDelta < 0||event.detail>0 )&& zIndex<=  MaxzIndex&&zIndex> 0 ) 
   { /* ZoomOut, clearOut images */
 		zIndex= zIndex- 1;
 		document.getElementById("zIndex").value=zIndex;	
@@ -478,15 +485,25 @@ resetGrid();CreatePathLoadingProcess();}
 
 }
 
+function InitforFireFoxWheel ()
+{
+                 // for mouse scrolling in Firefox
+            var elem = document.getElementById ("patchGrid");
+            if (elem.addEventListener) 
+            {
+                elem.addEventListener ("DOMMouseScroll", zIndexChanging, false);    
+                } 
+}
 </script>
 </head>
 
-<body oncontextmenu=event.returnValue=false onselectstart=event.returnValue=false id="main" style="cursor:   crosshair" onload="ResizeVW();gridFormation();CreatePathLoadingProcess()">
+<body  oncontextmenu=event.returnValue=false onselectstart=event.returnValue=false id="main" style="cursor:   crosshair"
+onload="ResizeVW();gridFormation();CreatePathLoadingProcess();InitforFireFoxWheel ()">
 
 <form method="post">
 	<input id="Width" name="Width" type="text" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" value="400" />
 	<input id="Height" name="Height" type="text"   onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" value="400"/>
-	<input id="Zoomlevel"name="zoomlevel" type="text" onchange="resetGrid();CreatePathLoadingProcess();CenterOffset()"value="2" /><input id="zIndex" name="zIndex" type="text"type="text" onchange="resetGrid();CreatePathLoadingProcess()
+	<input id="Zoomlevel"name="zoomlevel" type="text" onchange="resetGrid();CreatePathLoadingProcess()"value="2" /><input id="zIndex" name="zIndex" type="text"type="text" onchange="resetGrid();CreatePathLoadingProcess()
 "   value="0" /><input name="ZoomIn" type="button" value="ZoomIn" onclick="resetGrid();CreatePathLoadingProcess();CenterOffsetIn()"/><input name="ZoomOut" type="button" value="ZoomOut" onclick="resetGrid();CreatePathLoadingProcess();CenterOffsetOut()"/></form>
 
 <div  id="VW" style="border: thin #FF00FF solid; position: absolute; width: 256px; height: 256px;  left: 20px; top: 70px" >
@@ -494,7 +511,7 @@ resetGrid();CreatePathLoadingProcess();}
 
 <table draggable="true" id="patchGrid"cellpadding="0" cellspacing="0" style="width: 512px; height: 512px; position: absolute; left: 20px; top: 70px; right: 1121px;"        
        onmousedown="omniDrag(this,event)"
-       onmousewheel="zIndexChanging()"
+       onmousewheel="zIndexChanging(event)"
          >
 </table>
 
