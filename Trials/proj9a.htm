@@ -156,6 +156,21 @@ function f_sliderSetValue(n_value, b_noInputCheck){
 			return b_noInputCheck ? null : f_sliderError(this.n_id, "Can not find the input with NAME='" + this.s_name + "'.");
 	}
 	e_input.value = n_value;
+	
+	//document.getElementById(e_input.id).value = e_input.value;
+	//maybe instead of changing the value itself, try changing the attribute directly?
+	//document.getElementById(e_input.id).setAttribute('value', n_value);
+	//document.getElementById("sliderValue3").addEvent('load',function(){ pageisloaded=1; });
+	//ResizeVW();
+	if (document.createEvent){ //ff only
+		if (windowisloaded==1){
+		resetGrid();
+		CreatePathLoadingProcess();
+		ResizeVW();
+		//needed for the zoomlevel, but it breaks when inserted here. need to ask Tom.
+		//CenterOffset();
+		}
+	}
 	//make the update to the input element (the text box) for zoomlevel
 	//alert(e_input.id + "," + n_value);
 
