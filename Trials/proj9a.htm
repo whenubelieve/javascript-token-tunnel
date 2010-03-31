@@ -2,39 +2,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
 <style type="text/css"> 
     #VW {
         border: thin #FF00FF solid;
-        position: absolute;
-        width: 50px;
-        height: 50px;
+        width: 100px;
+        height: 100px;
         z-index: 1;
-        left: 160px;
-        top: 100px;
     }
     #patchGrid {
         border: thin #000000 none;
-        position: absolute;
         z-index: 1;
-        width: 512px;
-        height: 512px;
-        left: 160px;
-        top: 100px;/*doesn't work right now*/
+        width: 100px;
+        height: 100px;
     }
-    #controls dd {
-        color: #6699CC;
-        font-size: 0.9em;
-    }
-    #controls dl {
-        width: 21em;
-    }
-    #controls {
-        font-size: 0.85em;
-    }
-    #site {
-        border-style: none dashed;
-        text-align: left;
-    }
+	.windowframe {
+		position: absolute;
+		left: 160px;
+		top: 50px;
+	}
 	#main {
 		cursor: crosshair;
 	}
@@ -70,7 +56,8 @@ function slider(a_init, a_tpl){
     if (this.n_value == null)
         this.n_value = this.n_minValue;
 
-    // generate the control's HTML
+    //generate the control's HTML
+	//need to change this to static HTML - maybe use css with classes to design the sliders?
     document.write('<div style="width:' +
 	this.n_controlWidth + 'px;height:' +
 	this.n_controlHeight + 'px;border:0; background-image:url(' +
@@ -850,7 +837,7 @@ function InitforFireFoxWheel ()
 </script>
 </head>
 
-<body  oncontextmenu=event.returnValue=false onselectstart=event.returnValue=false id="main" 
+<body id="main" oncontextmenu=event.returnValue=false onselectstart=event.returnValue=false  
 onload="ResizeVW();gridFormation();CreatePathLoadingProcess();InitforFireFoxWheel ()">
 
 <form method="post">
@@ -862,20 +849,17 @@ onload="ResizeVW();gridFormation();CreatePathLoadingProcess();InitforFireFoxWhee
 	<input name="ZoomOut" type="button" value="ZoomOut" onclick="resetGrid();CreatePathLoadingProcess();CenterOffsetOut()"/>
 </form>
 
-<div  id="VW" style="border: thin #FF00FF solid; position: absolute; width: 256px; height: 256px;  left: 20px; top: 70px" >
+<div id="VW" class="windowframe" >
 </div>
 
-<table draggable="true" id="patchGrid"cellpadding="0" cellspacing="0" style="width: 512px; height: 512px; position: absolute; left: 20px; top: 70px; right: 1121px;"        
-       onmousedown="omniDrag(this,event)"
-       onmousewheel="zIndexChanging(event)"
-         >
+<table id="patchGrid" class="windowframe" draggable="true" cellpadding="0" cellspacing="0" style="left: 160px; top: 50px;" onmousedown="omniDrag(this,event)" onmousewheel="zIndexChanging(event)" >
 </table>
 
 <form method="post">
-	<input id="X"name="Text1" type="text" onchange="InputMove()" value="0"/>
-	<input id="Y"name="Text2" type="text"onchange="InputMove()" value="0" />
-	<input id="DiagX"name="Text3" type="text"/>
-	<input id="DiagY"name="Text4" type="text" />
+	<input id="X" name="Text1" type="text" onchange="InputMove()" value="0" />
+	<input id="Y" name="Text2" type="text" onchange="InputMove()" value="0" />
+	<input id="DiagX" name="Text3" type="text"/>
+	<input id="DiagY" name="Text4" type="text" />
 </form>
 </body>
 
