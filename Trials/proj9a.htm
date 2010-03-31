@@ -22,6 +22,7 @@
 		top: 50px;
 	}
 	#main {
+		/*crosshair needs fixing*/
 		cursor: crosshair;
 	}
 </style>
@@ -449,9 +450,7 @@ function ViewPoint( vw, xloc, yloc) {
     this.y = yloc;
 }
 
-
 // Initilizations 
-
 var imgage = new SVImage;
 imgage.xs=0;
 imgage.ys=0;
@@ -527,16 +526,6 @@ function ResizeVW() //change happens to viewing window and grid patches.
 	document.getElementById("patchGrid").style.clip="rect(" + haut + "px " + right + "px " + bottom + "px " + left + "px)";
 }
 
-
-//function resetGrid()
-//{
-//for (i=1; i<=row; i++)
-//{
-//var table = document.getElementById("patchGrid");
-//var tr= document.getElementById("tr1");
-//table.removeChild(tr);
-//}
-//}
 function resetGrid(){
 	for (i=1; i<=20; i++){// A priori number set
 		for (j=1; j<=20; j++){
@@ -545,11 +534,11 @@ function resetGrid(){
 	}
 }
 
- function gridFormation(){
+function gridFormation(){
 	//resetGrid();
 	row=col=20; // Fixed number of grids, but load according to the size of viewing window
-   //row=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
-   //col=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
+ 	//row=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
+   	//col=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
     X=parseInt(document.getElementById("X").value);  //Initial offset
     Y=parseInt(document.getElementById("Y").value);
     dx=-(X-vw.imgpnt.x);
@@ -614,55 +603,54 @@ function PatchLoadingX(){
 
 
 function omniDrag(ele,e) {
-   //alert("done");
-   // event.dataTransfer.effectAllowed = "none"; // do not allow copy
-
-    var event = window.event || e;  //FireFox compatibility
-    CooX0 = event.clientX;
-    CooY0 = event.clientY;
-    vw.xs=width;
-    vw.ys=height;
-    document.onmouseup = function voidDrag(){
+	//alert("done");
+	// event.dataTransfer.effectAllowed = "none"; // do not allow copy
+	
+	var event = window.event || e;  //FireFox compatibility
+	CooX0 = event.clientX;
+	CooY0 = event.clientY;
+	vw.xs=width;
+	vw.ys=height;
+	document.onmouseup = function voidDrag(){
 		this.onmousemove = null;
 	}
 	if(event.preventDefault){
 		event.preventDefault();
 	}
-
-    document.onmousemove = function trial_ondrag(e)
- {
-    var event = window.event || e;
-
-if(document.all && event.button == 0){
+	
+	document.onmousemove = function trial_ondrag(e){
+		var event = window.event || e;
+	
+		if(document.all && event.button == 0){
 			this.onmousemove = null;
 			return false;
 		};
-
-    imageDimension=patchSize*Math.pow(2, zoomlevel);
-    CooX1 = event.clientX;
-    CooY1 = event.clientY;
-
- // document.body.style.cursor="crosshair";
-    dx =(CooX1 - CooX0);
-    dy = (CooY1 - CooY0);
-    CooX0 = CooX1;    /*update frame*/
-    CooY0 = CooY1;
-    
-    if((vw.imgpnt.x - dx)<0)  //Dr.Alberto mentioned that we shall to so
-     {dx=0;}    
-   if((vw.imgpnt.y - dy)<0)
-    {dy=0;}
-   if((vw.imgpnt.x-dx+width)>patchSize*Math.pow(2, zoomlevel))
-    {dx=0;}
-   if((vw.imgpnt.y-dy+height)>patchSize*Math.pow(2, zoomlevel))
-    {dy=0;}
-    CommitMove();
-
-  if((vw.imgpnt.x+width)>patchSize*row||(vw.imgpnt.y+height)>patchSize*col)
-{CreatePathLoadingProcess();}
-return false
-}
-
+	
+	imageDimension=patchSize*Math.pow(2, zoomlevel);
+	CooX1 = event.clientX;
+	CooY1 = event.clientY;
+	
+	// document.body.style.cursor="crosshair";
+	dx =(CooX1 - CooX0);
+	dy = (CooY1 - CooY0);
+	CooX0 = CooX1;    /*update frame*/
+	CooY0 = CooY1;
+	
+	if((vw.imgpnt.x - dx)<0)  //Dr.Alberto mentioned that we shall to so
+	{dx=0;}    
+	if((vw.imgpnt.y - dy)<0)
+	{dy=0;}
+	if((vw.imgpnt.x-dx+width)>patchSize*Math.pow(2, zoomlevel))
+	{dx=0;}
+	if((vw.imgpnt.y-dy+height)>patchSize*Math.pow(2, zoomlevel))
+	{dy=0;}
+	CommitMove();
+	
+	if((vw.imgpnt.x+width)>patchSize*row||(vw.imgpnt.y+height)>patchSize*col){
+		CreatePathLoadingProcess();
+	}
+	return false
+	}
 }
 
 
@@ -721,88 +709,83 @@ function InputMove()
 
 }
 
-
-
 function CenterOffsetIn(imagePoint) //CenterOffset(Zfactor,imagePoint)
 {
-
- //zoomlevel=document.getElementById("Zoomlevel").value;
-  zoomlevel=parseInt(document.getElementById("Zoomlevel").value);
-if (zoomlevel < MaxZoom && zoomlevel >= 0)
-{
- zoomlevel=zoomlevel+1;
- document.getElementById("Zoomlevel").value=zoomlevel;
-
- var centerX = (vw.imgpnt.x+0.5*width);
- var centerY = (vw.imgpnt.y+0.5*height);// center of the viewing window in the zoomed frame
-
-X=2*centerX-0.5*width;  //Zoom from center
-Y=2*centerY-0.5*height;
-//X=Zfactor*imagePoint.x-0.5*width;
-//Y=Zfactor*imagePoint.y-0.5*height;
-
-    dx=-Math.floor((X-vw.imgpnt.x));
-    dy=-Math.floor((Y-vw.imgpnt.y));
-
- if ((vw.imgpnt.x - dx)>=0&&(vw.imgpnt.y - dy)>=0
-    &&(vw.imgpnt.x-dx+width)<=patchSize*Math.pow(2, zoomlevel)&&
-    (vw.imgpnt.y-dy+height)<=patchSize*Math.pow(2, zoomlevel))
-    { CommitMove(); }//Panning outside the buffer zone
-
-  if((vw.imgpnt.x+width)>patchSize*row||(vw.imgpnt.y+height)>patchSize*col)
-{CreatePathLoadingProcess();}
-
-}
+	//zoomlevel=document.getElementById("Zoomlevel").value;
+	zoomlevel=parseInt(document.getElementById("Zoomlevel").value);
+	if (zoomlevel < MaxZoom && zoomlevel >= 0){
+		zoomlevel=zoomlevel+1;
+		document.getElementById("Zoomlevel").value=zoomlevel;
+		
+		var centerX = (vw.imgpnt.x+0.5*width);
+		var centerY = (vw.imgpnt.y+0.5*height);// center of the viewing window in the zoomed frame
+		
+		X=2*centerX-0.5*width;  //Zoom from center
+		Y=2*centerY-0.5*height;
+		//X=Zfactor*imagePoint.x-0.5*width;
+		//Y=Zfactor*imagePoint.y-0.5*height;
+		
+		dx=-Math.floor((X-vw.imgpnt.x));
+		dy=-Math.floor((Y-vw.imgpnt.y));
+		
+		if ((vw.imgpnt.x - dx)>=0&&(vw.imgpnt.y - dy)>=0
+		&&(vw.imgpnt.x-dx+width)<=patchSize*Math.pow(2, zoomlevel)&&
+		(vw.imgpnt.y-dy+height)<=patchSize*Math.pow(2, zoomlevel))
+		{ CommitMove(); }//Panning outside the buffer zone
+		
+		if((vw.imgpnt.x+width)>patchSize*row||(vw.imgpnt.y+height)>patchSize*col)
+		{CreatePathLoadingProcess();}	
+	}
 }
 
 
 function CenterOffsetOut(imagePoint) //CenterOffset(Zfactor,imagePoint)
 {
 
- //zoomlevel=document.getElementById("Zoomlevel").value;
-  zoomlevel=parseInt(document.getElementById("Zoomlevel").value);
-if (zoomlevel <=MaxZoom && zoomlevel > 0)
-{
- zoomlevel=zoomlevel-1;
- document.getElementById("Zoomlevel").value=zoomlevel;
+	//zoomlevel=document.getElementById("Zoomlevel").value;
+	zoomlevel=parseInt(document.getElementById("Zoomlevel").value);
+	if (zoomlevel <=MaxZoom && zoomlevel > 0)
+		{
+		zoomlevel=zoomlevel-1;
+		document.getElementById("Zoomlevel").value=zoomlevel;
+		
+		var centerX = (vw.imgpnt.x+0.5*width);
+		var centerY = (vw.imgpnt.y+0.5*height);// center of the viewing window in the zoomed frame
+		
+		X=0.5*centerX-0.5*width;  //Zoom from center
+		if (X<0)
+		{X=0;}
+		
+		Y=0.5*centerY-0.5*height;
+		if (Y<0)
+		{Y=0;}
+		
+		
+		//X=Zfactor*imagePoint.x-0.5*width;
+		//Y=Zfactor*imagePoint.y-0.5*height;
+		
+		dx=-Math.floor((X-vw.imgpnt.x));
+		dy=-Math.floor((Y-vw.imgpnt.y));
+		
+		//if (X!=0&&(vw.imgpnt.x-dx+width)>(patchSize*Math.pow(2, zoomlevel)))
+		//{dx=vw.imgpnt.x+width-patchSize*Math.pow(2,zoomlevel);}
+		//if (Y!=0&&(vw.imgpnt.y-dy+height)>(patchSize*Math.pow(2, zoomlevel)))
+		//{dy=vw.imgpnt.y+height-patchSize*Math.pow(2,zoomlevel);}
+		
+		if (X!=0&&(X-dx+width)>(patchSize*Math.pow(2, zoomlevel)))
+		{dx=X+width-patchSize*Math.pow(2,zoomlevel);}
+		if (Y!=0&&(Y-dy+height)>(patchSize*Math.pow(2, zoomlevel)))
+		{dy=Y+height-patchSize*Math.pow(2,zoomlevel);}
+		
+		//if ((vw.imgpnt.x - dx)>=0&&(vw.imgpnt.y - dy)>=0
+		// &&(vw.imgpnt.x-dx+width)<=patchSize*Math.pow(2, zoomlevel)&&
+		//(vw.imgpnt.y-dy+height)<=patchSize*Math.pow(2, zoomlevel)||(X==0||Y==0))
+		{ CommitMove(); }//Panning outside the buffer zone
+		
+		if((vw.imgpnt.x+width)>patchSize*row||(vw.imgpnt.y+height)>patchSize*col)
+		{CreatePathLoadingProcess();}
 
- var centerX = (vw.imgpnt.x+0.5*width);
- var centerY = (vw.imgpnt.y+0.5*height);// center of the viewing window in the zoomed frame
-
-X=0.5*centerX-0.5*width;  //Zoom from center
-if (X<0)
-{X=0;}
-
-Y=0.5*centerY-0.5*height;
-if (Y<0)
-{Y=0;}
-
-
-//X=Zfactor*imagePoint.x-0.5*width;
-//Y=Zfactor*imagePoint.y-0.5*height;
-
-    dx=-Math.floor((X-vw.imgpnt.x));
-    dy=-Math.floor((Y-vw.imgpnt.y));
-    
-//if (X!=0&&(vw.imgpnt.x-dx+width)>(patchSize*Math.pow(2, zoomlevel)))
-//{dx=vw.imgpnt.x+width-patchSize*Math.pow(2,zoomlevel);}
-//if (Y!=0&&(vw.imgpnt.y-dy+height)>(patchSize*Math.pow(2, zoomlevel)))
-//{dy=vw.imgpnt.y+height-patchSize*Math.pow(2,zoomlevel);}
-
-if (X!=0&&(X-dx+width)>(patchSize*Math.pow(2, zoomlevel)))
-{dx=X+width-patchSize*Math.pow(2,zoomlevel);}
-if (Y!=0&&(Y-dy+height)>(patchSize*Math.pow(2, zoomlevel)))
-{dy=Y+height-patchSize*Math.pow(2,zoomlevel);}
-
- //if ((vw.imgpnt.x - dx)>=0&&(vw.imgpnt.y - dy)>=0
-   // &&(vw.imgpnt.x-dx+width)<=patchSize*Math.pow(2, zoomlevel)&&
-    //(vw.imgpnt.y-dy+height)<=patchSize*Math.pow(2, zoomlevel)||(X==0||Y==0))
-    { CommitMove(); }//Panning outside the buffer zone
-
-  if((vw.imgpnt.x+width)>patchSize*row||(vw.imgpnt.y+height)>patchSize*col)
-{CreatePathLoadingProcess();}
-
-}
+	}
 }
 
 function zIndexChanging(event){
@@ -858,7 +841,7 @@ onload="ResizeVW();gridFormation();CreatePathLoadingProcess();InitforFireFoxWhee
 <form method="post">
 	<input id="X" name="Text1" type="text" onchange="InputMove()" value="0" />
 	<input id="Y" name="Text2" type="text" onchange="InputMove()" value="0" />
-	<input id="DiagX" name="Text3" type="text"/>
+	<input id="DiagX" name="Text3" type="text" />
 	<input id="DiagY" name="Text4" type="text" />
 </form>
 </body>
