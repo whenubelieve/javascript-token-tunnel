@@ -19,7 +19,7 @@
         width: 512px;
         height: 512px;
         left: 160px;
-        top: 160px;/*doesn't work right now*/
+        top: 100px;/*doesn't work right now*/
     }
     #controls dd {
         color: #6699CC;
@@ -161,7 +161,7 @@ function f_sliderSetValue(n_value, b_noInputCheck){
 	//maybe instead of changing the value itself, try changing the attribute directly?
 	//document.getElementById(e_input.id).setAttribute('value', n_value);
 	//document.getElementById("sliderValue3").addEvent('load',function(){ pageisloaded=1; });
-	//ResizeVW();
+	
 	if (document.createEvent){ //ff only
 		if (windowisloaded==1){
 		resetGrid();
@@ -174,22 +174,6 @@ function f_sliderSetValue(n_value, b_noInputCheck){
 	//make the update to the input element (the text box) for zoomlevel
 	//alert(e_input.id + "," + n_value);
 
-	document.getElementById(e_input.id).value = e_input.value;
-	//maybe instead of changing the value itself, try changing the attribute directly?
-	//document.getElementById(e_input.id).setAttribute('value', n_value);
-	//document.getElementById("sliderValue3").addEvent('load',function(){ pageisloaded=1; });
-	//ResizeVW();
-	if (document.createEvent){
-		if (windowisloaded==1){
-		resetGrid();
-		CreatePathLoadingProcess();
-		ResizeVW();
-		//needed for the zoomlevel, but it breaks when inserted here. need to ask Tom.
-		//CenterOffset();
-		}
-	}
-	
-	
 }
 
 // get absolute position of the element in the document
@@ -834,35 +818,34 @@ if (Y!=0&&(Y-dy+height)>(patchSize*Math.pow(2, zoomlevel)))
 }
 }
 
-function zIndexChanging(event)
-{
- zIndex=parseInt(document.getElementById("zIndex").value);
-  
-  
-  //event.detail  FireFox
-  if ((event.wheelDelta > 0||event.detail<0 )&& zIndex< MaxzIndex&& zIndex>= 0)
- { /* Zoom limit */
+function zIndexChanging(event){
+	zIndex=parseInt(document.getElementById("zIndex").value);
+	
+	
+	//event.detail  FireFox
+	if ((event.wheelDelta > 0||event.detail<0 )&& zIndex< MaxzIndex&& zIndex>= 0)
+	{ /* Zoom limit */
 		zIndex= zIndex+ 1;/* ZoomIn, load images */
 		document.getElementById("zIndex").value=zIndex;
 		resetGrid();CreatePathLoadingProcess();
-}
-
-  if ((event.wheelDelta < 0||event.detail>0 )&& zIndex<=  MaxzIndex&&zIndex> 0 ) 
-  { /* ZoomOut, clearOut images */
+	}
+	
+	if ((event.wheelDelta < 0||event.detail>0 )&& zIndex<=  MaxzIndex&&zIndex> 0 ){ /* ZoomOut, clearOut images */
 		zIndex= zIndex- 1;
 		document.getElementById("zIndex").value=zIndex;	
-resetGrid();CreatePathLoadingProcess();}
+		resetGrid();
+		CreatePathLoadingProcess();
+	}
 
 }
 
 function InitforFireFoxWheel ()
 {
-                 // for mouse scrolling in Firefox
-            var elem = document.getElementById ("patchGrid");
-            if (elem.addEventListener) 
-            {
-                elem.addEventListener ("DOMMouseScroll", zIndexChanging, false);    
-                } 
+	// for mouse scrolling in Firefox
+	var elem = document.getElementById ("patchGrid");
+	if (elem.addEventListener) {
+		elem.addEventListener ("DOMMouseScroll", zIndexChanging, false);    
+	} 
 }
 </script>
 </head>
@@ -871,10 +854,10 @@ function InitforFireFoxWheel ()
 onload="ResizeVW();gridFormation();CreatePathLoadingProcess();InitforFireFoxWheel ()">
 
 <form method="post">
-	<input id="Width" name="Width1" type="text" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" value="400" />
+	<!--<input id="Width" name="Width1" type="text" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" value="400" />
 	<input id="Height" name="Height1" type="text"   onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" value="400"/>
-	<input id="Zoomlevel"name="zoomlevel1" type="text" onchange="resetGrid();CreatePathLoadingProcess()"value="2" />
-	<input id="zIndex" name="zIndex" type="text"type="text" onchange="resetGrid();CreatePathLoadingProcess()"   value="0" />
+	<input id="Zoomlevel"name="zoomlevel1" type="text" onchange="resetGrid();CreatePathLoadingProcess()" value="2" />-->
+	<input id="zIndex" name="zIndex" type="text"type="text" onchange="resetGrid();CreatePathLoadingProcess()" value="0" />
 	<input name="ZoomIn" type="button" value="ZoomIn" onclick="resetGrid();CreatePathLoadingProcess();CenterOffsetIn()"/>
 	<input name="ZoomOut" type="button" value="ZoomOut" onclick="resetGrid();CreatePathLoadingProcess();CenterOffsetOut()"/>
 </form>
