@@ -21,27 +21,45 @@
 		left: 160px;
 		top: 50px;
 	}
-	#main {
+	div.sliderdiv {
+		/*n_controlWidth*/
+		width: 16px;
+		/*n_control*/
+		height: 120px;
+		border: 0pt none;
+		/*this.s_imgControl*/
+		background-image: url('http://www.schillmania.com/projects/fireworks/demo-only/slider-bar.gif');
+	}
+	img.sliderimg {
+		/*doesn't work in ie*/
+		position: relative;
+		/*this.n_pathLeft*/
+		left: 1px;
+		/*this.n_pathTop*/
+		top: 35px;
+		/*this.n_zIndex*/
+		z-index: 1;
+		cursor: pointer;
+		visibility: hidden;	
+	}
+	#patchGrid {
 		/*crosshair needs fixing*/
 		cursor: crosshair;
 	}
 </style>
-<title>Trial</title>
+<title>proj9a</title>
 <script type="text/javascript">
-var windowisloaded = 0;
-window.onload = function(){
-	windowisloaded =1;
-	ResizeVW();
-	gridFormation();
-	CreatePathLoadingProcess();
-}
+
 //calling this function places a slider on the page
 function slider(a_init, a_tpl){
+	//owner is 'window'
     this.f_setValue = f_sliderSetValue;
     this.f_getPos = f_sliderGetPos;
 
     // register in the global collection
+	//create the object A_SLIDERS if it doesn't exist yet
     if (!window.A_SLIDERS)
+		//create new array	
         window.A_SLIDERS = [];
     this.n_id = window.A_SLIDERS.length;
     window.A_SLIDERS[this.n_id] = this;
@@ -59,32 +77,26 @@ function slider(a_init, a_tpl){
 
     //generate the control's HTML
 	//need to change this to static HTML - maybe use css with classes to design the sliders?
-    document.write('<div style="width:' +
-	this.n_controlWidth + 'px;height:' +
-	this.n_controlHeight + 'px;border:0; background-image:url(' +
-	this.s_imgControl + ')" id="sl' +
+	
+    document.write('<div class="sliderdiv" id="sl' +
 	this.n_id + 'base">' +
-    '<img src="' +
+    '<img class"sliderimg" src="' +
     this.s_imgSlider +
     '" width="' +
     this.n_sliderWidth +
     '" height="' +
     this.n_sliderHeight +
-    '" border="0" style="position:relative;left:' +
-    this.n_pathLeft +
-    'px;top:' +
-    this.n_pathTop +
-    'px;z-index:' +
-    this.n_zIndex +
-    ';cursor:pointer;visibility:hidden;" name="sl' +
+    '" border="0" style="position:relative;" name="sl' +
     this.n_id +
     'slider" id="sl' +
     this.n_id +
     'slider" onmousedown="return f_sliderMouseDown(' +
     this.n_id +
     ')"/></div>');
+    
     this.e_base = get_element('sl' + this.n_id + 'base');
     this.e_slider = get_element('sl' + this.n_id + 'slider');
+	
 
     // safely hook document/window events
     if (!window.f_savedMouseMove && document.onmousemove != f_sliderMouseMove) {
@@ -151,13 +163,10 @@ function f_sliderSetValue(n_value, b_noInputCheck){
 	//document.getElementById("sliderValue3").addEvent('load',function(){ pageisloaded=1; });
 	
 	if (document.createEvent){ //ff only
-		if (windowisloaded==1){
-		resetGrid();
-		CreatePathLoadingProcess();
-		ResizeVW();
+		
 		//needed for the zoomlevel, but it breaks when inserted here. need to ask Tom.
 		//CenterOffset();
-		}
+		
 	}
 	//make the update to the input element (the text box) for zoomlevel
 	//alert(e_input.id + "," + n_value);
@@ -292,7 +301,7 @@ get_element = document.all ? function(s_id){
         'n_zIndex': 1
     }
     var A_INIT = {
-        //maybe this refers to the form number?
+        //this refers to the form number
         's_form': 0,
         's_name': 'Zoomlevel',
         'n_minValue': 0,
@@ -307,14 +316,15 @@ get_element = document.all ? function(s_id){
     var A_TPL = {
         'b_vertical': true,
         'b_watch': true,
-        'n_controlWidth': 16,
+		//css
+        'n_controlWidth': 16,		
         'n_controlHeight': 120,
         'n_sliderWidth': 15,
         'n_sliderHeight': 16,
         'n_pathLeft': 1,
         'n_pathTop': 1,
         'n_pathLength': 103,
-        //this is the long slider bar
+        //cssthis is the long slider bar
         's_imgControl': 'http://www.schillmania.com/projects/fireworks/demo-only/slider-bar.gif',
         //this is the slider button
         's_imgSlider': 'http://www.schillmania.com/projects/fireworks/demo-only/slider.png',
@@ -329,9 +339,9 @@ get_element = document.all ? function(s_id){
         'n_value': 400,
         'n_step': 100
     }
-    document.write('<form name="form2">Width<input name="Width" id="Width" type="Text" size="3" onpropertychange="resetGrid();CreatePathLoadingProcess();ResizeVW()" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" />')
-    new slider(A_INIT, A_TPL);
-    document.write('</form>');
+    //document.write('<form name="form2">Width<input name="Width" id="Width" type="Text" size="3" onpropertychange="resetGrid();CreatePathLoadingProcess();ResizeVW()" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" />')
+    //new slider(A_INIT, A_TPL);
+    //document.write('</form>');
     //SLIDER3 - height
     var A_TPL = {
         'b_vertical': true,
@@ -358,9 +368,9 @@ get_element = document.all ? function(s_id){
         'n_value': 400,
         'n_step': 100
     }
-    document.write('<form name="form3">Height<input name="Height" id="Height" type="Text" size="3" onpropertychange="resetGrid();CreatePathLoadingProcess();ResizeVW()" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" />');
-    new slider(A_INIT, A_TPL);
-    document.write('</form>');
+    //document.write('<form name="form3">Height<input name="Height" id="Height" type="Text" size="3" onpropertychange="resetGrid();CreatePathLoadingProcess();ResizeVW()" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" />');
+    //new slider(A_INIT, A_TPL);
+    //document.write('</form>');
 
 
 patchSize=256;
@@ -790,8 +800,7 @@ function CenterOffsetOut(imagePoint) //CenterOffset(Zfactor,imagePoint)
 
 function zIndexChanging(event){
 	zIndex=parseInt(document.getElementById("zIndex").value);
-	
-	
+		
 	//event.detail  FireFox
 	if ((event.wheelDelta > 0||event.detail<0 )&& zIndex< MaxzIndex&& zIndex>= 0)
 	{ /* Zoom limit */
@@ -822,6 +831,17 @@ function InitforFireFoxWheel ()
 
 <body id="main" oncontextmenu=event.returnValue=false onselectstart=event.returnValue=false  
 onload="ResizeVW();gridFormation();CreatePathLoadingProcess();InitforFireFoxWheel ()">
+<!--tried to make the elements static, but it broke the slider functionality
+<form name="form">
+Zoom
+<input name="Zoomlevel" id="Zoomlevel" type="Text" size="3" value="2" onpropertychange="resetGrid();CreatePathLoadingProcess();CenterOffset()" onchange="resetGrid();CreatePathLoadingProcess();CenterOffset()" />
+</form>
+<div id="sl0base" class="sliderdiv" >
+<img width="15" height="16" border="0" onmousedown="return f_sliderMouseDown(0)" id="sl0slider" name="sl0slider" 
+style="position: relative; left: 1px; top: 35px; z-index: 1; cursor: pointer; visibility: visible;" 
+src="http://www.schillmania.com/projects/fireworks/demo-only/slider.png" />
+</div>
+-->
 
 <form method="post">
 	<!--<input id="Width" name="Width1" type="text" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" value="400" />
