@@ -31,7 +31,7 @@
 		background-image: url('http://www.schillmania.com/projects/fireworks/demo-only/slider-bar.gif');
 	}
 	img.sliderimg {
-		/*doesn't work in ie*/
+		/*doesn't work in ie or ff*/
 		position: relative;
 		/*this.n_pathLeft*/
 		left: 1px;
@@ -101,35 +101,50 @@ function slider(a_init, a_tpl){
     document.body.appendChild(foo);
     */
 	
-    /*
+    
     //HTML Creation Phase
+    //create a form
+    ee_form = document.createElement("form");
+    ee_form.name = "form";
+    //create text
+    var txt = document.createTextNode("This text was added to the form.");
+    //create an input
+    ee_input = document.createElement("input");
+    //set input name
+    ee_input.name = "form";
     //create a div
     var e_div = document.createElement("div");
-    //set class
-    e_div.className = "sliderdiv";
-    e_div.id = "sl" + this.n_id + "base";
+    //set class for div
+    ee_div.className = "sliderdiv";
+    //set id for div
+    ee_div.id = "sl" + this.n_id + "base";
     //make img tag
-    var e_img = document.createElement("img");
+    var ee_img = document.createElement("img");
     //set class
-    e_img.className = "sliderimg";
+    ee_img.className = "sliderimg";
     //set src
-    e_img.src = this.s_imgSlider;
+    ee_img.src = this.s_imgSlider;
     //set width
-    e_img.width = this.n_sliderWidth;
+    ee_img.width = this.n_sliderWidth;
     //set height
-    e_img.height = this.n_sliderHeight;
+    ee_img.height = this.n_sliderHeight;
     //set border
-    e_img.border = 0;
+    ee_img.border = 0;
     //set name
-    e_img.name = "s1" + this.n_id + "slider";
+    ee_img.name = "s1" + this.n_id + "slider";
     //set onmousedown
-    e_img.name = "return f_sliderMouseDown(" + this.n_id + ")";
+    ee_img.name = "return f_sliderMouseDown(" + this.n_id + ")";
+    //place input inside div
+    ee_div.appendChild(ee_input);
     //place img inside div
-    e_div.appendChild(e_img);
-    //insert the div into the body of the document
-    document.body.appendChild(e_div);
-    //document.body.insertBefore(e_div);
-    */
+    ee_div.appendChild(ee_img);
+    //insert the input into the form
+    ee_form.appendChild(ee_input);
+    //insert the div into the form
+    ee_form.appendChild(ee_div):
+    //insert the form into the body of the document
+    document.body.appendChild(ee_form);
+    
     
     this.e_base = get_element('sl' + this.n_id + 'base');
     this.e_slider = get_element('sl' + this.n_id + 'slider');
@@ -350,7 +365,7 @@ get_element = document.all ? function(s_id){
         'n_step': 1
     }
     document.write('<form name="form">Zoom<input name="Zoomlevel" id="Zoomlevel" type="Text" size="3" value="2" onpropertychange="resetGrid();CreatePathLoadingProcess();CenterOffset()" onchange="resetGrid();CreatePathLoadingProcess();CenterOffset()"/>');
-    new slider(A_INIT, A_TPL);
+    new slider(A_INIT, A_TPL);  //create the div and img
     document.write('</form>');
     //SLIDER2
     var A_TPL = {
