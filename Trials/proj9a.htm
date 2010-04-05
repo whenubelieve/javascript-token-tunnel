@@ -40,7 +40,8 @@
 		/*this.n_zIndex*/
 		z-index: 1;
 		cursor: pointer;
-		visibility: hidden;	
+		/*visibility: visible;	*/
+        /*background-color:   red;*/
 	}
 	#patchGrid {
 		/*crosshair needs fixing*/
@@ -52,9 +53,6 @@
 
 //calling this function places a slider on the page
 function slider(a_init, a_tpl){
-	//owner is 'window'
-    this.f_setValue = f_sliderSetValue;
-    this.f_getPos = f_sliderGetPos;
 
     // register in the global collection
 	//create the object A_SLIDERS if it doesn't exist yet
@@ -86,7 +84,7 @@ function slider(a_init, a_tpl){
     this.n_sliderWidth +
     '" height="' +
     this.n_sliderHeight +
-    '" border="0" style="position:relative;" name="sl' +
+    '" border="0" style="position: relative;" name="sl' +
     this.n_id +
     'slider" id="sl' +
     this.n_id +
@@ -94,9 +92,51 @@ function slider(a_init, a_tpl){
     this.n_id +
     ')"/></div>');
     
+
+    /*
+    //a little test to see how to add elements to the body
+    var foo = document.createElement('img');
+    foo.src = "http://www.google.com/intl/en_ALL/images/logo.gif";
+    //foo.setAttribute('src', 'http://www.google.com/intl/en_ALL/images/logo.gif');
+    document.body.appendChild(foo);
+    */
+	
+    /*
+    //HTML Creation Phase
+    //create a div
+    var e_div = document.createElement("div");
+    //set class
+    e_div.className = "sliderdiv";
+    e_div.id = "sl" + this.n_id + "base";
+    //make img tag
+    var e_img = document.createElement("img");
+    //set class
+    e_img.className = "sliderimg";
+    //set src
+    e_img.src = this.s_imgSlider;
+    //set width
+    e_img.width = this.n_sliderWidth;
+    //set height
+    e_img.height = this.n_sliderHeight;
+    //set border
+    e_img.border = 0;
+    //set name
+    e_img.name = "s1" + this.n_id + "slider";
+    //set onmousedown
+    e_img.name = "return f_sliderMouseDown(" + this.n_id + ")";
+    //place img inside div
+    e_div.appendChild(e_img);
+    //insert the div into the body of the document
+    document.body.appendChild(e_div);
+    //document.body.insertBefore(e_div);
+    */
+    
     this.e_base = get_element('sl' + this.n_id + 'base');
     this.e_slider = get_element('sl' + this.n_id + 'slider');
-	
+
+	//owner is 'window'
+    this.f_setValue = f_sliderSetValue;
+    this.f_getPos = f_sliderGetPos;
 
     // safely hook document/window events
     if (!window.f_savedMouseMove && document.onmousemove != f_sliderMouseMove) {
@@ -831,17 +871,6 @@ function InitforFireFoxWheel ()
 
 <body id="main" oncontextmenu=event.returnValue=false onselectstart=event.returnValue=false  
 onload="ResizeVW();gridFormation();CreatePathLoadingProcess();InitforFireFoxWheel ()">
-<!--tried to make the elements static, but it broke the slider functionality
-<form name="form">
-Zoom
-<input name="Zoomlevel" id="Zoomlevel" type="Text" size="3" value="2" onpropertychange="resetGrid();CreatePathLoadingProcess();CenterOffset()" onchange="resetGrid();CreatePathLoadingProcess();CenterOffset()" />
-</form>
-<div id="sl0base" class="sliderdiv" >
-<img width="15" height="16" border="0" onmousedown="return f_sliderMouseDown(0)" id="sl0slider" name="sl0slider" 
-style="position: relative; left: 1px; top: 35px; z-index: 1; cursor: pointer; visibility: visible;" 
-src="http://www.schillmania.com/projects/fireworks/demo-only/slider.png" />
-</div>
--->
 
 <form method="post">
 	<!--<input id="Width" name="Width1" type="text" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" value="400" />
@@ -864,6 +893,7 @@ src="http://www.schillmania.com/projects/fireworks/demo-only/slider.png" />
 	<input id="DiagX" name="Text3" type="text" />
 	<input id="DiagY" name="Text4" type="text" />
 </form>
+<!--<img src="http://www.google.com/intl/en_ALL/images/logo.gif"/>-->
 </body>
 
 </html>
