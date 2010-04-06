@@ -17,34 +17,33 @@
         height: 100px;
     }
 	.windowframe {
-		position: absolute;
-		left: 160px;
-		top: 50px;
+		position:           absolute;
+		left:               160px;
+		top:                50px;
 	}
-	div.sliderdiv {
+	div.sliderbar {
 		/*n_controlWidth*/
-		width: 16px;
+		width:              16px;
 		/*n_control*/
-		height: 120px;
-		border: 0pt none;
-		/*this.s_imgControl*/
-		background-image: url('http://www.schillmania.com/projects/fireworks/demo-only/slider-bar.gif');
+		height:             120px;
+		border:             0pt none;
+		/*this.s_imgControl - note: uncomment this for a pretty blue button*/
+		/*background-image: url('http://www.schillmania.com/projects/fireworks/demo-only/slider-bar.gif');*/
+        background-color:   black;
 	}
-	img.sliderimg {
-		/*doesn't work in ie or ff*/
-		position: relative;
+	.sliderbutton {
+		position:           relative;
 		/*this.n_pathLeft*/
-		left: 1px;
+		left:               1px;
 		/*this.n_pathTop*/
-		top: 35px;
+		top:                35px;
 		/*this.n_zIndex*/
-		z-index: 1;
-		cursor: pointer;
+		z-index:            1;
+		cursor:             pointer;
 		/*visibility: visible;	*/
-        /*background-color:   red;*/
+        background-color:   red;
 	}
 	#patchGrid {
-		/*crosshair needs fixing*/
 		cursor: crosshair;
 	}
 </style>
@@ -76,15 +75,15 @@ function slider(a_init, a_tpl){
     //generate the control's HTML
 	//need to change this to static HTML - maybe use css with classes to design the sliders?
 	
-    document.write('<div class="sliderdiv" id="sl' +
+    document.write('<div class="sliderbar" id="sl' +
 	this.n_id + 'base">' +
-    '<img class"sliderimg" src="' +
+    '<img class="sliderbutton" src="' +
     this.s_imgSlider +
     '" width="' +
     this.n_sliderWidth +
     '" height="' +
     this.n_sliderHeight +
-    '" border="0" style="position: relative;" name="sl' +
+    '" border="0" name="sl' +
     this.n_id +
     'slider" id="sl' +
     this.n_id +
@@ -101,24 +100,38 @@ function slider(a_init, a_tpl){
     document.body.appendChild(foo);
     */
 	
-    
+    /*
     //HTML Creation Phase
     //create a form
-    ee_form = document.createElement("form");
+    var ee_form = document.createElement("form");
     ee_form.name = "form";
     //create text
-    var txt = document.createTextNode("This text was added to the form.");
+    var txt = document.createTextNode("dynamic Zoomlevel");
     //create an input
-    ee_input = document.createElement("input");
+    var ee_input = document.createElement("input");
     //set input name
-    ee_input.name = "form";
+    ee_input.name = "Zoomlevel";
+    //set input id
+    ee_input.id = "Zoomlevel";
+    //set input type
+    ee_input.type = "Text"
+    //set size
+    ee_input.size = 3;
+    //set value
+    ee_input.value = 2;
+    //set onpropertychange
+    ee_input.onpropertychange = "resetGrid();CreatePathLoadingProcess();CenterOffset()";
+    //set onchange
+    ee_input.onchange = "resetgrid();createpathloadingprocess();centeroffset()";
     //create a div
-    var e_div = document.createElement("div");
+    var ee_div = document.createElement("div");
+    //alert("value of ee_div is:" + ee_div);
+    //alert(this);
     //set class for div
     ee_div.className = "sliderdiv";
     //set id for div
     ee_div.id = "sl" + this.n_id + "base";
-    //make img tag
+    //create img tag
     var ee_img = document.createElement("img");
     //set class
     ee_img.className = "sliderimg";
@@ -134,20 +147,31 @@ function slider(a_init, a_tpl){
     ee_img.name = "s1" + this.n_id + "slider";
     //set onmousedown
     ee_img.name = "return f_sliderMouseDown(" + this.n_id + ")";
-    //place input inside div
+    //insert input inside div
     ee_div.appendChild(ee_input);
-    //place img inside div
+    //insert img inside div
     ee_div.appendChild(ee_img);
     //insert the input into the form
     ee_form.appendChild(ee_input);
+    //insert textnode into the form
+    ee_form.appendChild(txt);
     //insert the div into the form
-    ee_form.appendChild(ee_div):
+    ee_form.appendChild(ee_div);
     //insert the form into the body of the document
-    document.body.appendChild(ee_form);
+    //problem - this is being run before the page is being loaded
+    //document.body.onload = document.body.appendChild(ee_form);
+    //while (document.body == null){
+            //setTimeout('document.body.appendChild(ee_form)', 10000);
+    //}
+    //this.appendChild(ee_form);
+    ///note - when appendChild fails, it hangs. chances are almost any error stops the script
+    //alert(123);
+    */
     
     
     this.e_base = get_element('sl' + this.n_id + 'base');
     this.e_slider = get_element('sl' + this.n_id + 'slider');
+    //alert(this.e_slider);
 
 	//owner is 'window'
     this.f_setValue = f_sliderSetValue;
@@ -331,8 +355,13 @@ function f_sliderError(n_id, s_message){
     alert("Slider #" + n_id + " Error:\n" + s_message);
     window.n_activeSliderId = null;
 }
+//need to get rid of this document.all - it is deprecated
+//this if statement is true if IE
 get_element = document.all ? function(s_id){
-    return document.all[s_id]
+    //return document.all[s_id]
+    //alert("NULL!!");
+    //return NULL;
+    return document.getElementById(s_id)
 }
  : function(s_id){
     return document.getElementById(s_id)
@@ -364,7 +393,7 @@ get_element = document.all ? function(s_id){
         'n_value': 2,
         'n_step': 1
     }
-    document.write('<form name="form">Zoom<input name="Zoomlevel" id="Zoomlevel" type="Text" size="3" value="2" onpropertychange="resetGrid();CreatePathLoadingProcess();CenterOffset()" onchange="resetGrid();CreatePathLoadingProcess();CenterOffset()"/>');
+    document.write('<form name="form">Zoom<input name="Zoomlevel" id="Zoomlevel" type="Text" size="3" value="2" onpropertychange="resetGrid();CreatePathLoadingProcess();CenterOffset()" onchange="resetgrid();createpathloadingprocess();centeroffset()"/>');
     new slider(A_INIT, A_TPL);  //create the div and img
     document.write('</form>');
     //SLIDER2
@@ -394,9 +423,9 @@ get_element = document.all ? function(s_id){
         'n_value': 400,
         'n_step': 100
     }
-    //document.write('<form name="form2">Width<input name="Width" id="Width" type="Text" size="3" onpropertychange="resetGrid();CreatePathLoadingProcess();ResizeVW()" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" />')
-    //new slider(A_INIT, A_TPL);
-    //document.write('</form>');
+    document.write('<form name="form2">Width<input name="Width" id="Width" type="Text" size="3" onpropertychange="resetGrid();CreatePathLoadingProcess();ResizeVW()" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" />')
+    /new slider(A_INIT, A_TPL);
+    document.write('</form>');
     //SLIDER3 - height
     var A_TPL = {
         'b_vertical': true,
@@ -423,9 +452,9 @@ get_element = document.all ? function(s_id){
         'n_value': 400,
         'n_step': 100
     }
-    //document.write('<form name="form3">Height<input name="Height" id="Height" type="Text" size="3" onpropertychange="resetGrid();CreatePathLoadingProcess();ResizeVW()" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" />');
-    //new slider(A_INIT, A_TPL);
-    //document.write('</form>');
+    document.write('<form name="form3">Height<input name="Height" id="Height" type="Text" size="3" onpropertychange="resetGrid();CreatePathLoadingProcess();ResizeVW()" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" />');
+    new slider(A_INIT, A_TPL);
+    document.write('</form>');
 
 
 patchSize=256;
