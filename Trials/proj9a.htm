@@ -7,7 +7,7 @@
 	#VW {
 		border: 			thin #FF00FF solid;
 		width:				100px;
-		height:				100px;
+		height:				500px;
 		z-index:			1;
 	}
     #patchGrid {
@@ -15,11 +15,13 @@
         z-index:			1;
         width:				100px;
         height:				100px;
-    }
-	.windowframe {
-		position:			absolute;
-		left:				160px;
 		top:				50px;
+		left:				200px;
+    }
+	.windowframe {			/*applies to both #VW and#patchGrid*/
+		position:			absolute;
+		top:				50px;
+		left:				200px;
 	}
 	div.sliderbar {
 		/*n_controlWidth*/
@@ -27,7 +29,7 @@
 		/*n_control*/
 		height:             120px;
 		border:             0pt none;
-		/*this.s_imgControl - note: uncomment this for a pretty blue button*/
+		/*this.s_imgControl - note: uncomment this for a pretty sliderbar*/
 		/*background-image: url('http://www.schillmania.com/projects/fireworks/demo-only/slider-bar.gif');*/
         background-color:   black;
 	}
@@ -40,8 +42,8 @@
 		/*this.n_zIndex*/
 		z-index:            1;
 		cursor:				pointer;
-		/*visibility: visible;	*/
-        background-color:	red;
+		/*visibility: visible;	
+        background-color:	red;*/
 	}
 	#patchGrid {
 		cursor: crosshair;
@@ -261,10 +263,6 @@ function f_sliderSetValue(n_value, b_noInputCheck){
 			txt.dispatchEvent(evt);
 		}
 	}
-	
-	//make the update to the input element (the text box) for zoomlevel
-	//alert(e_input.id + "," + n_value);
-
 }
 
 // get absolute position of the element in the document
@@ -408,7 +406,7 @@ get_element = document.all ? function(s_id){
         'n_value': 2,
         'n_step': 1
     }
-    document.write('<form name="form">Zoom<input name="Zoomlevel" id="Zoomlevel" type="Text" size="3" value="2" onpropertychange="resetGrid();CreatePathLoadingProcess();CenterOffset()" onchange="resetGrid();CreatePathLoadingProcess();CenterOffset()"/>');
+    document.write('<form name="form">Zoom<input name="Zoomlevel" id="Zoomlevel" type="Text" size="3" value="2" onchange="resetGrid();CreatePathLoadingProcess();CenterOffset()"/>');
     new slider(A_INIT, A_TPL);  //create the div and img
     document.write('</form>');
     //SLIDER2
@@ -438,7 +436,7 @@ get_element = document.all ? function(s_id){
         'n_value': 400,
         'n_step': 100
     }
-    document.write('<form name="form2">Width<input name="Width" id="Width" type="Text" size="3" onpropertychange="resetGrid();CreatePathLoadingProcess();ResizeVW()" onchange="CreatePathLoadingProcess();ResizeVW()" />')
+    document.write('<form name="form2">Width<input name="Width" id="Width" type="Text" size="3" onchange="CreatePathLoadingProcess();ResizeVW()" />')
     /new slider(A_INIT, A_TPL);
     document.write('</form>');
     //SLIDER3 - height
@@ -467,7 +465,7 @@ get_element = document.all ? function(s_id){
         'n_value': 400,
         'n_step': 100
     }
-    document.write('<form name="form3">Height<input name="Height" id="Height" type="Text" size="3" onpropertychange="resetGrid();CreatePathLoadingProcess();ResizeVW()" onchange="CreatePathLoadingProcess();ResizeVW()" />');
+    document.write('<form name="form3">Height<input name="Height" id="Height" type="Text" size="3" onchange="CreatePathLoadingProcess();ResizeVW()" />');
     new slider(A_INIT, A_TPL);
     document.write('</form>');
 
@@ -935,15 +933,15 @@ onload="ResizeVW();gridFormation();CreatePathLoadingProcess();InitforFireFoxWhee
 	<!--<input id="Width" name="Width1" type="text" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" value="400" />
 	<input id="Height" name="Height1" type="text"   onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" value="400"/>
 	<input id="Zoomlevel"name="zoomlevel1" type="text" onchange="resetGrid();CreatePathLoadingProcess()" value="2" />-->
-	<input id="zIndex" name="zIndex" type="text"type="text" onchange="resetGrid();CreatePathLoadingProcess()" value="0" />
+	<input id="zIndex" name="zIndex" type="text" onchange="resetGrid();CreatePathLoadingProcess()" value="0" />
 	<input name="ZoomIn" type="button" value="ZoomIn" onclick="resetGrid();CreatePathLoadingProcess();CenterOffsetIn()"/>
 	<input name="ZoomOut" type="button" value="ZoomOut" onclick="resetGrid();CreatePathLoadingProcess();CenterOffsetOut()"/>
 </form>
 
 <div id="VW" class="windowframe" >
 </div>
-
-<table id="patchGrid" class="windowframe" draggable="true" cellpadding="0" cellspacing="0" style="left: 160px; top: 50px;" onmousedown="omniDrag(this,event)" onmousewheel="zIndexChanging(event)" >
+<!--why can't I take out top and left IE?!?!?! WHY?!?!-->
+<table id="patchGrid" class="windowframe" style="top: 50px; left: 200px;" draggable="true" cellpadding="0" cellspacing="0"  onmousedown="omniDrag(this,event)" onmousewheel="zIndexChanging(event)" >
 </table>
 
 <form method="post">
