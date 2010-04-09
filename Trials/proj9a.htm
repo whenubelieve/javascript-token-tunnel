@@ -12,7 +12,7 @@
 	}
     #patchGrid {
         border:				thin #000000 none;
-        z-index:			1;
+        z-index:			0;
         width:				100px;
         height:				100px;
 		top:				50px;
@@ -25,13 +25,13 @@
 	}
 	div.sliderbar {
 		/*n_controlWidth*/
-		width:              16px;
+		width:				16px;
 		/*n_control*/
-		height:             120px;
-		border:             0pt none;
+		height:				120px;
+		border:				0pt none;
 		/*this.s_imgControl - note: uncomment this for a pretty sliderbar*/
 		/*background-image: url('http://www.schillmania.com/projects/fireworks/demo-only/slider-bar.gif');*/
-        background-color:   black;
+        background-color:	black;
 	}
 	.sliderbutton {
 		position:			relative;
@@ -46,7 +46,7 @@
         background-color:	red;*/
 	}
 	#patchGrid {
-		cursor: crosshair;
+		cursor:				crosshair;
 	}
 </style>
 <title>proj9a</title>
@@ -93,7 +93,6 @@ function slider(a_init, a_tpl){
     this.n_id +
     ')"/></div>');
     
-
     /*
     //a little test to see how to add elements to the body
     var foo = document.createElement('img');
@@ -246,7 +245,7 @@ function f_sliderSetValue(n_value, b_noInputCheck){
 	//txt is the input element
 	var txt =  document.getElementById(this.s_name);
 	
-	//On IE
+	//For IE
 	if(txt.fireEvent){
 		txt.fireEvent('onchange');
 	}
@@ -391,15 +390,14 @@ get_element = document.all ? function(s_id){
         'n_pathLeft': 1,
         'n_pathTop': 1,
         'n_pathLength': 103,
-        //this is the long slider bar
+        //css this is the long slider bar
         's_imgControl': 'http://www.schillmania.com/projects/fireworks/demo-only/slider-bar.gif',
         //this is the slider button
         's_imgSlider': 'http://www.schillmania.com/projects/fireworks/demo-only/slider.png',
         'n_zIndex': 1
     }
     var A_INIT = {
-        //this refers to the form number
-        's_form': 0,
+        's_form': 0,				//this refers to the form number
         's_name': 'Zoomlevel',
         'n_minValue': 0,
         'n_maxValue': 3,
@@ -421,7 +419,7 @@ get_element = document.all ? function(s_id){
         'n_pathLeft': 1,
         'n_pathTop': 1,
         'n_pathLength': 103,
-        //cssthis is the long slider bar
+        //this is the long slider bar
         's_imgControl': 'http://www.schillmania.com/projects/fireworks/demo-only/slider-bar.gif',
         //this is the slider button
         's_imgSlider': 'http://www.schillmania.com/projects/fireworks/demo-only/slider.png',
@@ -431,8 +429,8 @@ get_element = document.all ? function(s_id){
         //this refers to the form number. The first form in the document is form number 0, next is 1, etc.
         's_form': 1,
         's_name': 'Width',//change this according to what is in the id 6 lines below
-        'n_minValue': 200,
-        'n_maxValue': 1000,
+        'n_minValue': 100,
+        'n_maxValue': 800,
         'n_value': 400,
         'n_step': 100
     }
@@ -460,8 +458,8 @@ get_element = document.all ? function(s_id){
         //this refers to the form number. The first form in the document is form number 0, next is 1, etc.
         's_form': 2,
         's_name': 'Height',
-        'n_minValue': 200,
-        'n_maxValue': 1000,
+        'n_minValue': 100,
+        'n_maxValue': 800,
         'n_value': 400,
         'n_step': 100
     }
