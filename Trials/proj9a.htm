@@ -4,12 +4,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=8" />
 <style type="text/css"> 
-    #VW {
-        border: 			thin #FF00FF solid;
-        width:				100px;
-        height:				100px;
-        z-index:			1;
-    }
+	#VW {
+		border: 			thin #FF00FF solid;
+		width:				100px;
+		height:				100px;
+		z-index:			1;
+	}
     #patchGrid {
         border:				thin #000000 none;
         z-index:			1;
@@ -241,12 +241,27 @@ function f_sliderSetValue(n_value, b_noInputCheck){
 	//document.getElementById(e_input.id).setAttribute('value', n_value);
 	//document.getElementById("sliderValue3").addEvent('load',function(){ pageisloaded=1; });
 	
-	if (document.createEvent){ //ff only
-		
-		//needed for the zoomlevel, but it breaks when inserted here. need to ask Tom.
-		//CenterOffset();
-		
+	//txt is the input element
+	var txt =  document.getElementById(this.s_name);
+	
+	//On IE
+	if(txt.fireEvent){
+		txt.fireEvent('onchange');
 	}
+	//Gecko based browsers
+	if (document.createEvent){ 
+		//first, create the event
+		var evt = document.createEvent('HTMLEvents');
+		if(evt.initEvent){
+			//call initEvent on the object
+			evt.initEvent('change', true, true);
+		}
+		if(txt.dispatchEvent){
+			//dispatch the event
+			txt.dispatchEvent(evt);
+		}
+	}
+	
 	//make the update to the input element (the text box) for zoomlevel
 	//alert(e_input.id + "," + n_value);
 
@@ -393,7 +408,7 @@ get_element = document.all ? function(s_id){
         'n_value': 2,
         'n_step': 1
     }
-    document.write('<form name="form">Zoom<input name="Zoomlevel" id="Zoomlevel" type="Text" size="3" value="2" onpropertychange="resetGrid();CreatePathLoadingProcess();CenterOffset()" onchange="resetgrid();createpathloadingprocess();centeroffset()"/>');
+    document.write('<form name="form">Zoom<input name="Zoomlevel" id="Zoomlevel" type="Text" size="3" value="2" onpropertychange="resetGrid();CreatePathLoadingProcess();CenterOffset()" onchange="resetGrid();CreatePathLoadingProcess();CenterOffset()"/>');
     new slider(A_INIT, A_TPL);  //create the div and img
     document.write('</form>');
     //SLIDER2
@@ -423,7 +438,7 @@ get_element = document.all ? function(s_id){
         'n_value': 400,
         'n_step': 100
     }
-    document.write('<form name="form2">Width<input name="Width" id="Width" type="Text" size="3" onpropertychange="resetGrid();CreatePathLoadingProcess();ResizeVW()" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" />')
+    document.write('<form name="form2">Width<input name="Width" id="Width" type="Text" size="3" onpropertychange="resetGrid();CreatePathLoadingProcess();ResizeVW()" onchange="CreatePathLoadingProcess();ResizeVW()" />')
     /new slider(A_INIT, A_TPL);
     document.write('</form>');
     //SLIDER3 - height
@@ -452,7 +467,7 @@ get_element = document.all ? function(s_id){
         'n_value': 400,
         'n_step': 100
     }
-    document.write('<form name="form3">Height<input name="Height" id="Height" type="Text" size="3" onpropertychange="resetGrid();CreatePathLoadingProcess();ResizeVW()" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" />');
+    document.write('<form name="form3">Height<input name="Height" id="Height" type="Text" size="3" onpropertychange="resetGrid();CreatePathLoadingProcess();ResizeVW()" onchange="CreatePathLoadingProcess();ResizeVW()" />');
     new slider(A_INIT, A_TPL);
     document.write('</form>');
 
