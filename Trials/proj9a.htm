@@ -16,13 +16,13 @@
         z-index:			1;					/*careful when changing*/
         width:				100px;
         height:				100px;
-		top:				50px;
-		left:				200px;
+		top:				30px;
+		left:				100px;
     }
 	.windowframe {			/*applies to both #VW and#patchGrid*/
 		position:			absolute;
-		top:				50px;
-		left:				200px;
+		top:				20px;
+		left:				80px;
 	}
 	div.sliderbar {
 		width:				16px;				/*n_controlWidth*/
@@ -228,7 +228,11 @@ function f_sliderSetValue(n_value, b_noInputCheck){
 		if (!e_input)
 			return b_noInputCheck ? null : f_sliderError(this.n_id, "Can not find the input with NAME='" + this.s_name + "'.");
 	}
+	e_old = e_input.value;
 	e_input.value = n_value;
+	
+	//maybe try to only update if the new value is different than the old value?
+	
 	
 	//document.getElementById(e_input.id).value = e_input.value;
 	//maybe instead of changing the value itself, try changing the attribute directly?
@@ -236,8 +240,14 @@ function f_sliderSetValue(n_value, b_noInputCheck){
 	//document.getElementById("sliderValue3").addEvent('load',function(){ pageisloaded=1; });
 	
 	//txt is the input element
-	var txt =  document.getElementById(this.s_name);
+	var elementtotrigger =  document.getElementById(this.s_name);
 	
+	if(e_input.value!=e_old)
+		triggerOnChange(elementtotrigger);
+	
+}
+
+function triggerOnChange(txt){
 	//For IE
 	if(txt.fireEvent){
 		txt.fireEvent('onchange');
@@ -397,7 +407,7 @@ get_element = document.all ? function(s_id){
         'n_value': 2,
         'n_step': 1
     }
-    document.write('<form name="form">Zoom<br /><input name="Zoomlevel" id="Zoomlevel" type="Text" size="3" value="2" onchange="resetGrid();CreatePathLoadingProcess();CenterOffset()"/>');
+    document.write('<form name="form">Zoom<br /><input name="Zoomlevel" id="Zoomlevel" type="Text" size="3" value="2" onchange="resetGrid();CreatePathLoadingProcess();"/>');
     new slider(A_INIT, A_TPL);  //create the div and img
     document.write('</form>');
     //SLIDER2
@@ -422,10 +432,10 @@ get_element = document.all ? function(s_id){
         //this refers to the form number. The first form in the document is form number 0, next is 1, etc.
         's_form': 1,
         's_name': 'Width',//change this according to what is in the id 6 lines below
-        'n_minValue': 100,
-        'n_maxValue': 800,
+        'n_minValue': 50,
+        'n_maxValue': 600,
         'n_value': 400,
-        'n_step': 100
+        'n_step': 10
     }
     document.write('<form name="form2">Width<br /><input name="Width" id="Width" type="Text" size="3" onchange="CreatePathLoadingProcess();ResizeVW()" />')
     new slider(A_INIT, A_TPL);
@@ -451,10 +461,10 @@ get_element = document.all ? function(s_id){
         //this refers to the form number. The first form in the document is form number 0, next is 1, etc.
         's_form': 2,
         's_name': 'Height',
-        'n_minValue': 100,
-        'n_maxValue': 800,
+        'n_minValue': 50,
+        'n_maxValue': 600,
         'n_value': 400,
-        'n_step': 100
+        'n_step': 10
     }
     document.write('<form name="form3">Height<br /><input name="Height" id="Height" type="Text" size="3" onchange="CreatePathLoadingProcess();ResizeVW()" />');
     new slider(A_INIT, A_TPL);
@@ -932,7 +942,7 @@ onload="ResizeVW();gridFormation();CreatePathLoadingProcess();InitforFireFoxWhee
 <div id="VW" class="windowframe" >
 </div>
 <!--why can't I take out top and left IE?!?!?! WHY?!?!-->
-<table id="patchGrid" class="windowframe" style="top: 50px; left: 200px;" draggable="true" cellpadding="0" cellspacing="0"  onmousedown="omniDrag(this,event)" onmousewheel="zIndexChanging(event)" >
+<table id="patchGrid" class="windowframe" style="top: 20px; left: 80px;" draggable="true" cellpadding="0" cellspacing="0"  onmousedown="omniDrag(this,event)" onmousewheel="zIndexChanging(event)" >
 </table>
 
 <form method="post">
