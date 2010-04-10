@@ -25,10 +25,8 @@
 		left:				200px;
 	}
 	div.sliderbar {
-		/*n_controlWidth*/
-		width:				16px;
-		/*n_control*/
-		height:				120px;
+		width:				16px;				/*n_controlWidth*/
+		height:				120px;				/*n_control*/
 		border:				0pt none;
 		/*this.s_imgControl - note: uncomment this for a pretty sliderbar*/
 		/*background-image: url('http://www.schillmania.com/projects/fireworks/demo-only/slider-bar.gif');*/
@@ -36,12 +34,9 @@
 	}
 	.sliderbutton {
 		position:			relative;
-		/*this.n_pathLeft*/
-		left:				1px;
-		/*this.n_pathTop*/
-		top:				35px;
-		/*this.n_zIndex*/
-		z-index:            1;
+		left:				1px;				/*this.n_pathLeft*/
+		top:				35px;				/*this.n_pathTop*/
+		z-index:            1;					/*this.n_zIndex*/
 		cursor:				pointer;
 		/*visibility: visible;	
         background-color:	red;*/
@@ -402,7 +397,7 @@ get_element = document.all ? function(s_id){
         'n_value': 2,
         'n_step': 1
     }
-    document.write('<form name="form">Zoom<input name="Zoomlevel" id="Zoomlevel" type="Text" size="3" value="2" onchange="resetGrid();CreatePathLoadingProcess();CenterOffset()"/>');
+    document.write('<form name="form">Zoom<br /><input name="Zoomlevel" id="Zoomlevel" type="Text" size="3" value="2" onchange="resetGrid();CreatePathLoadingProcess();CenterOffset()"/>');
     new slider(A_INIT, A_TPL);  //create the div and img
     document.write('</form>');
     //SLIDER2
@@ -432,8 +427,8 @@ get_element = document.all ? function(s_id){
         'n_value': 400,
         'n_step': 100
     }
-    document.write('<form name="form2">Width<input name="Width" id="Width" type="Text" size="3" onchange="CreatePathLoadingProcess();ResizeVW()" />')
-    /new slider(A_INIT, A_TPL);
+    document.write('<form name="form2">Width<br /><input name="Width" id="Width" type="Text" size="3" onchange="CreatePathLoadingProcess();ResizeVW()" />')
+    new slider(A_INIT, A_TPL);
     document.write('</form>');
     //SLIDER3 - height
     var A_TPL = {
@@ -461,7 +456,7 @@ get_element = document.all ? function(s_id){
         'n_value': 400,
         'n_step': 100
     }
-    document.write('<form name="form3">Height<input name="Height" id="Height" type="Text" size="3" onchange="CreatePathLoadingProcess();ResizeVW()" />');
+    document.write('<form name="form3">Height<br /><input name="Height" id="Height" type="Text" size="3" onchange="CreatePathLoadingProcess();ResizeVW()" />');
     new slider(A_INIT, A_TPL);
     document.write('</form>');
 
