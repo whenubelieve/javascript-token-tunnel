@@ -16,12 +16,12 @@
         z-index:			1;					/*careful when changing*/
         width:				100px;
         height:				100px;
-		top:				30px;
-		left:				100px;
+		/*top:				30px;
+		left:				200px ;*/
     }
 	.windowframe {			/*applies to both #VW and#patchGrid*/
 		position:			absolute;
-		top:				20px;
+		top:				20px;	/*might need inline for patchgrid*/
 		left:				80px;
 	}
 	div.sliderbar {
@@ -382,86 +382,54 @@ get_element = document.all ? function(s_id){
     return document.getElementById(s_id)
 };
 
-    //SLIDER1
-    var A_TPL = {
-        'b_vertical': true,
-        'b_watch': true,
-        'n_controlWidth': 16,
-        'n_controlHeight': 120,
-        'n_sliderWidth': 15,
-        'n_sliderHeight': 16,
-        'n_pathLeft': 1,
-        'n_pathTop': 1,
-        'n_pathLength': 103,
-        //css this is the long slider bar
-        's_imgControl': 'http://www.schillmania.com/projects/fireworks/demo-only/slider-bar.gif',
-        //this is the slider button
-        's_imgSlider': 'http://www.schillmania.com/projects/fireworks/demo-only/slider.png',
-        'n_zIndex': 1
-    }
+	//SLIDER1
+	var A_TPL = {
+		'b_vertical': true,
+		'b_watch': true,
+		//css
+		'n_controlWidth': 16,
+		'n_controlHeight': 120,
+		'n_sliderWidth': 15,
+		'n_sliderHeight': 16,
+		'n_pathLeft': 1,
+		'n_pathTop': 1,
+		'n_pathLength': 103,
+		//css this is the long slider bar
+		's_imgControl': 'http://www.schillmania.com/projects/fireworks/demo-only/slider-bar.gif',
+		//this is the slider button
+		's_imgSlider': 'http://www.schillmania.com/projects/fireworks/demo-only/slider.png',
+		'n_zIndex': 1
+	}
     var A_INIT = {
         's_form': 0,				//this refers to the form number
         's_name': 'Zoomlevel',
         'n_minValue': 0,
-        'n_maxValue': 3,
-        'n_value': 2,
+        'n_maxValue': 4,
+        'n_value': 1,
         'n_step': 1
     }
-    document.write('<form name="form">Zoom<br /><input name="Zoomlevel" id="Zoomlevel" type="Text" size="3" value="2" onchange="resetGrid();CreatePathLoadingProcess();"/>');
+    document.write('<form name="form">Zoom<br /><input name="Zoomlevel" id="Zoomlevel" type="Text" size="3" value="1" onchange="resetGrid();CreatePathLoadingProcess();"/>');
     new slider(A_INIT, A_TPL);  //create the div and img
     document.write('</form>');
     //SLIDER2
-    var A_TPL = {
-        'b_vertical': true,
-        'b_watch': true,
-		//css
-        'n_controlWidth': 16,		
-        'n_controlHeight': 120,
-        'n_sliderWidth': 15,
-        'n_sliderHeight': 16,
-        'n_pathLeft': 1,
-        'n_pathTop': 1,
-        'n_pathLength': 103,
-        //this is the long slider bar
-        's_imgControl': 'http://www.schillmania.com/projects/fireworks/demo-only/slider-bar.gif',
-        //this is the slider button
-        's_imgSlider': 'http://www.schillmania.com/projects/fireworks/demo-only/slider.png',
-        'n_zIndex': 1
-    }
     var A_INIT = {
         //this refers to the form number. The first form in the document is form number 0, next is 1, etc.
         's_form': 1,
         's_name': 'Width',//change this according to what is in the id 6 lines below
-        'n_minValue': 50,
+        'n_minValue': 10,
         'n_maxValue': 600,
         'n_value': 400,
         'n_step': 10
     }
-    document.write('<form name="form2">Width<br /><input name="Width" id="Width" type="Text" size="3" onchange="CreatePathLoadingProcess();ResizeVW()" />')
+    document.write('<form name="form2">Width<br /><input name="Width" id="Width" type="Text" size="3" onchange="CreatePathLoadingProcess();ResizeVW();" />')
     new slider(A_INIT, A_TPL);
     document.write('</form>');
     //SLIDER3 - height
-    var A_TPL = {
-        'b_vertical': true,
-        'b_watch': true,
-        'n_controlWidth': 16,
-        'n_controlHeight': 120,
-        'n_sliderWidth': 15,
-        'n_sliderHeight': 16,
-        'n_pathLeft': 1,
-        'n_pathTop': 1,
-        'n_pathLength': 103,
-        //this is the long slider bar
-        's_imgControl': 'http://www.schillmania.com/projects/fireworks/demo-only/slider-bar.gif',
-        //this is the slider button
-        's_imgSlider': 'http://www.schillmania.com/projects/fireworks/demo-only/slider.png',
-        'n_zIndex': 1
-    }
     var A_INIT = {
         //this refers to the form number. The first form in the document is form number 0, next is 1, etc.
         's_form': 2,
         's_name': 'Height',
-        'n_minValue': 50,
+        'n_minValue': 10,
         'n_maxValue': 600,
         'n_value': 400,
         'n_step': 10
@@ -469,7 +437,20 @@ get_element = document.all ? function(s_id){
     document.write('<form name="form3">Height<br /><input name="Height" id="Height" type="Text" size="3" onchange="CreatePathLoadingProcess();ResizeVW()" />');
     new slider(A_INIT, A_TPL);
     document.write('</form>');
-
+	
+	//SLIDER4 - zIndex
+	var A_INIT = {
+		//this refers to the form number. The first form in the document is form number 0, next is 1, etc.
+		's_form': 3,
+		's_name': 'zIndex',
+		'n_minValue': 0,
+		'n_maxValue': 4,
+		'n_value': 0,
+		'n_step': 1
+	}
+	document.write('<form name="form4">zIndex<br /><input id="zIndex" name="zIndex" type="text" size="3" value="0" onchange="resetGrid();CreatePathLoadingProcess()" />')
+	new slider(A_INIT, A_TPL);
+	document.write('</form>');
 
 patchSize=256;
 zoomlevel=0;
@@ -933,8 +914,8 @@ onload="ResizeVW();gridFormation();CreatePathLoadingProcess();InitforFireFoxWhee
 <form method="post">
 	<!--<input id="Width" name="Width1" type="text" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" value="400" />
 	<input id="Height" name="Height1" type="text"   onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" value="400"/>
-	<input id="Zoomlevel"name="zoomlevel1" type="text" onchange="resetGrid();CreatePathLoadingProcess()" value="2" />-->
-	<input id="zIndex" name="zIndex" type="text" onchange="resetGrid();CreatePathLoadingProcess()" value="0" />
+	<input id="Zoomlevel"name="zoomlevel1" type="text" onchange="resetGrid();CreatePathLoadingProcess()" value="2" />
+	<input id="zIndex" name="zIndex" type="text" value="0" onchange="resetGrid();CreatePathLoadingProcess()" />-->
 	<input name="ZoomIn" type="button" value="ZoomIn" onclick="resetGrid();CreatePathLoadingProcess();CenterOffsetIn()"/>
 	<input name="ZoomOut" type="button" value="ZoomOut" onclick="resetGrid();CreatePathLoadingProcess();CenterOffsetOut()"/>
 </form>
