@@ -24,6 +24,12 @@
 		top:				20px;	/*might need inline for patchgrid*/
 		left:				80px;
 	}
+	#windowresizehandle {
+		position:			relative;
+		border:				dashed #00FF00;
+		width:				100px;
+		height:				100px;
+	}
 	div.sliderbar {
 		width:				16px;				/*n_controlWidth*/
 		height:				100px;				/*n_control*/
@@ -608,6 +614,12 @@ function ResizeVW() //change happens to viewing window and grid patches.
 	right=left+width;
 	bottom=haut+height;
 	document.getElementById("patchGrid").style.clip="rect(" + haut + "px " + right + "px " + bottom + "px " + left + "px)";
+	
+	//update the position of the windowresizehandle
+	//alert(document.getElementById("VW").style.right);
+	document.getElementById("windowresizehandle").style.left = document.getElementById("VW").style.width  + "px";
+	document.getElementById("windowresizehandle").style.top = document.getElementById("VW").style.height + "px";
+
 }
 
 function resetGrid(){
@@ -920,6 +932,8 @@ onload="ResizeVW();gridFormation();CreatePathLoadingProcess();InitforFireFoxWhee
 <!--why can't I take out top and left IE?!?!?! WHY?!?!-->
 <table id="patchGrid" class="windowframe" style="top: 20px; left: 80px;" draggable="true" cellpadding="0" cellspacing="0"  onmousedown="omniDrag(this,event)" onmousewheel="zIndexChanging(event)" >
 </table>
+
+<div id="windowresizehandle" ></div>
 
 <form method="post">
 	<input id="X" name="Text1" type="text" onchange="InputMove()" value="0" />
