@@ -26,7 +26,7 @@
 	}
 	div.sliderbar {
 		width:				16px;				/*n_controlWidth*/
-		height:				120px;				/*n_control*/
+		height:				100px;				/*n_control*/
 		border:				0pt none;
 		/*this.s_imgControl - note: uncomment this for a pretty sliderbar*/
 		/*background-image: url('http://www.schillmania.com/projects/fireworks/demo-only/slider-bar.gif');*/
@@ -159,7 +159,6 @@ function slider(a_init, a_tpl){
     //}
     //this.appendChild(ee_form);
     ///note - when appendChild fails, it hangs. chances are almost any error stops the script
-    //alert(123);
     */
     
     
@@ -187,7 +186,9 @@ function slider(a_init, a_tpl){
 }
 
 //logic is implemented to smooth out the action of the slider
+//the input value update occurs at the end
 function f_sliderSetValue(n_value, b_noInputCheck){
+	//alert("f__sliderSetValue called!");
 	if (n_value == null)
 		n_value = this.n_value == null ? this.n_minValue : this.n_value;
 	if (isNaN(n_value))
@@ -205,7 +206,7 @@ function f_sliderSetValue(n_value, b_noInputCheck){
 		n_value = this.n_maxValue;
 
 	this.n_value = n_value;
-
+	
 	// move the slider
 	if (this.b_vertical)
 		this.e_slider.style.top = (this.n_pathTop + this.n_pathLength - Math.round((n_value - this.n_minValue) * this.n_pix2value)) + 'px';
@@ -228,26 +229,19 @@ function f_sliderSetValue(n_value, b_noInputCheck){
 		if (!e_input)
 			return b_noInputCheck ? null : f_sliderError(this.n_id, "Can not find the input with NAME='" + this.s_name + "'.");
 	}
-	e_old = e_input.value;
-	e_input.value = n_value;
+	e_old = e_input.value;		//assign old value to a holder variable
+	e_input.value = n_value;	//perform the update
 	
-	//maybe try to only update if the new value is different than the old value?
-	
-	
-	//document.getElementById(e_input.id).value = e_input.value;
-	//maybe instead of changing the value itself, try changing the attribute directly?
-	//document.getElementById(e_input.id).setAttribute('value', n_value);
-	//document.getElementById("sliderValue3").addEvent('load',function(){ pageisloaded=1; });
-	
-	//txt is the input element
 	var elementtotrigger =  document.getElementById(this.s_name);
-	
+	//check to see if the value has changed
 	if(e_input.value!=e_old)
 		triggerOnChange(elementtotrigger);
 	
 }
 
-function triggerOnChange(txt){
+
+
+function triggerOnChange(txt){	//txt is the input element
 	//For IE
 	if(txt.fireEvent){
 		txt.fireEvent('onchange');
@@ -361,14 +355,14 @@ function f_scrollTop(){
     return f_filterResults(window.pageYOffset ? window.pageYOffset : 0, document.documentElement ? document.documentElement.scrollTop : 0, document.body ? document.body.scrollTop : 0);
 }
 function f_filterResults(n_win, n_docel, n_body){
-    var n_result = n_win ? n_win : 0;
-    if (n_docel && (!n_result || (n_result > n_docel)))
-        n_result = n_docel;
-    return n_body && (!n_result || (n_result > n_body)) ? n_body : n_result;
+	var n_result = n_win ? n_win : 0;
+	if (n_docel && (!n_result || (n_result > n_docel)))
+		n_result = n_docel;
+	return n_body && (!n_result || (n_result > n_body)) ? n_body : n_result;
 }
 function f_sliderError(n_id, s_message){
-    alert("Slider #" + n_id + " Error:\n" + s_message);
-    window.n_activeSliderId = null;
+	alert("Slider #" + n_id + " Error:\n" + s_message);
+	window.n_activeSliderId = null;
 }
 //need to get rid of this document.all - it is deprecated
 //this if statement is true if IE
@@ -382,24 +376,25 @@ get_element = document.all ? function(s_id){
     return document.getElementById(s_id)
 };
 
-	//SLIDER1
+	//define slider properties - currently all the same, but can be changed.
 	var A_TPL = {
 		'b_vertical': true,
 		'b_watch': true,
 		//css
 		'n_controlWidth': 16,
-		'n_controlHeight': 120,
+		'n_controlHeight': 100,
 		'n_sliderWidth': 15,
 		'n_sliderHeight': 16,
 		'n_pathLeft': 1,
 		'n_pathTop': 1,
-		'n_pathLength': 103,
+		'n_pathLength': 83,		//this needs to be n_controlHeight-17
 		//css this is the long slider bar
 		's_imgControl': 'http://www.schillmania.com/projects/fireworks/demo-only/slider-bar.gif',
 		//this is the slider button
 		's_imgSlider': 'http://www.schillmania.com/projects/fireworks/demo-only/slider.png',
 		'n_zIndex': 1
 	}
+	//SLIDER1
     var A_INIT = {
         's_form': 0,				//this refers to the form number
         's_name': 'Zoomlevel',
@@ -448,7 +443,7 @@ get_element = document.all ? function(s_id){
 		'n_value': 0,
 		'n_step': 1
 	}
-	document.write('<form name="form4">zIndex<br /><input id="zIndex" name="zIndex" type="text" size="3" value="0" onchange="resetGrid();CreatePathLoadingProcess()" />')
+	document.write('<form name="form4">zIndex<br /><input id="zIndex" name="zIndex" type="text" size="3" value="0" onchange="resetGrid();CreatePathLoadingProcess()" onkeydown="if (event.keyCode == 13) {alert(123);f_sliderSetValue(1,false);}"/>')
 	new slider(A_INIT, A_TPL);
 	document.write('</form>');
 
@@ -911,14 +906,14 @@ function InitforFireFoxWheel ()
 <body id="main" oncontextmenu=event.returnValue=false onselectstart=event.returnValue=false  
 onload="ResizeVW();gridFormation();CreatePathLoadingProcess();InitforFireFoxWheel ()">
 
-<form method="post">
-	<!--<input id="Width" name="Width1" type="text" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" value="400" />
+<!--<form method="post">
+	<input id="Width" name="Width1" type="text" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" value="400" />
 	<input id="Height" name="Height1" type="text"   onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" value="400"/>
 	<input id="Zoomlevel"name="zoomlevel1" type="text" onchange="resetGrid();CreatePathLoadingProcess()" value="2" />
-	<input id="zIndex" name="zIndex" type="text" value="0" onchange="resetGrid();CreatePathLoadingProcess()" />-->
+	<input id="zIndex" name="zIndex" type="text" value="0" onchange="resetGrid();CreatePathLoadingProcess()" />
 	<input name="ZoomIn" type="button" value="ZoomIn" onclick="resetGrid();CreatePathLoadingProcess();CenterOffsetIn()"/>
 	<input name="ZoomOut" type="button" value="ZoomOut" onclick="resetGrid();CreatePathLoadingProcess();CenterOffsetOut()"/>
-</form>
+</form>-->
 
 <div id="VW" class="windowframe" >
 </div>
