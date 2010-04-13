@@ -24,11 +24,13 @@
 		top:				20px;	/*might need inline for patchgrid*/
 		left:				80px;
 	}
-	#windowresizehandle {
+	#vwresizer {
 		position:			relative;
 		border:				dashed #00FF00;
 		width:				100px;
 		height:				100px;
+		left:				50px;
+		top:				50px;
 	}
 	div.sliderbar {
 		width:				16px;				/*n_controlWidth*/
@@ -50,7 +52,17 @@
 </style>
 <title>proj9a</title>
 <script type="text/javascript">
+var div_vwresizer = document.createElement('div');
+div_vwresizer.id = 'vwresizer';
 
+//while (document.window == null) {
+	//setTimeout('alert(\'waiting..\')', 10000);
+	//setTimeout('', 100000);
+//}
+//document.body.appendChild(div_vwresizer);
+
+//var holder = document.getElementById("Height");
+//document.body.insertBefore(div_vwresizer);
 //calling this function places a slider on the page
 function slider(a_init, a_tpl){
 
@@ -238,10 +250,11 @@ function f_sliderSetValue(n_value, b_noInputCheck){
 	e_old = e_input.value;		//assign old value to a holder variable
 	e_input.value = n_value;	//perform the update
 	
-	var elementtotrigger =  document.getElementById(this.s_name);
+	var elementtotrigger = document.getElementById(this.s_name);
 	//check to see if the value has changed
-	if(e_input.value!=e_old)
+	if(e_input.value != e_old){
 		triggerOnChange(elementtotrigger);
+	}
 	
 }
 
@@ -422,7 +435,7 @@ get_element = document.all ? function(s_id){
         'n_value': 400,
         'n_step': 10
     }
-    document.write('<form name="form2">Width<br /><input name="Width" id="Width" type="Text" size="3" onchange="CreatePathLoadingProcess();ResizeVW();" />')
+    document.write('<form name="form2">Width<br /><input name="Width" id="Width" type="Text" size="3" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW();" />')
     new slider(A_INIT, A_TPL);
     document.write('</form>');
     //SLIDER3 - height
@@ -453,7 +466,7 @@ get_element = document.all ? function(s_id){
 	new slider(A_INIT, A_TPL);
 	document.write('</form>');
 
-patchSize=256;
+var patchSize = 256;
 zoomlevel=0;
 imageSize= Math.pow(2, zoomlevel)*patchSize;
 var height=0;
@@ -592,12 +605,16 @@ var XGridNumber = 1;
 	
 function ResizeVW() //change happens to viewing window and grid patches.
 { 
-  	height=parseInt(document.getElementById("Height").value);// property of viewing window
+  	if (document.getElementById("Height")){
+		height=parseInt(document.getElementById("Height").value);// property of viewing window
+	}
   	width=parseInt(document.getElementById("Width").value); // fixed, once given
   	zoomlevel=document.getElementById("Zoomlevel").value;
 
-	var boundaryCheckY=vw.imgpnt.y+height-patchSize*Math.pow(2, zoomlevel);
-	var boundaryCheckX=vw.imgpnt.x+width-patchSize*Math.pow(2, zoomlevel);
+	if (vw){
+		var boundaryCheckY=vw.imgpnt.y+height-patchSize*Math.pow(2, zoomlevel);
+		var boundaryCheckX=vw.imgpnt.x+width-patchSize*Math.pow(2, zoomlevel);
+	}
 
  	if(boundaryCheckX>0&&(vw.imgpnt.x-boundaryCheckX>0)) //resize on the edge of boundary
  	{dx=boundaryCheckX; dy=0; CommitMove();}
@@ -605,27 +622,36 @@ function ResizeVW() //change happens to viewing window and grid patches.
 	{dx=0; dy=boundaryCheckY;CommitMove();}
 
 	number = Math.pow(4, zoomlevel);
-	imgage.xs = Math.pow(2, zoomlevel) * patchSize;
-	imgage.ys = Math.pow(2, zoomlevel) * patchSize;
- 
-	document.getElementById("VW").style.height=height+"px";
-	document.getElementById("VW").style.width=width+"px";
+	if (patchSize!=null){
+		imgage.xs = Math.pow(2, zoomlevel) * patchSize;
+		imgage.ys = Math.pow(2, zoomlevel) * patchSize;
+	}
+	
+	//update height and width of VW
+ 	if(document.getElementById("VW")){
+		document.getElementById("VW").style.height = height+'px';
+		document.getElementById("VW").style.width = width+'px';		
+	}
 
 	right=left+width;
 	bottom=haut+height;
-	document.getElementById("patchGrid").style.clip="rect(" + haut + "px " + right + "px " + bottom + "px " + left + "px)";
+	if(document.getElementById("patchGrid"))
+		document.getElementById("patchGrid").style.clip = "rect(" + haut + "px " + right + "px " + bottom + "px " + left + "px)";
 	
-	//update the position of the windowresizehandle
-	//alert(document.getElementById("VW").style.right);
-	document.getElementById("windowresizehandle").style.left = document.getElementById("VW").style.width  + "px";
-	document.getElementById("windowresizehandle").style.top = document.getElementById("VW").style.height + "px";
+	//update the position of the vwresizer devpoint
+	if (document.getElementById('vwresizer')){
+		document.getElementById('vwresizer').style.left = width  + 'px';
+		document.getElementById('vwresizer').style.top = height + 'px';		
+	}
+
 
 }
 
 function resetGrid(){
 	for (i=1; i<=20; i++){// A priori number set
 		for (j=1; j<=20; j++){
-			document.getElementById("img["+i+"]["+j+"]").style.display="none";//hide contents;
+			if (document.getElementById("img["+i+"]["+j+"]"))
+				document.getElementById("img["+i+"]["+j+"]").style.display = "none";//hide contents;
 		}
 	}
 }
@@ -645,18 +671,18 @@ function gridFormation(){
 	zIndex=document.getElementById("zIndex").value;
 	var table = document.getElementById("patchGrid");
 	
-	table.style.height=row*patchSize;
-	table.style.width=col*patchSize;
+	table.style.height= row*patchSize;
+	table.style.width= col*patchSize;
 		
 	for (i = 1; i <= row; i++) {
 		var tr = document.createElement("tr");
-		tr.height =patchSize ;
-		tr.width=col*patchSize;
+		tr.height = patchSize + "px" ;
+		tr.width = col * patchSize + "px";
 		tr.id="tr1";
 		for(j=1;j<=col;j++){
 			dummy=document.createElement("td");
-			dummy.height=patchSize;
-			dummy.width=patchSize;
+			dummy.height = patchSize + "px";
+			dummy.width = patchSize + "px";
 			img=document.createElement("img");
 		    img.id="img["+i+"]["+j+"]";
 		    img.style.display="none";
@@ -690,8 +716,11 @@ function PatchLoadingX(){
 
 	for(I=1;I<=row;I++){
 		for (J=1;J<=col;J++){ // img[i][j], the naming system
-			document.getElementById("img["+I+"]["+J+"]").style.display="";
-			document.getElementById("img["+I+"]["+J+"]").src="http://wonko.via.cornell.edu/bigimgs/test2/bar."+ zoomlevel + "." +( J -1)+ "." + (I-1) + "."+ zIndex+ ".jpeg";
+			if (document.getElementById("img["+I+"]["+J+"]")){
+				document.getElementById("img["+I+"]["+J+"]").style.display="";
+				document.getElementById("img["+I+"]["+J+"]").src="http://wonko.via.cornell.edu/bigimgs/test2/bar."+ zoomlevel + "." +( J -1)+ "." + (I-1) + "."+ zIndex+ ".jpeg";			
+			}
+
 		}
 	}
 	clearInterval;
@@ -912,6 +941,8 @@ function InitforFireFoxWheel ()
 		elem.addEventListener ("DOMMouseScroll", zIndexChanging, false);    
 	} 
 }
+
+
 </script>
 </head>
 
@@ -929,11 +960,11 @@ onload="ResizeVW();gridFormation();CreatePathLoadingProcess();InitforFireFoxWhee
 
 <div id="VW" class="windowframe" >
 </div>
-<!--why can't I take out top and left IE?!?!?! WHY?!?!-->
+<!--why can't I take out top and left in IE?!?!?! WHY?!?!-->
 <table id="patchGrid" class="windowframe" style="top: 20px; left: 80px;" draggable="true" cellpadding="0" cellspacing="0"  onmousedown="omniDrag(this,event)" onmousewheel="zIndexChanging(event)" >
 </table>
 
-<div id="windowresizehandle" ></div>
+<!--<div id="vwresizer" ></div>-->
 
 <form method="post">
 	<input id="X" name="Text1" type="text" onchange="InputMove()" value="0" />
