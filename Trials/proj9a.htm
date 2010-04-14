@@ -52,8 +52,8 @@
 </style>
 <title>proj9a</title>
 <script type="text/javascript">
-var div_vwresizer = document.createElement('div');
-div_vwresizer.id = 'vwresizer';
+//var div_vwresizer = document.createElement('div');
+//div_vwresizer.id = 'vwresizer';
 
 //while (document.window == null) {
 	//setTimeout('alert(\'waiting..\')', 10000);
@@ -435,7 +435,7 @@ get_element = document.all ? function(s_id){
         'n_value': 400,
         'n_step': 10
     }
-    document.write('<form name="form2">Width<br /><input name="Width" id="Width" type="Text" size="3" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW();" />')
+    document.write('<form name="form2">Width<br /><input name="Width" id="Width" type="Text" size="3" onchange="CreatePathLoadingProcess();ResizeVW();" />')
     new slider(A_INIT, A_TPL);
     document.write('</form>');
     //SLIDER3 - height
@@ -661,10 +661,10 @@ function gridFormation(){
 	row=col=20; // Fixed number of grids, but load according to the size of viewing window
  	//row=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
    	//col=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
-    X=parseInt(document.getElementById("X").value);  //Initial offset
-    Y=parseInt(document.getElementById("Y").value);
-    dx=-(X-vw.imgpnt.x);
-    dy=-(Y-vw.imgpnt.y);
+    //X=parseInt(document.getElementById("X").value);	//Initial offset//dbg
+    //Y=parseInt(document.getElementById("Y").value);	//dbg
+    //dx=-(X-vw.imgpnt.x);	//dbg
+    //dy=-(Y-vw.imgpnt.y);	//dbg
     CommitMove();
    
 	zoomlevel=document.getElementById("Zoomlevel").value;
@@ -792,10 +792,10 @@ function CommitMove() {
    	vw.imgpnt.x = vw.imgpnt.x - dx; // Update coordinates of view windox x,y changes with zooming
    	vw.imgpnt.y = vw.imgpnt.y - dy;     //panning within the buffer zone
                     
-    document.getElementById("X").value=vw.imgpnt.x;  //Display for the sake of debug
-    document.getElementById("Y").value=vw.imgpnt.y;
-    document.getElementById("DiagX").value=vw.imgpnt.x+width;
-    document.getElementById("DiagY").value=vw.imgpnt.y+height;
+    //document.getElementById("X").value=vw.imgpnt.x;  //Display for the sake of debug
+    //document.getElementById("Y").value=vw.imgpnt.y;
+    //document.getElementById("DiagX").value=vw.imgpnt.x+width;
+    //document.getElementById("DiagY").value=vw.imgpnt.y+height;
 
     right = right - dx; 
     left = left - dx;
@@ -965,14 +965,14 @@ onload="ResizeVW();gridFormation();CreatePathLoadingProcess();InitforFireFoxWhee
 </table>
 
 <!--<div id="vwresizer" ></div>-->
-
+<!--
 <form method="post">
 	<input id="X" name="Text1" type="text" onchange="InputMove()" value="0" />
 	<input id="Y" name="Text2" type="text" onchange="InputMove()" value="0" />
 	<input id="DiagX" name="Text3" type="text" />
 	<input id="DiagY" name="Text4" type="text" />
-</form>
-<!--<img src="http://www.google.com/intl/en_ALL/images/logo.gif"/>-->
+</form>-->
+
 </body>
 
 </html>
