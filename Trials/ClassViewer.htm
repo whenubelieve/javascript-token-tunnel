@@ -1,0 +1,444 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Image Viewer </title>
+<script type="text/javascript" >
+
+ function ImageViewer(MetaX, MetaY,instanceID)
+{
+
+var imgpsz = { x: 256, y: 256};
+// Image Prototype
+// objects created by:
+// var img = new SVImage( <url>, <xs>, <ys>, <zs>);
+
+function SVImage( url, xs, ys, zs) {
+    this.url = url;
+    this.xs = xs;
+    this.ys = ys;
+    this.zs = zs;
+}
+
+SVImage.prototype.getUrl = function () {
+    return this.url;
+}
+
+SVImage.prototype.getXs = function () {
+    return this.xs;
+}
+SVImage.prototype.getYs = function () {
+    return this.ys;
+}
+SVImage.prototype.getZs = function () {
+    return this.zs;
+}
+
+
+// Image Point Prototype
+// objects created by:
+//     var imgpt = new SVImagePoint( <image>, <x>, <y>, <z>);
+
+function SVImagePoint( img, xloc, yloc, zloc) {
+    this.image = img;
+    this.x = xloc;
+    this.y = yloc;
+    this.z = zloc;
+}
+
+// Viewing Window Prototype
+// objects created by:
+//     var imgpt = new Vieww( <image-point>, <xs>, <ys>, <zs>);
+
+function Vieww( imgpnt, xs, ys, zs) {
+    this.imgpnt = imgpnt;
+    this.xs = xs;
+    this.ys = ys;
+    this.zs = zs;
+}
+
+// Image Patch Prototype
+// objects created by:
+//     var ptch = new SVImagePatch( <image>, <x>, <y>, <z>, <zoom>);
+
+function SVImagePatch( img, xind, yind, zind, zoom) {
+    this.image = img;
+    this.xind = xind;
+    this.yind = yind;
+    this.zind = zind;
+    this.zm = zoom;
+}
+
+// Image Patch Point Prototype
+// objects created by:
+//     var ptch = new PatchPoint( <patch>, <x>, <y>);
+
+function PatchPoint( patch, xloc, yloc) {
+    this.patch = patch;
+    this.x = xloc;
+    this.y = yloc;
+}
+
+
+// Viewing Window Point Prototype
+// objects created by:
+//     var imgpt = new ViewPoint( <view-wnd>, <x>, <y>);
+
+function ViewPoint( vw, xloc, yloc) {
+    this.vw = vw;
+    this.x = xloc;
+    this.y = yloc;
+}
+
+
+// Initilizations 
+
+var image = new SVImage;
+image.xs=0;
+image.ys=0;
+var imagePoint = new SVImagePoint;
+
+var vwcorner=new SVImagePoint;
+var vw = new Vieww;
+vw.imgpnt=vwcorner;
+vw.imgpnt.x = 0;
+vw.imgpnt.y = 0;
+vw.xs=0;
+vw.ys=0;
+
+var patchPoint = new PatchPoint;
+
+var vwPoint0 = new ViewPoint;
+var vwPoint1 = new ViewPoint;
+
+var patch = new SVImagePatch;
+patch.xind = 1;
+patch.yind = 1;
+
+var patchSize=256;
+imageSize= Math.pow(2, zoomlevel)*patchSize;
+var height=0;
+var width=0;
+
+var zIndex=0;
+var zoomlevel = 4;
+var MaxZoom = 4; /*  0,1,2,3,4*/
+var MaxzIndex=4;
+var row=0;
+var col=0;
+var number=0;
+//var head="Test%20Images/foo."; /*File name operation */
+//var tail = ".jpeg";
+
+var haut = 0;  // top is a reserved word in Chrome and Opera, changed from top to haut 
+/*the visible window that cropped, its size affects the Zoomoffset function*/
+var right = 0;
+var bottom = 0;
+var left = 0;
+
+var dx = 0;
+var dy = 0;
+var MaxZoom=4;
+var YGridNumber = 1; 
+var XGridNumber = 1;
+
+
+
+
+
+
+
+
+
+// internal variables
+this.VW=document.createElement('div');  // eliminating global variables
+this.VW.id="VW";
+
+// style parameters
+this.VW.style.position='absolute';
+this.VW.style.width=400+'px';
+this.VW.style.height=400+'px';
+this.VW.style.left=MetaX+'px';
+this.VW.style.top=MetaY+'px';
+this.VW.style.border='thin #FF00FF solid';
+document.body.appendChild(this.VW);
+
+this.patchGrid = document.createElement("table");
+this.patchGrid.id="patchGrid"
+
+this.patchGrid.image=image;
+this.patchGrid.instanceID=instanceID;  // Dr.Alberto suggested this quick & dirty trick
+this.patchGrid.vw=vw;
+this.patchGrid.patch=patch;
+this.patchGrid.zIndex=zIndex;
+this.patchGrid.zoomlevel=zoomlevel;
+this.patchGrid.MaxZoom=MaxZoom;
+this.patchGrid.MaxzIndex=MaxzIndex;
+this.patchGrid.row=row;
+this.patchGrid.col=col;
+this.patchGrid.number=number;
+this.patchGrid.haut=haut;
+this.patchGrid.right=right
+this.patchGrid.bottom=bottom;
+this.patchGrid.left=left;
+this.patchGrid.dx=dx;
+this.patchGrid.dy=dy;
+this.patchGrid.patchSize=patchSize
+this.patchGrid.style.left=MetaX+'px';
+this.patchGrid.style.top=MetaY+'px';
+this.patchGrid.style.overflow='hidden';
+this.patchGrid.style.position='absolute';
+//this.patchGrid.style.border='thin #FF00FF solid';
+this.patchGrid.cellPadding=0;  // THIS IS SHIT !!!! cell"P"adding in JS, cellpadding in HTML
+this.patchGrid.cellSpacing=0;
+document.body.appendChild(this.patchGrid);
+
+this.patchGrid.row=20
+this.patchGrid.col=20; // Fixed number of grids, but load according to the size of viewing window
+
+this.patchGrid.style.height=row*patchSize;
+this.patchGrid.style.width=col*patchSize;
+
+// Layout initilization 
+
+this.ResizeVW()
+this.gridFormation()
+
+this.CreatePatchLoadingProcess();
+//this.PatchLoadingX();
+
+// action initilization
+this.patchGrid.onmousedown=ImageViewer.prototype.omniDrag;	
+this.patchGrid.CommitMove=ImageViewer.prototype.CommitMove;
+}
+
+
+ImageViewer.prototype.omniDrag = function omniDrag()
+{
+	ele = this;
+	
+	
+	// event.dataTransfer.effectAllowed = "none"; // do not allow copy
+	// var event = window.event || arguments.callee.caller.arguments[0]; 
+	this.event = window.event || arguments[0]; // FireFox  compatibility
+	// or attach event fucntion like this onmousedown=function blah(this event)
+	// anyhow FireFox needs a event parameter passed, unlike in IE event is a global parameter  
+	CooX0 = this.event.clientX;
+	CooY0 = this.event.clientY;
+	
+	document.onmouseup = function voidDrag()
+	{
+		this.onmousemove = null;
+	}
+	
+	if (this.event.preventDefault) 
+	{
+		this.event.preventDefault();
+	}
+	
+	document.onmousemove = function trial_ondrag(e)
+{
+		this.event = window.event || e;
+		
+		if (document.all && this.event.button == 0) 
+		{
+			this.onmousemove = null;
+			return false;
+		};
+		
+		CooX1 = this.event.clientX;
+		CooY1 = this.event.clientY;
+		
+		// document.body.style.cursor="crosshair";
+		ele.dx = (CooX1 - CooX0); //Instead of ele.patchGrid.dx
+		ele.dy = (CooY1 - CooY0);
+		CooX0 = CooX1; /*update frame*/
+		CooY0 = CooY1;
+		
+		if ((ele.vw.imgpnt.x - ele.dx) < 0) //Dr.Alberto mentioned that we shall to do so
+		{
+			ele.dx = 0;
+		}
+		if ((ele.vw.imgpnt.y - ele.dy) < 0) {
+			ele.dy = 0;
+		}
+		if ((ele.vw.imgpnt.x - ele.dx + ele.width) > ele.patchSize * Math.pow(2, ele.zoomlevel)) {
+			ele.dx = 0;
+		}
+		if ((ele.vw.imgpnt.y - ele.dy + ele.height) > ele.patchSize * Math.pow(2, ele.zoomlevel)) {
+			ele.dy = 0;
+		}
+		ele.CommitMove();
+		
+		if ((ele.vw.imgpnt.x + ele.width) > ele.patchSize * row || (ele.vw.imgpnt.y + ele.height) > ele.patchSize * ele.col) {
+			CreatePathLoadingProcess();
+		}
+		return false
+	}
+
+
+}
+
+ImageViewer.prototype.CommitMove=function CommitMove()
+{
+   this.vw.imgpnt.x = this.vw.imgpnt.x - this.dx; // Update coordinates of view windox x,y changes with zooming
+   this.vw.imgpnt.y = this.vw.imgpnt.y - this.dy;     //panning within the buffer zone
+                    
+    //document.getElementById("inputX").value=vw.imgpnt.x;  //Display for the sake of debug
+    //document.getElementById("inputY").value=vw.imgpnt.y;
+   // document.getElementById("DiagX").value=vw.imgpnt.x+width;
+   // document.getElementById("DiagY").value=vw.imgpnt.y+height;
+
+    this.right = this.right - this.dx; 
+    this.left = this.left - this.dx;
+    this.haut = this.haut - this.dy;
+    this.bottom = this.bottom - this.dy;
+ 
+    MetaX = parseInt(this.style.left) + this.dx;
+    this.style.left = MetaX + 'px';
+    MetaY = parseInt(this.style.top) + this.dy;
+	
+    this.style.top = MetaY + 'px';
+    this.style.clip = "rect(" + this.haut + "px " + this.right + "px " + this.bottom + "px " + this.left + "px)";
+
+	this.dx = 0;// Attention !!!
+    this.dy = 0;//  Attention !!! It was moved from ondragend() 
+
+}
+
+
+
+ImageViewer.prototype.ResizeVW=function ResizeVW() //change happens to viewing window and grid patches.
+{ 
+  //height=parseInt(document.getElementById("Height").value);// property of viewing window
+ // width=parseInt(document.getElementById("Width").value); // fixed, once given
+ // zoomlevel=document.getElementById("Zoomlevel").value;
+
+var boundaryCheckY=this.patchGrid.vw.imgpnt.y+parseInt(this.patchGrid.style.height)-this.patchGrid.patchSize*Math.pow(2, this.patchGrid.zoomlevel);
+var boundaryCheckX=this.patchGrid.vw.imgpnt.x+parseInt(this.patchGrid.style.width)-this.patchGrid.patchSize*Math.pow(2, this.patchGrid.zoomlevel);
+
+
+
+ if(boundaryCheckX>0&&(this.patchGrid.vw.imgpnt.x-boundaryCheckX>0)) //resize on the edge of boundary
+ {this.patchGrid.dx=boundaryCheckX; this.patchGrid.dy=0; CommitMove();}
+  if( boundaryCheckY>0&&(this.patchGrid.vw.imgpnt.y-boundaryCheckY>0)) 
+ {this.patchGrid.dx=0; this.patchGrid.dy=boundaryCheckY;CommitMove();}
+
+ 
+     this.patchGrid.number = Math.pow(4, this.patchGrid.zoomlevel);
+     this.patchGrid.image.xs = Math.pow(2, this.patchGrid.zoomlevel) * this.patchGrid.patchSize;
+     this.patchGrid.image.ys = Math.pow(2, this.patchGrid.zoomlevel) * this.patchGrid.patchSize;
+
+this.patchGrid.right=this.patchGrid.left+parseInt(this.VW.style.width);
+this.patchGrid.bottom=this.patchGrid.haut+parseInt(this.VW.style.height);
+this.patchGrid.style.clip="rect(" + this.patchGrid.haut + "px " + this.patchGrid.right + "px " + this.patchGrid.bottom + "px " + this.patchGrid.left + "px)";
+
+}
+
+ImageViewer.prototype.gridFormation=function gridFormation()
+
+{
+   row=col=20; // Fixed number of grids, but load according to the size of viewing window
+   //row=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
+   //col=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
+    //X=parseInt(document.getElementById("inputX").value);  //Initial offset
+    //Y=parseInt(document.getElementById("inputY").value);
+    //dx=-(X-vw.imgpnt.x);
+    //dy=-(Y-vw.imgpnt.y);
+    //this.CommitMove();
+   //zoomlevel=document.getElementById("Zoomlevel").value;
+   //zIndex=document.getElementById("zIndex").value;
+	
+	 this.patchGrid.style.height=row*this.patchGrid.patchSize+'px';
+     this.patchGrid.style.width=col*this.patchGrid.patchSize+'px';
+		
+	for (i = 1; i <= row; i++) {
+		var tr = document.createElement("tr");
+		tr.height =this.patchGrid.patchSize ;
+		tr.width=col*this.patchGrid.patchSize;
+		tr.id="tr1";
+			this.patchGrid.appendChild(tr);
+		for(j=1;j<=col;j++){
+		
+				dummy=document.createElement("td");
+				dummy.height=this.patchGrid.patchSize;
+				dummy.width=this.patchGrid.patchSize;
+				img=document.createElement("img");
+			      img.id=+this.patchGrid.instanceID+"img["+i+"]["+j+"]"; //instanceID
+			      img.style.display="none";
+			      img.unselectable="on";  
+			     // img.style.draggable="true" 
+                     dummy.appendChild(img);
+				tr.appendChild(dummy);		
+		}
+	
+	}
+}
+
+
+ImageViewer.prototype.CreatePatchLoadingProcess=function ()
+{
+//setInterval("PatchLoadingX()",90);
+setTimeout(PatchLoadingX(this),90);
+
+}
+
+
+function PatchLoadingX(self)
+{
+  col=Math.ceil((self.patchGrid.vw.imgpnt.x-self.patchGrid.dx+parseInt(self.patchGrid.style.width))/self.patchGrid.patchSize)+1;
+  row=Math.ceil((self.patchGrid.vw.imgpnt.y-self.patchGrid.dy+parseInt(self.patchGrid.style.height))/self.patchGrid.patchSize)+1;
+  //zoomlevel=document.getElementById("Zoomlevel").value;
+   //zIndex=document.getElementById("zIndex").value;
+
+if (row>Math.pow(2, self.patchGrid.zoomlevel))
+{row=Math.pow(2, self.patchGrid.zoomlevel);}
+if (col>Math.pow(2, self.patchGrid.zoomlevel))
+{col=Math.pow(2, self.patchGrid.zoomlevel);}
+
+
+for(I=1;I<=row;I++)
+{
+ for (J=1;J<=col;J++) // img[i][j], the naming system
+ {document.getElementById(+self.patchGrid.instanceID+"img["+I+"]["+J+"]").style.display="";
+ document.getElementById(+self.patchGrid.instanceID+"img["+I+"]["+J+"]").src="http://wonko.via.cornell.edu/bigimgs/test2/bar."+ self.patchGrid.zoomlevel + "." +(J-1)+ "." + (I-1) + "."+ self.patchGrid.zIndex+ ".jpeg";
+ }
+ }
+//clearInterval;
+}
+
+//Attention this expression!!
+
+
+
+
+
+function trial()
+{
+a=new ImageViewer(50,50,1);
+//a.patchGrid.zoomlevel=0;
+//a.patchGrid.zIndex=2;
+b=new ImageViewer(600,50,2);
+//var b=30;
+}
+function trial2()
+{
+delete a;
+delete b;
+c=new ImageViewer(50,500,3);
+d=new ImageViewer(600,500,4);
+//var b=30;
+}
+
+</script>
+</head>
+
+<body>
+
+<form method="post">
+				<input name="Button2" type="button" onclick="trial()"value="Two" /><input name="Button1" type="button" value="Four" onclick="trial2()" /></form>
+
+</body>
+
+</html>
