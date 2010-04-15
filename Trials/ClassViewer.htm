@@ -163,14 +163,15 @@ var XGridNumber = 1;
 this.patchGrid = document.createElement("table");
 this.patchGrid.VW=document.createElement('div');
 this.patchGrid.VW.style.position='absolute';
-this.patchGrid.VW.style.width=400+'px';
-this.patchGrid.VW.style.height=400+'px';
+this.patchGrid.VW.style.width=401+'px';
+this.patchGrid.VW.style.height=401+'px';
 this.patchGrid.VW.style.left=MetaX+'px';
 this.patchGrid.VW.style.top=MetaY+'px';
 this.patchGrid.VW.style.border='thin #FF00FF solid';
+//this.patchGrid.VW.style.cursor="crosshair";
 this.patchGrid.VW.id=+ instanceID + "VW";
 document.body.appendChild(this.patchGrid.VW);
-
+document.body.style.cursor="crosshair"
 
 
 
@@ -212,18 +213,71 @@ this.patchGrid.style.width=col*patchSize;
 // action initilization
 this.patchGrid.onmousedown=ImageViewer.prototype.omniDrag;	
 this.patchGrid.CommitMove=ImageViewer.prototype.CommitMove;
-this.patchGrid.CreatePatchLoadingProcess=ImageViewer.prototype.CreatePatchLoadingProcess;
-this.patchGrid.Leakage=ImageViewer.prototype.Leakage;
+this.patchGrid.PanOutsideLoading=ImageViewer.prototype.PanOutsideLoading;
+this.patchGrid.onmousewheel=ImageViewer.prototype.zIndexChanging;
+this.patchGrid.resetGrid=ImageViewer.prototype.resetGrid;
+this.patchGrid.gridFormation=ImageViewer.prototype.gridFormation;
+this.patchGrid.InitforFireFoxWheel=ImageViewer.prototype.InitforFireFoxWheel;
 
 
-// Layout initilization 
+
+// Layout,and FireFox wheel initilization 
 this.ResizeVW();
 this.gridFormation();
-this.patchGrid.Leakage();
-this.CreatePatchLoadingProcess();
+this.patchGrid.PanOutsideLoading();
+this.InitforFireFoxWheel();
+}
+
+ImageViewer.prototype.InitforFireFoxWheel =function InitforFireFoxWheel ()
+{
+                 // for mouse scrolling in Firefox
+            var elem = this.patchGrid;
+            if (elem.addEventListener) 
+            {
+                elem.addEventListener ("DOMMouseScroll", this.zIndexChanging, false);    
+                } 
+}
+
+
+ImageViewer.prototype.zIndexChanging=function zIndexChanging()
+{
+ var event = window.event || arguments[0]; // FireFox event parameter passing solution
+ 
+ //zIndex=parseInt(document.getElementById("zIndex").value);
+
+  //event.detail  FireFox
+  if ((event.wheelDelta > 0||event.detail<0 )&& this.zIndex< this.MaxzIndex&& this.zIndex>= 0)
+ { /* Zoom limit */
+		this.zIndex= this.zIndex+ 1;/* ZoomIn, load images */
+		//document.getElementById("zIndex").value=zIndex;
+		
+		GinstanceID=this.instanceID;
+		GzIndex=this.zIndex;
+		this.resetGrid();
+		CreatePatchLoadingProcess();
+}
+
+  if ((event.wheelDelta < 0||event.detail>0 )&& this.zIndex<=  this.MaxzIndex&&this.zIndex> 0 ) 
+  { /* ZoomOut, clearOut images */
+		this.zIndex= this.zIndex- 1;
+		//document.getElementById("zIndex").value=zIndex;	
+        GinstanceID=this.instanceID;
+		GzIndex=this.zIndex;
+		this.resetGrid();
+        CreatePatchLoadingProcess();}
 
 }
 
+ImageViewer.prototype.resetGrid=function resetGrid()
+{
+for (i=1; i<=20; i++)// A priori number set
+{for (j=1; j<=20; j++)
+{
+document.getElementById(+this.instanceID+"img["+i+"]["+j+"]").style.display="none";//hide contents;
+}
+}
+
+}
 
 ImageViewer.prototype.omniDrag = function omniDrag()
 {
@@ -283,8 +337,8 @@ ImageViewer.prototype.omniDrag = function omniDrag()
 		ele.CommitMove();
 		
 		if ((ele.vw.imgpnt.x + parseInt(ele.VW.style.width)) > ele.patchSize * ele.row || (ele.vw.imgpnt.y + parseInt(ele.VW.style.height)) > ele.patchSize * ele.col) {
-		ele.Leakage();
-		ele.CreatePatchLoadingProcess();
+		ele.PanOutsideLoading();
+		
 		}
 		return false
 	}
@@ -395,7 +449,8 @@ var GlobalRow=0;
 var GlobalCol=0;
 var Gzoomlevel=0;
 var GzIndex=0;
-ImageViewer.prototype.Leakage = function Leakage()
+
+ImageViewer.prototype.PanOutsideLoading = function PanOutsideLoading()
 
 { 
         this.col = Math.ceil((this.vw.imgpnt.x - this.dx + parseInt(this.VW.style.width)) / this.patchSize) + 1;
@@ -415,18 +470,16 @@ ImageViewer.prototype.Leakage = function Leakage()
 		GinstanceID=this.instanceID;
 		Gzoomlevel=this.zoomlevel;
 		GzIndex=this.zIndex;
+		CreatePatchLoadingProcess();
 }
  
-ImageViewer.prototype.CreatePatchLoadingProcess = function CreatePatchLoadingProcess()
+function CreatePatchLoadingProcess()
 
 { 
 	//setInterval("PatchLoadingX()",90);
 	PatchLoadingX();
 	setTimeout("PatchLoadingX()", 90);
 }
- 
-
-
 
 function PatchLoadingX()// cannot use word "this"
 {
@@ -448,24 +501,37 @@ function PatchLoadingX()// cannot use word "this"
 
 
 
-
-
+var clickMonitor=0;
 function trial()
 {
 a=new ImageViewer(50,50,1);
 a.patchGrid.VW.style.width=500+'px';
 a.ResizeVW();
-
 b=new ImageViewer(600,50,2);
 //var b=30;
+if (clickMonitor==1)
+{
+intermedT=document.getElementById('3patchGrid');
+intermedV=document.getElementById('3VW');
+document.body.removeChild(intermedT);
+document.body.removeChild(intermedV);
+intermedT=document.getElementById('4patchGrid');
+intermedV=document.getElementById('4VW');
+document.body.removeChild(intermedT);
+document.body.removeChild(intermedV);
+
 }
+clickMonitor=0;
+}
+
 function trial2()
 {
 delete a;
-delete b;
+
 c=new ImageViewer(50,500,3);
 d=new ImageViewer(600,500,4);
 //var b=30;
+clickMonitor=1;
 }
 
 </script>
