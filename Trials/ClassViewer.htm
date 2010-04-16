@@ -171,7 +171,7 @@ this.patchGrid.VW.style.border='thin #FF00FF solid';
 //this.patchGrid.VW.style.cursor="crosshair";
 this.patchGrid.VW.id=+ instanceID + "VW";
 document.body.appendChild(this.patchGrid.VW);
-document.body.style.cursor="crosshair"
+this.patchGrid.style.cursor="crosshair"
 
 
 
@@ -219,6 +219,18 @@ this.patchGrid.resetGrid=ImageViewer.prototype.resetGrid;
 this.patchGrid.gridFormation=ImageViewer.prototype.gridFormation;
 this.patchGrid.InitforFireFoxWheel=ImageViewer.prototype.InitforFireFoxWheel;
 
+//create vwresizer
+this.vwresizer = document.createElement('div');
+this.vwresizer.id = instanceID + 'vwresizer';
+this.vwresizer.className = 'vwresizer';
+this.vwresizer.position = 'absolute';
+this.vwresizer.style.left = 0 + 'px';
+this.vwresizer.style.top = 0 + 'px';
+this.vwresizer.style.height = 500 + 'px';
+this.vwresizer.style.width = 500 + 'px';
+this.vwresizer.style.zIndex = 1;
+this.vwresizer.style.border = 'dashed #00FF00';
+//document.body.appendChild(this.vwresizer);
 
 
 // Layout,and FireFox wheel initilization 
