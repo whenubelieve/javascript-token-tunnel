@@ -515,11 +515,20 @@ function InitforFireFoxWheel ()
                 elem.addEventListener ("DOMMouseScroll", zIndexChanging, false);    
                 } 
 }
+
+function dis(){
+document.onmousewheel   =   function()
+{return   false;}
+} 
+
 </script>
+
+
+
 </head>
 
 <body  oncontextmenu=event.returnValue=false onselectstart=event.returnValue=false id="main" 
-onload="ResizeVW();gridFormation();CreatePathLoadingProcess();InitforFireFoxWheel ()">
+onload="dis();ResizeVW();gridFormation();CreatePathLoadingProcess();InitforFireFoxWheel ()">
 
 <form method="post">
 	<input id="Width" name="Width" type="text" onchange="resetGrid();CreatePathLoadingProcess();ResizeVW()" value="400" />
