@@ -182,7 +182,7 @@ this.patchGrid.VW.style.border='thin #FF00FF solid';
 //this.patchGrid.VW.style.cursor="crosshair";
 this.patchGrid.VW.id=+ instanceID + "VW";
 document.body.appendChild(this.patchGrid.VW);
-this.patchGrid.style.cursor="crosshair"
+document.body.style.cursor="crosshair"
 
 
 
@@ -230,18 +230,6 @@ this.patchGrid.resetGrid=ImageViewer.prototype.resetGrid;
 this.patchGrid.gridFormation=ImageViewer.prototype.gridFormation;
 this.patchGrid.InitforFireFoxWheel=ImageViewer.prototype.InitforFireFoxWheel;
 
-//create vwresizer
-this.vwresizer = document.createElement('div');
-this.vwresizer.id = instanceID + 'vwresizer';
-this.vwresizer.className = 'vwresizer';
-this.vwresizer.position = 'absolute';
-this.vwresizer.style.left = 0 + 'px';
-this.vwresizer.style.top = 0 + 'px';
-this.vwresizer.style.height = 500 + 'px';
-this.vwresizer.style.width = 500 + 'px';
-this.vwresizer.style.zIndex = 1;
-this.vwresizer.style.border = 'dashed #00FF00';
-//document.body.appendChild(this.vwresizer);
 
 
 // Layout,and FireFox wheel initilization 
@@ -540,15 +528,19 @@ function PatchLoadingX()// cannot use word "this"
 
 
 
-var clickMonitor=0;
-function trial()
+var clickMonitor=0;// 0, windows, 2 windows, 4 windows
+function trial()     // stupid logics to control the viewing windows
 {
-a=new ImageViewer(50,50,1);
-a.patchGrid.VW.style.width=500+'px';
-a.ResizeVW();
-b=new ImageViewer(600,50,2);
-//var b=30;
-if (clickMonitor==1)
+	if (clickMonitor == 0) {
+		a = new ImageViewer(50, 50, 1);
+		a.patchGrid.VW.style.width = 500 + 'px';
+		a.ResizeVW();
+		b = new ImageViewer(600, 50, 2);
+		b.patchGrid.VW.style.width = 500 + 'px';
+		b.ResizeVW();
+	}
+	
+if (clickMonitor==2)
 {
 intermedT=document.getElementById('3patchGrid');
 intermedV=document.getElementById('3VW');
@@ -560,17 +552,42 @@ document.body.removeChild(intermedT);
 document.body.removeChild(intermedV);
 
 }
-clickMonitor=0;
+clickMonitor=1;
+
 }
 
 function trial2()
 {
-delete a;
-
+	
+if (clickMonitor==1)
+{
 c=new ImageViewer(50,500,3);
+c.patchGrid.VW.style.width=500+'px';
+c.ResizeVW();
 d=new ImageViewer(600,500,4);
+d.patchGrid.VW.style.width=500+'px';
+d.ResizeVW();
 //var b=30;
-clickMonitor=1;
+clickMonitor=2;
+}
+
+if (clickMonitor==0)
+{
+		a = new ImageViewer(50, 50, 1);
+		a.patchGrid.VW.style.width = 500 + 'px';
+		a.ResizeVW();
+		b = new ImageViewer(600, 50, 2);
+		b.patchGrid.VW.style.width = 500 + 'px';
+		b.ResizeVW();
+	
+c=new ImageViewer(50,500,3);
+c.patchGrid.VW.style.width=500+'px';
+c.ResizeVW();
+d=new ImageViewer(600,500,4);
+d.patchGrid.VW.style.width=500+'px';
+d.ResizeVW();
+clickMonitor=2;
+}
 }
 
 </script>
