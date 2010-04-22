@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ï»¿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -155,8 +155,19 @@ var YGridNumber = 1;
 var XGridNumber = 1;
 
 
-
-
+//create the form with inputs
+this.mainform = 					document.createElement('form');
+this.mainform.i_dual =				document.createElement('input');
+this.mainform.i_dual.name =			'Button1';
+this.mainform.i_dual.type =			'button';
+this.mainform.i_dual.value =		'Dual';
+this.mainform.i_dual.onclick =		'trial()';
+this.mainform.i_quad =				document.createElement('input');
+this.mainform.i_quad.name =			'Button1';
+this.mainform.i_quad.type =			'button';
+this.mainform.i_quad.value =		'Quad';
+this.mainform.i_quad.onclick =		'trial2()';
+document.body.appendChild(this.mainform);
 
 
 
@@ -182,7 +193,7 @@ this.patchGrid.VW.style.border='thin #FF00FF solid';
 //this.patchGrid.VW.style.cursor="crosshair";
 this.patchGrid.VW.id=+ instanceID + "VW";
 document.body.appendChild(this.patchGrid.VW);
-document.body.style.cursor="crosshair"
+this.patchGrid.style.cursor="crosshair"
 
 
 
@@ -230,6 +241,19 @@ this.patchGrid.resetGrid=ImageViewer.prototype.resetGrid;
 this.patchGrid.gridFormation=ImageViewer.prototype.gridFormation;
 this.patchGrid.InitforFireFoxWheel=ImageViewer.prototype.InitforFireFoxWheel;
 
+//create vwresizer
+this.vwresizer =					document.createElement('div');
+this.vwresizer.id =					instanceID + 'vwresizer';
+this.vwresizer.className =			'vwresizer';
+this.vwresizer.position =			'absolute';
+this.vwresizer.style.left =			0 + 'px';
+this.vwresizer.style.top =			0 + 'px';
+this.vwresizer.style.height =		100 + 'px';
+this.vwresizer.style.width =		100 + 'px';
+this.vwresizer.style.zIndex =		1;
+this.vwresizer.style.border =		'dashed #00FF00';
+this.vwresizer.style.cursor =		'nw-resize'
+document.body.appendChild(this.vwresizer);
 
 
 // Layout,and FireFox wheel initilization 
@@ -251,8 +275,7 @@ ImageViewer.prototype.InitforFireFoxWheel =function InitforFireFoxWheel ()
 
 
 ImageViewer.prototype.zIndexChanging=function zIndexChanging()
-{	
-	
+{
  var event = window.event || arguments[0]; // FireFox event parameter passing solution
  
  //zIndex=parseInt(document.getElementById("zIndex").value);
@@ -260,13 +283,12 @@ ImageViewer.prototype.zIndexChanging=function zIndexChanging()
   //event.detail  FireFox
   if ((event.wheelDelta > 0||event.detail<0 )&& this.zIndex< this.MaxzIndex&& this.zIndex>= 0)
  { /* Zoom limit */
-       this.zIndex= this.zIndex+ 1;/* ZoomIn, load images */
+		this.zIndex= this.zIndex+ 1;/* ZoomIn, load images */
 		//document.getElementById("zIndex").value=zIndex;
 		
 		GinstanceID=this.instanceID;
 		GzIndex=this.zIndex;
 		this.resetGrid();
-		
 		CreatePatchLoadingProcess();
 		
 			if (event.preventDefault) 
@@ -401,6 +423,8 @@ ImageViewer.prototype.CommitMove=function CommitMove()
     this.dy = 0;//  Attention !!! It was moved from ondragend() 
 
 }
+
+
 
 ImageViewer.prototype.ResizeVW=function ResizeVW() //change happens to viewing window and grid patches.
 { 
@@ -593,10 +617,12 @@ clickMonitor=2;
 </script>
 </head>
 
-<body>
+<body onload="function() {document.body.appendChild(this.mainform);}">
 
 <form method="post">
-				<input name="Button2" type="button" onclick="trial()"value="Dual" /><input name="Button1" type="button" value="Quad" onclick="trial2()" /></form>
+	<input name="Button2" type="button" value="Dual" onclick="trial()" />
+	<input name="Button1" type="button" value="Quad" onclick="trial2()" />
+</form>
 
 </body>
 
