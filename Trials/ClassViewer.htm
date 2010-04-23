@@ -258,26 +258,21 @@ function ImageViewer(MetaX, MetaY,instanceID) {
 	this.InitforFireFoxWheel();
 }
 
-ImageViewer.prototype.InitforFireFoxWheel =function InitforFireFoxWheel ()
-{
-                 // for mouse scrolling in Firefox
-            var elem = this.patchGrid;
-            if (elem.addEventListener) 
-            {
-                elem.addEventListener ("DOMMouseScroll", this.zIndexChanging, false);    
-                } 
+ImageViewer.prototype.InitforFireFoxWheel =function InitforFireFoxWheel () {
+	// for mouse scrolling in Firefox
+	var elem = this.patchGrid;
+	if (elem.addEventListener) {
+		elem.addEventListener ("DOMMouseScroll", this.zIndexChanging, false);
+	}
 }
 
-
-ImageViewer.prototype.zIndexChanging=function zIndexChanging()
-{
- var event = window.event || arguments[0]; // FireFox event parameter passing solution
- 
- //zIndex=parseInt(document.getElementById("zIndex").value);
-
-  //event.detail  FireFox
-  if ((event.wheelDelta > 0||event.detail<0 )&& this.zIndex< this.MaxzIndex&& this.zIndex>= 0)
- { /* Zoom limit */
+ImageViewer.prototype.zIndexChanging=function zIndexChanging() {
+	var event = window.event || arguments[0]; // FireFox event parameter passing solution
+	
+	//zIndex=parseInt(document.getElementById("zIndex").value);
+	
+	//event.detail  FireFox
+	if ((event.wheelDelta > 0||event.detail<0 )&& this.zIndex< this.MaxzIndex&& this.zIndex>= 0) { /* Zoom limit */
 		this.zIndex= this.zIndex+ 1;/* ZoomIn, load images */
 		//document.getElementById("zIndex").value=zIndex;
 		
@@ -286,49 +281,39 @@ ImageViewer.prototype.zIndexChanging=function zIndexChanging()
 		this.resetGrid();
 		CreatePatchLoadingProcess();
 		
-			if (event.preventDefault) 
-	{
-		event.preventDefault();
-	}	
-}
-
-  if ((event.wheelDelta < 0||event.detail>0 )&& this.zIndex<=  this.MaxzIndex&&this.zIndex> 0 ) 
-  { /* ZoomOut, clearOut images */
+		if (event.preventDefault) {
+			event.preventDefault();
+		}	
+	}
+	
+	if ((event.wheelDelta < 0||event.detail>0 )&& this.zIndex<=  this.MaxzIndex&&this.zIndex> 0 )
+	{ /* ZoomOut, clearOut images */
 		this.zIndex= this.zIndex- 1;
 		//document.getElementById("zIndex").value=zIndex;	
-        GinstanceID=this.instanceID;
+		GinstanceID=this.instanceID;
 		GzIndex=this.zIndex;
 		this.resetGrid();
-        CreatePatchLoadingProcess();
-		if (event.preventDefault) 
-	{
-		event.preventDefault();
-	}	
-	
+		CreatePatchLoadingProcess();
+		if (event.preventDefault) {
+			event.preventDefault();
 		}
-		if (event.preventDefault) 
+	}
+	if (event.preventDefault) 
 	{
 		event.preventDefault();
-	}	
-	
-
+	}
 }
 
-ImageViewer.prototype.resetGrid=function resetGrid()
-{
-for (i=1; i<=20; i++)// A priori number set
-{for (j=1; j<=20; j++)
-{
-document.getElementById(+this.instanceID+"img["+i+"]["+j+"]").style.display="none";//hide contents;
-}
-}
-
+ImageViewer.prototype.resetGrid=function resetGrid() {
+	for (i=1; i<=20; i++) {// A priori number set
+		for (j=1; j<=20; j++) {
+			document.getElementById(+this.instanceID+"img["+i+"]["+j+"]").style.display="none";//hide contents;
+		}
+	}
 }
 
-ImageViewer.prototype.omniDrag = function omniDrag()
-{
+ImageViewer.prototype.omniDrag = function omniDrag() {
 	ele = this;
-	
 	
 	// event.dataTransfer.effectAllowed = "none"; // do not allow copy
 	// var event = window.event || arguments.callee.caller.arguments[0]; 
@@ -338,22 +323,18 @@ ImageViewer.prototype.omniDrag = function omniDrag()
 	CooX0 = this.event.clientX;
 	CooY0 = this.event.clientY;
 	
-	document.onmouseup = function voidDrag()
-	{
+	document.onmouseup = function voidDrag() {
 		this.onmousemove = null;
 	}
 	
-	if (this.event.preventDefault) 
-	{
+	if (this.event.preventDefault) {
 		this.event.preventDefault();
 	}
 	
-	document.onmousemove = function trial_ondrag(e)
-{
+	document.onmousemove = function trial_ondrag(e) {
 		this.event = window.event || e;
 		
-		if (document.all && this.event.button == 0) 
-		{
+		if (document.all && this.event.button == 0) {
 			this.onmousemove = null;
 			return false;
 		};
@@ -383,40 +364,36 @@ ImageViewer.prototype.omniDrag = function omniDrag()
 		ele.CommitMove();
 		
 		if ((ele.vw.imgpnt.x + parseInt(ele.VW.style.width)) > ele.patchSize * ele.row || (ele.vw.imgpnt.y + parseInt(ele.VW.style.height)) > ele.patchSize * ele.col) {
-		ele.PanOutsideLoading();
-		
+			ele.PanOutsideLoading();
 		}
 		return false
 	}
-
-
 }
 
 ImageViewer.prototype.CommitMove=function CommitMove()
 {
-   this.vw.imgpnt.x = this.vw.imgpnt.x - this.dx; // Update coordinates of view windox x,y changes with zooming
-   this.vw.imgpnt.y = this.vw.imgpnt.y - this.dy;     //panning within the buffer zone
-                    
-    //document.getElementById("inputX").value=vw.imgpnt.x;  //Display for the sake of debug
-    //document.getElementById("inputY").value=vw.imgpnt.y;
-   // document.getElementById("DiagX").value=vw.imgpnt.x+width;
-   // document.getElementById("DiagY").value=vw.imgpnt.y+height;
-
-    this.right = this.right - this.dx; 
-    this.left = this.left - this.dx;
-    this.haut = this.haut - this.dy;
-    this.bottom = this.bottom - this.dy;
- 
-    MetaX = parseInt(this.style.left) + this.dx;
-    this.style.left = MetaX + 'px';
-    MetaY = parseInt(this.style.top) + this.dy;
+	this.vw.imgpnt.x = this.vw.imgpnt.x - this.dx; // Update coordinates of view windox x,y changes with zooming
+	this.vw.imgpnt.y = this.vw.imgpnt.y - this.dy;     //panning within the buffer zone
+		                
+	//document.getElementById("inputX").value=vw.imgpnt.x;  //Display for the sake of debug
+	//document.getElementById("inputY").value=vw.imgpnt.y;
+	// document.getElementById("DiagX").value=vw.imgpnt.x+width;
+	// document.getElementById("DiagY").value=vw.imgpnt.y+height;
 	
-    this.style.top = MetaY + 'px';
-    this.style.clip = "rect(" + this.haut + "px " + this.right + "px " + this.bottom + "px " + this.left + "px)";
-
+	this.right = this.right - this.dx; 
+	this.left = this.left - this.dx;
+	this.haut = this.haut - this.dy;
+	this.bottom = this.bottom - this.dy;
+	
+	MetaX = parseInt(this.style.left) + this.dx;
+	this.style.left = MetaX + 'px';
+	MetaY = parseInt(this.style.top) + this.dy;
+	
+	this.style.top = MetaY + 'px';
+	this.style.clip = "rect(" + this.haut + "px " + this.right + "px " + this.bottom + "px " + this.left + "px)";
+	
 	this.dx = 0;// Attention !!!
-    this.dy = 0;//  Attention !!! It was moved from ondragend() 
-
+	this.dy = 0;//  Attention !!! It was moved from ondragend() 
 }
 
 
