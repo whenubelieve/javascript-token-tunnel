@@ -343,8 +343,7 @@ ImageViewer.prototype.omniDrag = function omniDrag() {
 		CooX0 = CooX1; /*update frame*/
 		CooY0 = CooY1;
 		
-		if ((ele.vw.imgpnt.x - ele.dx) < 0) //Dr.Alberto mentioned that we shall to do so
-		{
+		if ((ele.vw.imgpnt.x - ele.dx) < 0) {//Dr.Alberto mentioned that we shall to do so
 			ele.dx = 0;
 		}
 		if ((ele.vw.imgpnt.y - ele.dy) < 0) {
@@ -488,8 +487,7 @@ function CreatePatchLoadingProcess() {
 
 function PatchLoadingX() {// cannot use word "this"
 	for (I = 1; I <= GlobalRow; I++) {
-		for (J = 1; J <= GlobalCol; J++) // img[i][j], the naming system
-		{
+		for (J = 1; J <= GlobalCol; J++) {// img[i][j], the naming system
 			document.getElementById(+GinstanceID + "img[" + I + "][" + J + "]").style.display = "";
 			document.getElementById(+GinstanceID + "img[" + I + "][" + J + "]").src = "http://wonko.via.cornell.edu/bigimgs/test2/bar." + Gzoomlevel + "." + (J - 1) + "." + (I - 1) + "." + GzIndex + ".jpeg";
 		}
