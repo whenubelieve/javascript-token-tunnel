@@ -6,18 +6,15 @@
 <title>Image Viewer </title>
 <script type="text/javascript" >
 
-
 // Disabling mousewheel for scroll
 
-
-
 window.onload=function(){
-	document.onmousewheel = function(){return   false;}
+	document.onmousewheel = function(){
+		return false;
+	}
 } 
 
-
 function ImageViewer(MetaX, MetaY,instanceID) {
-	
 	var imgpsz = { x: 256, y: 256};
 	// Image Prototype
 	// objects created by:
@@ -286,8 +283,7 @@ ImageViewer.prototype.zIndexChanging=function zIndexChanging() {
 		}	
 	}
 	
-	if ((event.wheelDelta < 0||event.detail>0 )&& this.zIndex<=  this.MaxzIndex&&this.zIndex> 0 )
-	{ /* ZoomOut, clearOut images */
+	if ((event.wheelDelta < 0||event.detail>0 )&& this.zIndex<=  this.MaxzIndex&&this.zIndex> 0 ) { /* ZoomOut, clearOut images */
 		this.zIndex= this.zIndex- 1;
 		//document.getElementById("zIndex").value=zIndex;	
 		GinstanceID=this.instanceID;
@@ -298,8 +294,7 @@ ImageViewer.prototype.zIndexChanging=function zIndexChanging() {
 			event.preventDefault();
 		}
 	}
-	if (event.preventDefault) 
-	{
+	if (event.preventDefault) {
 		event.preventDefault();
 	}
 }
@@ -370,8 +365,7 @@ ImageViewer.prototype.omniDrag = function omniDrag() {
 	}
 }
 
-ImageViewer.prototype.CommitMove=function CommitMove()
-{
+ImageViewer.prototype.CommitMove=function CommitMove() {
 	this.vw.imgpnt.x = this.vw.imgpnt.x - this.dx; // Update coordinates of view windox x,y changes with zooming
 	this.vw.imgpnt.y = this.vw.imgpnt.y - this.dy;     //panning within the buffer zone
 	
@@ -503,16 +497,9 @@ function PatchLoadingX() {// cannot use word "this"
 	clearTimeout;
 }
 
-
-
-
-
-
-
-
 var clickMonitor=0;// 0, windows, 2 windows, 4 windows
-function trial()     // stupid logics to control the viewing windows
-{
+
+function trial() {    // stupid logics to control the viewing windows
 	if (clickMonitor == 0) {
 		a = new ImageViewer(50, 50, 1);
 		a.patchGrid.VW.style.width = 500 + 'px';
@@ -522,54 +509,47 @@ function trial()     // stupid logics to control the viewing windows
 		b.ResizeVW();
 	}
 	
-if (clickMonitor==2)
-{
-intermedT=document.getElementById('3patchGrid');
-intermedV=document.getElementById('3VW');
-document.body.removeChild(intermedT);
-document.body.removeChild(intermedV);
-intermedT=document.getElementById('4patchGrid');
-intermedV=document.getElementById('4VW');
-document.body.removeChild(intermedT);
-document.body.removeChild(intermedV);
-
-}
-clickMonitor=1;
-
+	if (clickMonitor==2) {
+		intermedT=document.getElementById('3patchGrid');
+		intermedV=document.getElementById('3VW');
+		document.body.removeChild(intermedT);
+		document.body.removeChild(intermedV);
+		intermedT=document.getElementById('4patchGrid');
+		intermedV=document.getElementById('4VW');
+		document.body.removeChild(intermedT);
+		document.body.removeChild(intermedV);
+	}
+	clickMonitor=1;
 }
 
-function trial2()
-{
+function trial2() {
+	if (clickMonitor==1) {
+		c=new ImageViewer(50,500,3);
+		c.patchGrid.VW.style.width=500+'px';
+		c.ResizeVW();
+		d=new ImageViewer(600,500,4);
+		d.patchGrid.VW.style.width=500+'px';
+		d.ResizeVW();
+		//var b=30;
+		clickMonitor=2;
+	}
 	
-if (clickMonitor==1)
-{
-c=new ImageViewer(50,500,3);
-c.patchGrid.VW.style.width=500+'px';
-c.ResizeVW();
-d=new ImageViewer(600,500,4);
-d.patchGrid.VW.style.width=500+'px';
-d.ResizeVW();
-//var b=30;
-clickMonitor=2;
-}
-
-if (clickMonitor==0)
-{
+	if (clickMonitor==0) {
 		a = new ImageViewer(50, 50, 1);
 		a.patchGrid.VW.style.width = 500 + 'px';
 		a.ResizeVW();
 		b = new ImageViewer(600, 50, 2);
 		b.patchGrid.VW.style.width = 500 + 'px';
 		b.ResizeVW();
-	
-c=new ImageViewer(50,500,3);
-c.patchGrid.VW.style.width=500+'px';
-c.ResizeVW();
-d=new ImageViewer(600,500,4);
-d.patchGrid.VW.style.width=500+'px';
-d.ResizeVW();
-clickMonitor=2;
-}
+		
+		c=new ImageViewer(50,500,3);
+		c.patchGrid.VW.style.width=500+'px';
+		c.ResizeVW();
+		d=new ImageViewer(600,500,4);
+		d.patchGrid.VW.style.width=500+'px';
+		d.ResizeVW();
+		clickMonitor=2;
+	}
 }
 
 </script>
