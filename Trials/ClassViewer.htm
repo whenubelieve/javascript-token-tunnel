@@ -6,6 +6,7 @@
 <title>Image Viewer </title>
 <script type="text/javascript" >
 
+
 // Disabling mousewheel for scroll
 
 window.onload=function() {
@@ -238,14 +239,14 @@ function ImageViewer(MetaX, MetaY,instanceID) {
 	this.vwresizer.id =					instanceID + 'vwresizer';
 	this.vwresizer.className =			'vwresizer';
 	this.vwresizer.position =			'absolute';
-	this.vwresizer.style.left =			0 + 'px';
+	this.vwresizer.style.left =			50 + 'px';
 	this.vwresizer.style.top =			500 + 'px';
-	this.vwresizer.style.height =		50 + 'px';
-	this.vwresizer.style.width =		50 + 'px';
+	this.vwresizer.style.height =		30 + 'px';
+	this.vwresizer.style.width =		30 + 'px';
 	//this.vwresizer.style.zIndex =		1;
 	this.vwresizer.style.border =		'dashed #00FF00';
 	this.vwresizer.style.cursor =		'nw-resize'
-	document.body.appendChild(this.vwresizer);
+	//document.body.appendChild(this.vwresizer);
 	
 	
 	// Layout,and FireFox wheel initilization 
