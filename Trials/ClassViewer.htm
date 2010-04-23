@@ -8,7 +8,7 @@
 
 // Disabling mousewheel for scroll
 
-window.onload=function(){
+window.onload=function() {
 	document.onmousewheel = function(){
 		return false;
 	}
@@ -360,7 +360,7 @@ ImageViewer.prototype.omniDrag = function omniDrag() {
 		if ((ele.vw.imgpnt.x + parseInt(ele.VW.style.width)) > ele.patchSize * ele.row || (ele.vw.imgpnt.y + parseInt(ele.VW.style.height)) > ele.patchSize * ele.col) {
 			ele.PanOutsideLoading();
 		}
-		return false
+		return false;
 	}
 }
 
