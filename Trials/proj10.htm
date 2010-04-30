@@ -283,6 +283,34 @@ function f_sliderMouseUp(e_event, b_watching){
     if (window.f_savedMouseUp)
         return window.f_savedMouseUp(e_event);
 }
+// get the scroller positions of the page
+function f_scrollLeft(){
+	return f_filterResults(window.pageXOffset ? window.pageXOffset : 0, document.documentElement ? document.documentElement.scrollLeft : 0, document.body ? document.body.scrollLeft : 0);
+}
+function f_scrollTop(){
+	return f_filterResults(window.pageYOffset ? window.pageYOffset : 0, document.documentElement ? document.documentElement.scrollTop : 0, document.body ? document.body.scrollTop : 0);
+}
+function f_filterResults(n_win, n_docel, n_body){
+	var n_result = n_win ? n_win : 0;
+	if (n_docel && (!n_result || (n_result > n_docel)))
+		n_result = n_docel;
+	return n_body && (!n_result || (n_result > n_body)) ? n_body : n_result;
+}
+function f_sliderError(n_id, s_message){
+	alert("Slider #" + n_id + " Error:\n" + s_message);
+	window.n_activeSliderId = null;
+}
+//need to get rid of this document.all - it is deprecated
+//this if statement is true if IE
+get_element = document.all ? function(s_id){
+	//return document.all[s_id]
+	//alert("NULL!!");
+	//return NULL;
+	return document.getElementById(s_id);
+}
+ : function(s_id){
+	return document.getElementById(s_id);
+};
 
 //this part controls the behavior of the slider while being clicked and dragged
 function f_sliderMouseMove(e_event){
@@ -329,37 +357,9 @@ function f_sliderMouseMove(e_event){
         return window.f_savedMouseMove(e_event);
 }
 
-// get the scroller positions of the page
-function f_scrollLeft(){
-	return f_filterResults(window.pageXOffset ? window.pageXOffset : 0, document.documentElement ? document.documentElement.scrollLeft : 0, document.body ? document.body.scrollLeft : 0);
-}
-function f_scrollTop(){
-	return f_filterResults(window.pageYOffset ? window.pageYOffset : 0, document.documentElement ? document.documentElement.scrollTop : 0, document.body ? document.body.scrollTop : 0);
-}
-function f_filterResults(n_win, n_docel, n_body){
-	var n_result = n_win ? n_win : 0;
-	if (n_docel && (!n_result || (n_result > n_docel)))
-		n_result = n_docel;
-	return n_body && (!n_result || (n_result > n_body)) ? n_body : n_result;
-}
-function f_sliderError(n_id, s_message){
-	alert("Slider #" + n_id + " Error:\n" + s_message);
-	window.n_activeSliderId = null;
-}
-//need to get rid of this document.all - it is deprecated
-//this if statement is true if IE
-get_element = document.all ? function(s_id){
-	//return document.all[s_id]
-	//alert("NULL!!");
-	//return NULL;
-	return document.getElementById(s_id);
-}
- : function(s_id){
-	return document.getElementById(s_id);
-};
 
 
-	
+
 
 //******************************************************************************
 //******************************************************************************
@@ -520,7 +520,7 @@ function ImageViewer(MetaX, MetaY,instanceID) {
 	this.mainform.i_quad.type =			'button';
 	this.mainform.i_quad.value =		'Quad';
 	this.mainform.i_quad.onclick =		'trial2()';
-	//document.body.appendChild(this.mainform);
+	
 	
 	
 	
@@ -988,7 +988,7 @@ function trial2() {
 </script>
 </head>
 
-<body onload="function() {document.body.appendChild(this.mainform);}">
+<body onload="">
 
 <form method="post">
 	<input name="Button2" type="button" value="Dual" onclick="trial()" />
