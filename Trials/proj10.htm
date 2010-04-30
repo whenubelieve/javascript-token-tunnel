@@ -1,0 +1,1000 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css"> 
+	div.sliderbar {
+		width:				16px;				/*n_controlWidth*/
+		height:				100px;				/*n_control*/
+		border:				0pt none;
+		/*this.s_imgControl - note: uncomment this for a pretty sliderbar*/
+		/*background-image: url('http://www.schillmania.com/projects/fireworks/demo-only/slider-bar.gif');*/
+		background-color:	black;
+	}
+	.sliderbutton {
+		position:			relative;
+		left:				1px;				/*this.n_pathLeft*/
+		top:				35px;				/*this.n_pathTop*/
+		z-index:            1;					/*this.n_zIndex*/
+		cursor:				pointer;
+		/*visibility: visible;	
+		background-color:	red;*/
+	}
+</style>
+<title>Image Viewer </title>
+<script type="text/javascript" >
+//******************************************************************************
+//******************************************************************************
+//*************SLIDERS*START*HERE***********************************************
+//******************************************************************************
+//******************************************************************************
+function slider(a_init, a_tpl){
+	// register in the global collection
+	//create the object A_SLIDERS if it doesn't exist yet
+	if (!window.A_SLIDERS)
+		//create new array	
+		window.A_SLIDERS = [];
+    this.n_id = window.A_SLIDERS.length;
+    window.A_SLIDERS[this.n_id] = this;
+
+    // save config parameters in the slider object
+    var s_key;
+    if (a_tpl)
+        for (s_key in a_tpl)
+            this[s_key] = a_tpl[s_key];
+    for (s_key in a_init)
+        this[s_key] = a_init[s_key];
+    this.n_pix2value = this.n_pathLength / (this.n_maxValue - this.n_minValue);
+    if (this.n_value == null)
+        this.n_value = this.n_minValue;
+
+    //generate the control's HTML
+	//need to change this to static HTML - maybe use css with classes to design the sliders?
+	
+    document.write('<div class="sliderbar" id="sl' +
+	this.n_id + 'base">' +
+    '<img class="sliderbutton" src="' +
+    this.s_imgSlider +
+    '" width="' +
+    this.n_sliderWidth +
+    '" height="' +
+    this.n_sliderHeight +
+    '" border="0" name="sl' +
+    this.n_id +
+    'slider" id="sl' +
+    this.n_id +
+    'slider" onmousedown="return f_sliderMouseDown(' +
+    this.n_id +
+    ')"/></div>');
+    
+    /*
+    //a little test to see how to add elements to the body
+    var foo = document.createElement('img');
+    foo.src = "http://www.google.com/intl/en_ALL/images/logo.gif";
+    //foo.setAttribute('src', 'http://www.google.com/intl/en_ALL/images/logo.gif');
+    document.body.appendChild(foo);
+    */
+	
+    /*
+    //HTML Creation Phase
+    //create a form
+    var ee_form = document.createElement("form");
+    ee_form.name = "form";
+    //create text
+    var txt = document.createTextNode("dynamic Zoomlevel");
+    //create an input
+    var ee_input = document.createElement("input");
+    //set input name
+    ee_input.name = "Zoomlevel";
+    //set input id
+    ee_input.id = "Zoomlevel";z
+    //set input type
+    ee_input.type = "Text"
+    //set size
+    ee_input.size = 3;
+    //set value
+    ee_input.value = 2;
+    //set onpropertychange
+    ee_input.onpropertychange = "resetGrid();CreatePatchLoadingProcess();CenterOffset()";
+    //set onchange
+    ee_input.onchange = "resetgrid();createpathloadingprocess();centeroffset()";
+    //create a div
+    var ee_div = document.createElement("div");
+    //alert("value of ee_div is:" + ee_div);
+    //alert(this);
+    //set class for div
+    ee_div.className = "sliderdiv";
+    //set id for div
+    ee_div.id = "sl" + this.n_id + "base";
+    //create img tag
+    var ee_img = document.createElement("img");
+    //set class
+    ee_img.className = "sliderimg";
+    //set src
+    ee_img.src = this.s_imgSlider;
+    //set width
+    ee_img.width = this.n_sliderWidth;
+    //set height
+    ee_img.height = this.n_sliderHeight;
+    //set border
+    ee_img.border = 0;
+    //set name
+    ee_img.name = "s1" + this.n_id + "slider";
+    //set onmousedown
+    ee_img.name = "return f_sliderMouseDown(" + this.n_id + ")";
+    //insert input inside div
+    ee_div.appendChild(ee_input);
+    //insert img inside div
+    ee_div.appendChild(ee_img);
+    //insert the input into the form
+    ee_form.appendChild(ee_input);
+    //insert textnode into the form
+    ee_form.appendChild(txt);
+    //insert the div into the form
+    ee_form.appendChild(ee_div);
+    //insert the form into the body of the document
+    //problem - this is being run before the page is being loaded
+    //document.body.onload = document.body.appendChild(ee_form);
+    //while (document.body == null){
+            //setTimeout('document.body.appendChild(ee_form)', 10000);
+    //}
+    //this.appendChild(ee_form);
+    ///note - when appendChild fails, it hangs. chances are almost any error stops the script
+    */
+    
+    
+    this.e_base = get_element('sl' + this.n_id + 'base');
+    this.e_slider = get_element('sl' + this.n_id + 'slider');
+    //alert(this.e_slider);
+
+	//owner is 'window'
+    this.f_setValue = f_sliderSetValue;
+    this.f_getPos = f_sliderGetPos;
+
+    // safely hook document/window events
+    if (!window.f_savedMouseMove && document.onmousemove != f_sliderMouseMove) {
+        window.f_savedMouseMove = document.onmousemove;
+        document.onmousemove = f_sliderMouseMove;
+    }
+    if (!window.f_savedMouseUp && document.onmouseup != f_sliderMouseUp) {
+        window.f_savedMouseUp = document.onmouseup;
+        document.onmouseup = f_sliderMouseUp;
+    }
+    // preset to the value in the input box if available
+    var e_input = this.s_form == null ? get_element(this.s_name) : document.forms[this.s_form] ? document.forms[this.s_form].elements[this.s_name] : null;
+    this.f_setValue(e_input && e_input.value != '' ? e_input.value : null, 1);
+    this.e_slider.style.visibility = 'visible';
+}
+
+//logic is implemented to smooth out the action of the slider
+//the input value update occurs at the end
+function f_sliderSetValue(n_value, b_noInputCheck){
+	//alert("f__sliderSetValue called!");
+	if (n_value == null)
+		n_value = this.n_value == null ? this.n_minValue : this.n_value;
+	if (isNaN(n_value))
+		return false;
+	// round to closest multiple if step is specified
+	if (this.n_step)
+		n_value = Math.round((n_value - this.n_minValue) / this.n_step) * this.n_step + this.n_minValue;
+	// smooth out the result
+	if (n_value % 1)
+		n_value = Math.round(n_value * 1e5) / 1e5;
+
+	if (n_value < this.n_minValue)
+		n_value = this.n_minValue;
+	if (n_value > this.n_maxValue)
+		n_value = this.n_maxValue;
+
+	this.n_value = n_value;
+	
+	// move the slider
+	if (this.b_vertical)
+		this.e_slider.style.top = (this.n_pathTop + this.n_pathLength - Math.round((n_value - this.n_minValue) * this.n_pix2value)) + 'px';
+	else
+		this.e_slider.style.left = (this.n_pathLeft + Math.round((n_value - this.n_minValue) * this.n_pix2value)) + 'px';
+
+	// save new value
+	//the final location may not be the same as where the mouse cursor is
+	var e_input;
+	if (this.s_form == null) {
+		e_input = get_element(this.s_name);
+		if (!e_input)
+			return b_noInputCheck ? null : f_sliderError(this.n_id, "Can not find the input with ID='" + this.s_name + "'.");
+	}
+	else {
+		var e_form = document.forms[this.s_form];
+		if (!e_form)
+			return b_noInputCheck ? null : f_sliderError(this.n_id, "Can not find the form with NAME='" + this.s_form + "'.");
+		e_input = e_form.elements[this.s_name];
+		if (!e_input)
+			return b_noInputCheck ? null : f_sliderError(this.n_id, "Can not find the input with NAME='" + this.s_name + "'.");
+	}
+	e_old = e_input.value;		//assign old value to a holder variable
+	e_input.value = n_value;	//perform the update
+	
+	var elementtotrigger = document.getElementById(this.s_name);
+	//check to see if the value has changed
+	if(e_input.value != e_old){
+		triggerOnChange(elementtotrigger);
+	}
+	
+}
+
+
+
+function triggerOnChange(txt){	//elem is the element to be triggered
+	//For IE
+	if(txt.fireEvent){
+		txt.fireEvent('onchange');
+	}
+	//Gecko based browsers
+	if (document.createEvent){ 
+		//first, create the event
+		var evt = document.createEvent('HTMLEvents');
+		if(evt.initEvent){
+			//call initEvent on the object
+			evt.initEvent('change', true, true);
+		}
+		if(txt.dispatchEvent){
+			//dispatch the event
+			txt.dispatchEvent(evt);
+		}
+	}
+}
+
+// get absolute position of the element in the document
+function f_sliderGetPos(b_vertical, b_base){
+    var n_pos = 0, s_coord = (b_vertical ? 'Top' : 'Left');
+    var o_elem = o_elem2 = b_base ? this.e_base : this.e_slider;
+
+    while (o_elem) {
+        n_pos += o_elem["offset" + s_coord];
+        o_elem = o_elem.offsetParent;
+    }
+    o_elem = o_elem2;
+
+    var n_offset;
+    while (o_elem.tagName != "BODY") {
+        n_offset = o_elem["scroll" + s_coord];
+        if (n_offset)
+            n_pos -= o_elem["scroll" + s_coord];
+        o_elem = o_elem.parentNode;
+    }
+    return n_pos;
+}
+
+function f_sliderMouseDown(n_id){
+	window.n_activeSliderId = n_id;
+	return false;
+}
+
+function f_sliderMouseUp(e_event, b_watching){
+    if (window.n_activeSliderId != null) {
+        var o_slider = window.A_SLIDERS[window.n_activeSliderId];
+        o_slider.f_setValue(o_slider.n_minValue +
+        (o_slider.b_vertical ? (o_slider.n_pathLength - parseInt(o_slider.e_slider.style.top) + o_slider.n_pathTop) : (parseInt(o_slider.e_slider.style.left) - o_slider.n_pathLeft)) /
+        o_slider.n_pix2value);
+        if (b_watching)
+            return;
+        window.n_activeSliderId = null;
+    }
+    if (window.f_savedMouseUp)
+        return window.f_savedMouseUp(e_event);
+}
+
+//this part controls the behavior of the slider while being clicked and dragged
+function f_sliderMouseMove(e_event){
+    if (!e_event && window.event)
+        e_event = window.event;
+
+    // save mouse coordinates
+    if (e_event) {
+        window.n_mouseX = e_event.clientX + f_scrollLeft();
+        window.n_mouseY = e_event.clientY + f_scrollTop();
+    }
+
+    // check if in drag mode
+    if (window.n_activeSliderId != null) {
+        var o_slider = window.A_SLIDERS[window.n_activeSliderId];
+        var n_pxOffset;
+        if (o_slider.b_vertical) {
+            var n_sliderTop = window.n_mouseY - o_slider.n_sliderHeight / 2 - o_slider.f_getPos(1, 1) - 3;
+            // limit the slider movement
+            if (n_sliderTop < o_slider.n_pathTop)
+                n_sliderTop = o_slider.n_pathTop;
+            var n_pxMax = o_slider.n_pathTop + o_slider.n_pathLength;
+            if (n_sliderTop > n_pxMax)
+                n_sliderTop = n_pxMax;
+            o_slider.e_slider.style.top = n_sliderTop + 'px';
+            n_pxOffset = o_slider.n_pathLength - n_sliderTop + o_slider.n_pathTop;
+        }
+        else {
+            var n_sliderLeft = window.n_mouseX - o_slider.n_sliderWidth / 2 - o_slider.f_getPos(0, 1) - 3;
+            // limit the slider movement
+            if (n_sliderLeft < o_slider.n_pathLeft)
+                n_sliderLeft = o_slider.n_pathLeft;
+            var n_pxMax = o_slider.n_pathLeft + o_slider.n_pathLength;
+            if (n_sliderLeft > n_pxMax)
+                n_sliderLeft = n_pxMax;
+            o_slider.e_slider.style.left = n_sliderLeft + 'px';
+            n_pxOffset = n_sliderLeft - o_slider.n_pathLeft;
+        }
+        if (o_slider.b_watch)
+            f_sliderMouseUp(e_event, 1);
+        return false;
+    }
+    if (window.f_savedMouseMove)
+        return window.f_savedMouseMove(e_event);
+}
+
+// get the scroller positions of the page
+function f_scrollLeft(){
+	return f_filterResults(window.pageXOffset ? window.pageXOffset : 0, document.documentElement ? document.documentElement.scrollLeft : 0, document.body ? document.body.scrollLeft : 0);
+}
+function f_scrollTop(){
+	return f_filterResults(window.pageYOffset ? window.pageYOffset : 0, document.documentElement ? document.documentElement.scrollTop : 0, document.body ? document.body.scrollTop : 0);
+}
+function f_filterResults(n_win, n_docel, n_body){
+	var n_result = n_win ? n_win : 0;
+	if (n_docel && (!n_result || (n_result > n_docel)))
+		n_result = n_docel;
+	return n_body && (!n_result || (n_result > n_body)) ? n_body : n_result;
+}
+function f_sliderError(n_id, s_message){
+	alert("Slider #" + n_id + " Error:\n" + s_message);
+	window.n_activeSliderId = null;
+}
+//need to get rid of this document.all - it is deprecated
+//this if statement is true if IE
+get_element = document.all ? function(s_id){
+	//return document.all[s_id]
+	//alert("NULL!!");
+	//return NULL;
+	return document.getElementById(s_id);
+}
+ : function(s_id){
+	return document.getElementById(s_id);
+};
+
+
+	
+
+//******************************************************************************
+//******************************************************************************
+//*************SLIDERS*END*HERE*************************************************
+//******************************************************************************
+//******************************************************************************
+
+// Disabling mousewheel for scroll
+
+window.onload=function() {
+	document.onmousewheel = function(){
+		return false;
+	}
+} 
+
+function ImageViewer(MetaX, MetaY,instanceID) {
+	var imgpsz = { x: 256, y: 256};
+	// Image Prototype
+	// objects created by:
+	// var img = new SVImage( <url>, <xs>, <ys>, <zs>);
+	
+	function SVImage( url, xs, ys, zs) {
+		this.url = url;
+		this.xs = xs;
+		this.ys = ys;
+		this.zs = zs;
+	}
+	
+	SVImage.prototype.getUrl = function () {
+		return this.url;
+	}
+	
+	SVImage.prototype.getXs = function () {
+		return this.xs;
+	}
+	SVImage.prototype.getYs = function () {
+		return this.ys;
+	}
+	SVImage.prototype.getZs = function () {
+		return this.zs;
+	}
+	
+	// Image Point Prototype
+	// objects created by:
+	//     var imgpt = new SVImagePoint( <image>, <x>, <y>, <z>);
+	
+	function SVImagePoint( img, xloc, yloc, zloc) {
+		this.image = img;
+		this.x = xloc;
+		this.y = yloc;
+		this.z = zloc;
+	}
+	
+	// Viewing Window Prototype
+	// objects created by:
+	//     var imgpt = new Vieww( <image-point>, <xs>, <ys>, <zs>);
+	
+	function Vieww( imgpnt, xs, ys, zs) {
+		this.imgpnt = imgpnt;
+		this.xs = xs;
+		this.ys = ys;
+		this.zs = zs;
+	}
+	
+	// Image Patch Prototype
+	// objects created by:
+	//     var ptch = new SVImagePatch( <image>, <x>, <y>, <z>, <zoom>);
+	
+	function SVImagePatch( img, xind, yind, zind, zoom) {
+		this.image = img;
+		this.xind = xind;
+		this.yind = yind;
+		this.zind = zind;
+		this.zm = zoom;
+	}
+	
+	// Image Patch Point Prototype
+	// objects created by:
+	//     var ptch = new PatchPoint( <patch>, <x>, <y>);
+	
+	function PatchPoint( patch, xloc, yloc) {
+		this.patch = patch;
+		this.x = xloc;
+		this.y = yloc;
+	}
+	
+	// Viewing Window Point Prototype
+	// objects created by:
+	//     var imgpt = new ViewPoint( <view-wnd>, <x>, <y>);
+	
+	function ViewPoint( vw, xloc, yloc) {
+		this.vw = vw;
+		this.x = xloc;
+		this.y = yloc;
+	}
+	
+	// Initilizations 
+	
+	var image = new SVImage;
+	image.xs=0;
+	image.ys=0;
+	var imagePoint = new SVImagePoint;
+	
+	var vwcorner=new SVImagePoint;
+	var vw = new Vieww;
+	vw.imgpnt=vwcorner;
+	vw.imgpnt.x = 0;
+	vw.imgpnt.y = 0;
+	vw.xs=0;
+	vw.ys=0;
+	
+	var patchPoint = new PatchPoint;
+	
+	var vwPoint0 = new ViewPoint;
+	var vwPoint1 = new ViewPoint;
+	
+	var patch = new SVImagePatch;
+	patch.xind = 1;
+	patch.yind = 1;
+	
+	var patchSize=256;
+	imageSize= Math.pow(2, zoomlevel)*patchSize;
+	var height=0;
+	var width=0;
+	
+	var zIndex=0;
+	var zoomlevel = 4;
+	var MaxZoom = 4; /*  0,1,2,3,4*/
+	var MaxzIndex=4;
+	var row=0;
+	var col=0;
+	var number=0;
+	//var head="Test%20Images/foo."; /*File name operation */
+	//var tail = ".jpeg";
+	
+	var haut = 0;  // top is a reserved word in Chrome and Opera, changed from top to haut 
+	/*the visible window that cropped, its size affects the Zoomoffset function*/
+	var right = 0;
+	var bottom = 0;
+	var left = 0;
+	
+	var dx = 0;
+	var dy = 0;
+	var MaxZoom=4;
+	var YGridNumber = 1; 
+	var XGridNumber = 1;
+	
+	
+	//create the form with inputs
+	this.mainform = 					document.createElement('form');
+	this.mainform.i_dual =				document.createElement('input');
+	this.mainform.i_dual.name =			'Button1';
+	this.mainform.i_dual.type =			'button';
+	this.mainform.i_dual.value =		'Dual';
+	this.mainform.i_dual.onclick =		'trial()';
+	this.mainform.i_quad =				document.createElement('input');
+	this.mainform.i_quad.name =			'Button1';
+	this.mainform.i_quad.type =			'button';
+	this.mainform.i_quad.value =		'Quad';
+	this.mainform.i_quad.onclick =		'trial2()';
+	//document.body.appendChild(this.mainform);
+	
+	
+	
+	
+	
+	// internal variables
+	
+	
+	
+	// style parameters
+	
+	//document.body.appendChild(this.VW);
+	
+	
+	this.patchGrid = document.createElement("table");
+	this.patchGrid.VW=document.createElement('div');
+	this.patchGrid.VW.style.position='absolute';
+	this.patchGrid.VW.style.width=401+'px';
+	this.patchGrid.VW.style.height=401+'px';
+	this.patchGrid.VW.style.left=MetaX+'px';
+	this.patchGrid.VW.style.top=MetaY+'px';
+	this.patchGrid.VW.style.border='thin #FF00FF solid';
+	//this.patchGrid.VW.style.cursor="crosshair";
+	this.patchGrid.VW.id=+ instanceID + "VW";
+	document.body.appendChild(this.patchGrid.VW);
+	this.patchGrid.style.cursor="crosshair"
+	
+	
+	
+	this.patchGrid.id=+ instanceID + "patchGrid"
+	this.patchGrid.image=image;
+	this.patchGrid.instanceID=instanceID;  // Dr.Alberto suggested this quick & dirty trick
+	this.patchGrid.vw=vw;
+	this.patchGrid.patch=patch;
+	this.patchGrid.zIndex=zIndex;
+	this.patchGrid.zoomlevel=zoomlevel;
+	this.patchGrid.MaxZoom=MaxZoom;
+	this.patchGrid.MaxzIndex=MaxzIndex;
+	this.patchGrid.row=row;
+	this.patchGrid.col=col;
+	this.patchGrid.number=number;
+	this.patchGrid.haut=haut;
+	this.patchGrid.right=right
+	this.patchGrid.bottom=bottom;
+	this.patchGrid.left=left;
+	this.patchGrid.dx=dx;
+	this.patchGrid.dy=dy;
+	this.patchGrid.patchSize=patchSize
+	this.patchGrid.style.left=MetaX+'px';
+	this.patchGrid.style.top=MetaY+'px';
+	this.patchGrid.style.overflow='hidden';
+	this.patchGrid.style.position='absolute';
+	//this.patchGrid.style.border='thin #FF00FF solid';
+	this.patchGrid.cellPadding=0;  // THIS IS SHIT !!!! cell"P"adding in JS, cellpadding in HTML
+	this.patchGrid.cellSpacing=0;
+	document.body.appendChild(this.patchGrid);
+	
+	this.patchGrid.row=0
+	this.patchGrid.col=0; // Fixed number of grids, but load according to the size of viewing window
+	
+	this.patchGrid.style.height=row*patchSize;
+	this.patchGrid.style.width=col*patchSize;
+	
+	
+	// action initilization
+	this.patchGrid.onmousedown=ImageViewer.prototype.omniDrag;	
+	this.patchGrid.CommitMove=ImageViewer.prototype.CommitMove;
+	this.patchGrid.PanOutsideLoading=ImageViewer.prototype.PanOutsideLoading;
+	this.patchGrid.onmousewheel=ImageViewer.prototype.zIndexChanging;
+	this.patchGrid.resetGrid=ImageViewer.prototype.resetGrid;
+	this.patchGrid.gridFormation=ImageViewer.prototype.gridFormation;
+	this.patchGrid.InitforFireFoxWheel=ImageViewer.prototype.InitforFireFoxWheel;
+	
+	//create vwresizer
+	this.vwresizer =					document.createElement('div');
+	this.vwresizer.id =					instanceID + 'vwresizer';
+	this.vwresizer.className =			'vwresizer';
+	this.vwresizer.position =			'absolute';
+	this.vwresizer.style.left =			50 + 'px';
+	this.vwresizer.style.top =			500 + 'px';
+	this.vwresizer.style.height =		30 + 'px';
+	this.vwresizer.style.width =		30 + 'px';
+	//this.vwresizer.style.zIndex =		1;
+	this.vwresizer.style.border =		'dashed #00FF00';
+	this.vwresizer.style.cursor =		'nw-resize'
+	//document.body.appendChild(this.vwresizer);
+	
+	//add slider HTML
+	//f_addSliderHtml();
+	
+	
+	// Layout,and FireFox wheel initilization 
+	this.ResizeVW();
+	this.gridFormation();
+	this.patchGrid.PanOutsideLoading();
+	this.InitforFireFoxWheel();
+}
+
+ImageViewer.prototype.InitforFireFoxWheel =function InitforFireFoxWheel () {
+	// for mouse scrolling in Firefox
+	var elem = this.patchGrid;
+	if (elem.addEventListener) {
+		elem.addEventListener ("DOMMouseScroll", this.zIndexChanging, false);
+	}
+}
+
+ImageViewer.prototype.zIndexChanging=function zIndexChanging() {
+	var event = window.event || arguments[0]; // FireFox event parameter passing solution
+	
+	//zIndex=parseInt(document.getElementById("zIndex").value);
+	
+	//event.detail  FireFox
+	if ((event.wheelDelta > 0||event.detail<0 )&& this.zIndex< this.MaxzIndex&& this.zIndex>= 0) { /* Zoom limit */
+		this.zIndex= this.zIndex+ 1;/* ZoomIn, load images */
+		//document.getElementById("zIndex").value=zIndex;
+		
+		GinstanceID=this.instanceID;
+		GzIndex=this.zIndex;
+		this.resetGrid();
+		CreatePatchLoadingProcess();
+		
+		if (event.preventDefault) {
+			event.preventDefault();
+		}	
+	}
+	
+	if ((event.wheelDelta < 0||event.detail>0 )&& this.zIndex<=  this.MaxzIndex&&this.zIndex> 0 ) { /* ZoomOut, clearOut images */
+		this.zIndex= this.zIndex- 1;
+		//document.getElementById("zIndex").value=zIndex;	
+		GinstanceID=this.instanceID;
+		GzIndex=this.zIndex;
+		this.resetGrid();
+		CreatePatchLoadingProcess();
+		if (event.preventDefault) {
+			event.preventDefault();
+		}
+	}
+	if (event.preventDefault) {
+		event.preventDefault();
+	}
+}
+
+ImageViewer.prototype.resetGrid=function resetGrid() {
+	for (i=1; i<=20; i++) {// A priori number set
+		for (j=1; j<=20; j++) {
+			document.getElementById(+this.instanceID+"img["+i+"]["+j+"]").style.display="none";//hide contents;
+		}
+	}
+}
+
+ImageViewer.prototype.omniDrag = function omniDrag() {
+	ele = this;
+	
+	// event.dataTransfer.effectAllowed = "none"; // do not allow copy
+	// var event = window.event || arguments.callee.caller.arguments[0]; 
+	this.event = window.event || arguments[0]; // FireFox  compatibility
+	// or attach event fucntion like this onmousedown=function blah(this event)
+	// anyhow FireFox needs a event parameter passed, unlike in IE event is a global parameter  
+	CooX0 = this.event.clientX;
+	CooY0 = this.event.clientY;
+	
+	document.onmouseup = function voidDrag() {
+		this.onmousemove = null;
+	}
+	
+	if (this.event.preventDefault) {
+		this.event.preventDefault();
+	}
+	
+	document.onmousemove = function trial_ondrag(e) {
+		this.event = window.event || e;
+		
+		if (document.all && this.event.button == 0) {
+			this.onmousemove = null;
+			return false;
+		};
+		
+		CooX1 = this.event.clientX;
+		CooY1 = this.event.clientY;
+		
+		// document.body.style.cursor="crosshair";
+		ele.dx = (CooX1 - CooX0); //Instead of ele.patchGrid.dx
+		ele.dy = (CooY1 - CooY0);
+		CooX0 = CooX1; /*update frame*/
+		CooY0 = CooY1;
+		
+		if ((ele.vw.imgpnt.x - ele.dx) < 0) {//Dr.Alberto mentioned that we shall to do so
+			ele.dx = 0;
+		}
+		if ((ele.vw.imgpnt.y - ele.dy) < 0) {
+			ele.dy = 0;
+		}
+		if ((ele.vw.imgpnt.x - ele.dx + parseInt(ele.VW.style.width)) > ele.patchSize * Math.pow(2, ele.zoomlevel)) {
+			ele.dx = 0;
+		}
+		if ((ele.vw.imgpnt.y - ele.dy + parseInt(ele.VW.style.height)) > ele.patchSize * Math.pow(2, ele.zoomlevel)) {
+			ele.dy = 0;
+		}
+		ele.CommitMove();
+		
+		if ((ele.vw.imgpnt.x + parseInt(ele.VW.style.width)) > ele.patchSize * ele.row || (ele.vw.imgpnt.y + parseInt(ele.VW.style.height)) > ele.patchSize * ele.col) {
+			ele.PanOutsideLoading();
+		}
+		return false;
+	}
+}
+
+ImageViewer.prototype.CommitMove=function CommitMove() {
+	this.vw.imgpnt.x = this.vw.imgpnt.x - this.dx; // Update coordinates of view windox x,y changes with zooming
+	this.vw.imgpnt.y = this.vw.imgpnt.y - this.dy;     //panning within the buffer zone
+	
+	//document.getElementById("inputX").value=vw.imgpnt.x;  //Display for the sake of debug
+	//document.getElementById("inputY").value=vw.imgpnt.y;
+	// document.getElementById("DiagX").value=vw.imgpnt.x+width;
+	// document.getElementById("DiagY").value=vw.imgpnt.y+height;
+	
+	this.right = this.right - this.dx; 
+	this.left = this.left - this.dx;
+	this.haut = this.haut - this.dy;
+	this.bottom = this.bottom - this.dy;
+	
+	MetaX = parseInt(this.style.left) + this.dx;
+	this.style.left = MetaX + 'px';
+	MetaY = parseInt(this.style.top) + this.dy;
+	
+	this.style.top = MetaY + 'px';
+	this.style.clip = "rect(" + this.haut + "px " + this.right + "px " + this.bottom + "px " + this.left + "px)";
+	
+	this.dx = 0;// Attention !!!
+	this.dy = 0;//  Attention !!! It was moved from ondragend() 
+}
+
+
+
+ImageViewer.prototype.ResizeVW=function ResizeVW() {//change happens to viewing window and grid patches.
+	//height=parseInt(document.getElementById("Height").value);// property of viewing window
+	// width=parseInt(document.getElementById("Width").value); // fixed, once given
+	// zoomlevel=document.getElementById("Zoomlevel").value;
+	
+	var boundaryCheckY=this.patchGrid.vw.imgpnt.y+parseInt(this.patchGrid.VW.style.height)-this.patchGrid.patchSize*Math.pow(2, this.patchGrid.zoomlevel);
+	var boundaryCheckX=this.patchGrid.vw.imgpnt.x+parseInt(this.patchGrid.VW.style.width)-this.patchGrid.patchSize*Math.pow(2, this.patchGrid.zoomlevel);
+	
+	if(boundaryCheckX>0&&(this.patchGrid.vw.imgpnt.x-boundaryCheckX>0)) {//resize on the edge of boundary
+		this.patchGrid.dx=boundaryCheckX; this.patchGrid.dy=0; CommitMove();
+	}
+	if( boundaryCheckY>0&&(this.patchGrid.vw.imgpnt.y-boundaryCheckY>0)) {
+		this.patchGrid.dx=0; this.patchGrid.dy=boundaryCheckY;CommitMove();
+	}
+	
+	this.patchGrid.number = Math.pow(4, this.patchGrid.zoomlevel);
+	this.patchGrid.image.xs = Math.pow(2, this.patchGrid.zoomlevel) * this.patchGrid.patchSize;
+	this.patchGrid.image.ys = Math.pow(2, this.patchGrid.zoomlevel) * this.patchGrid.patchSize;
+	
+	this.patchGrid.right=this.patchGrid.left+parseInt(this.patchGrid.VW.style.width);
+	this.patchGrid.bottom=this.patchGrid.haut+parseInt(this.patchGrid.VW.style.height);
+	this.patchGrid.style.clip="rect(" + this.patchGrid.haut + "px " + this.patchGrid.right + "px " + this.patchGrid.bottom + "px " + this.patchGrid.left + "px)";
+}
+
+ImageViewer.prototype.gridFormation=function gridFormation() {
+	this.patchGrid.row=20;
+	this.patchGrid.col=20; // Fixed number of grids, but load according to the size of viewing window
+	//row=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
+	//col=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
+	//X=parseInt(document.getElementById("inputX").value);  //Initial offset
+	//Y=parseInt(document.getElementById("inputY").value);
+	//dx=-(X-vw.imgpnt.x);
+	//dy=-(Y-vw.imgpnt.y);
+	//this.CommitMove();
+	//zoomlevel=document.getElementById("Zoomlevel").value;
+	//zIndex=document.getElementById("zIndex").value;
+	
+	this.patchGrid.style.height=this.patchGrid.row*this.patchGrid.patchSize+'px';
+	this.patchGrid.style.width=this.patchGrid.col*this.patchGrid.patchSize+'px';
+	
+	for (i = 1; i <= this.patchGrid.row; i++) {
+		var tr = document.createElement("tr");
+		tr.height =this.patchGrid.patchSize ;
+		tr.width=this.patchGrid.col*this.patchGrid.patchSize;
+		tr.id="tr1";
+		this.patchGrid.appendChild(tr);
+		for(j=1;j<=this.patchGrid.col;j++) {
+			dummy=document.createElement("td");
+			dummy.height=this.patchGrid.patchSize;
+			dummy.width=this.patchGrid.patchSize;
+			img=document.createElement("img");
+			img.id=+this.patchGrid.instanceID+"img["+i+"]["+j+"]"; //instanceID
+			img.style.display="none";
+			img.unselectable="on";
+			// img.style.draggable="true"
+			dummy.appendChild(img);
+			tr.appendChild(dummy);
+		}
+	}
+}
+
+var GinstanceID=0
+var GlobalRow=0;
+var GlobalCol=0;
+var Gzoomlevel=0;
+var GzIndex=0;
+
+ImageViewer.prototype.PanOutsideLoading = function PanOutsideLoading() {
+	this.col = Math.ceil((this.vw.imgpnt.x - this.dx + parseInt(this.VW.style.width)) / this.patchSize) + 1;
+	this.row = Math.ceil((this.vw.imgpnt.y - this.dy + parseInt(this.VW.style.height)) / this.patchSize) + 1;
+	//zoomlevel=document.getElementById("Zoomlevel").value;
+	//zIndex=document.getElementById("zIndex").value;
+	
+	if (this.row > Math.pow(2, this.zoomlevel)) {
+		this.row = Math.pow(2, this.zoomlevel);
+	}
+	if (this.col > Math.pow(2, this.zoomlevel)) {
+		this.col = Math.pow(2, this.zoomlevel);
+	}
+	
+	GlobalCol= this.col;
+	GlobalRow= this.row;
+	GinstanceID=this.instanceID;
+	Gzoomlevel=this.zoomlevel;
+	GzIndex=this.zIndex;
+	CreatePatchLoadingProcess();
+}
+ 
+function CreatePatchLoadingProcess() { 
+	//setInterval("PatchLoadingX()",90);
+	PatchLoadingX();
+	setTimeout("PatchLoadingX()", 90);
+}
+
+function PatchLoadingX() {// cannot use word "this"
+	for (I = 1; I <= GlobalRow; I++) {
+		for (J = 1; J <= GlobalCol; J++) {// img[i][j], the naming system
+			document.getElementById(+GinstanceID + "img[" + I + "][" + J + "]").style.display = "";
+			document.getElementById(+GinstanceID + "img[" + I + "][" + J + "]").src = "http://wonko.via.cornell.edu/bigimgs/test2/bar." + Gzoomlevel + "." + (J - 1) + "." + (I - 1) + "." + GzIndex + ".jpeg";
+		}
+	}
+	clearTimeout;
+}
+
+var clickMonitor=0;// 0, windows, 2 windows, 4 windows
+
+function trial() {    // stupid logics to control the viewing windows
+	if (clickMonitor == 0) {
+		a = new ImageViewer(50, 50, 1);
+		a.patchGrid.VW.style.width = 500 + 'px';
+		a.ResizeVW();
+		b = new ImageViewer(600, 50, 2);
+		b.patchGrid.VW.style.width = 500 + 'px';
+		b.ResizeVW();
+		
+		//define slider properties - currently all the same, but can be changed.
+		var A_TPL = {
+			'b_vertical': true,
+			'b_watch': true,
+			//css
+			'n_controlWidth': 16,
+			'n_controlHeight': 100,
+			'n_sliderWidth': 15,
+			'n_sliderHeight': 16,
+			'n_pathLeft': 1,
+			'n_pathTop': 1,
+			'n_pathLength': 83, //this needs to be n_controlHeight-17
+			//css this is the long slider bar
+			's_imgControl': 'http://www.schillmania.com/projects/fireworks/demo-only/slider-bar.gif',
+			//this is the slider button
+			's_imgSlider': 'http://www.schillmania.com/projects/fireworks/demo-only/slider.png',
+			'n_zIndex': 1
+		}
+		//SLIDER1
+		var A_INIT = {
+			's_form': 0, //this refers to the form number
+			's_name': 'Zoomlevel',
+			'n_minValue': 0,
+			'n_maxValue': 4,
+			'n_value': 1,
+			'n_step': 1
+		}
+		document.write('<form name="form" method="post">Zoom<br /><input name="Zoomlevel" id="Zoomlevel" type="Text" size="3" value="1" onchange="resetGrid();();" onKeyPress="if(event.keyCode==13) event.keyCode=9;" onKeyDown="if(event.keyCode==13) event.keyCode=9;" onblur="event.keyCode=9"/>');
+		new slider(A_INIT, A_TPL); //create the div and img
+		document.write('</form>');
+		//SLIDER2
+		var A_INIT = {
+			//this refers to the form number. The first form in the document is form number 0, next is 1, etc.
+			's_form': 1,
+			's_name': 'Width',//change this according to what is in the id 6 lines below
+			'n_minValue': 10,
+			'n_maxValue': 600,
+			'n_value': 400,
+			'n_step': 10
+		}
+		document.write('<form name="form2">Width<br /><input name="Width" id="Width" type="Text" size="3" onchange="CreatePatchLoadingProcess();ResizeVW();" />')
+		new slider(A_INIT, A_TPL);
+		document.write('</form>');
+		//SLIDER3 - height
+		var A_INIT = {
+			//this refers to the form number. The first form in the document is form number 0, next is 1, etc.
+			's_form': 2,
+			's_name': 'Height',
+			'n_minValue': 10,
+			'n_maxValue': 600,
+			'n_value': 400,
+			'n_step': 10
+		}
+		document.write('<form name="form3">Height<br /><input name="Height" id="Height" type="Text" size="3" onchange="CreatePatchLoadingProcess();ResizeVW()" />');
+		new slider(A_INIT, A_TPL);
+		document.write('</form>');
+		
+		//SLIDER4 - zIndex
+		var A_INIT = {
+			//this refers to the form number. The first form in the document is form number 0, next is 1, etc.
+			's_form': 3,
+			's_name': 'zIndex',
+			'n_minValue': 0,
+			'n_maxValue': 4,
+			'n_value': 0,
+			'n_step': 1
+		}
+		document.write('<form name="form4">zIndex<br /><input id="zIndex" name="zIndex" type="text" size="3" value="0" onchange="resetGrid();CreatePatchLoadingProcess()" onkeydown="if (event.keyCode == 13) {alert(123);f_sliderSetValue(1,false);}"/>')
+		new slider(A_INIT, A_TPL);
+		document.write('</form>');
+	} //end if
+	
+	if (clickMonitor==2) {
+		intermedT=document.getElementById('3patchGrid');
+		intermedV=document.getElementById('3VW');
+		document.body.removeChild(intermedT);
+		document.body.removeChild(intermedV);
+		intermedT=document.getElementById('4patchGrid');
+		intermedV=document.getElementById('4VW');
+		document.body.removeChild(intermedT);
+		document.body.removeChild(intermedV);
+	}
+	clickMonitor=1;
+}
+
+function trial2() {
+	if (clickMonitor==1) {
+		c=new ImageViewer(50,500,3);
+		c.patchGrid.VW.style.width=500+'px';
+		c.ResizeVW();
+		d=new ImageViewer(600,500,4);
+		d.patchGrid.VW.style.width=500+'px';
+		d.ResizeVW();
+		//var b=30;
+		clickMonitor=2;
+	}
+	
+	if (clickMonitor==0) {
+		a = new ImageViewer(50, 50, 1);
+		a.patchGrid.VW.style.width = 500 + 'px';
+		a.ResizeVW();
+		b = new ImageViewer(600, 50, 2);
+		b.patchGrid.VW.style.width = 500 + 'px';
+		b.ResizeVW();
+		
+		c=new ImageViewer(50,500,3);
+		c.patchGrid.VW.style.width=500+'px';
+		c.ResizeVW();
+		d=new ImageViewer(600,500,4);
+		d.patchGrid.VW.style.width=500+'px';
+		d.ResizeVW();
+		clickMonitor=2;
+	}
+}
+
+</script>
+</head>
+
+<body onload="function() {document.body.appendChild(this.mainform);}">
+
+<form method="post">
+	<input name="Button2" type="button" value="Dual" onclick="trial()" />
+	<input name="Button1" type="button" value="Quad" onclick="trial2()" />
+</form>
+
+</body>
+
+</html>
