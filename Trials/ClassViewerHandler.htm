@@ -40,18 +40,16 @@ function ImageViewer(MetaX, MetaY,instanceID){
 	// Image Point Prototype
 	// objects created by:
 	// 		var imgpt = new SVImagePoint( <image>, <x>, <y>, <z>);
-	
 	function SVImagePoint(img, xloc, yloc, zloc){
 	    this.image = img;
 	    this.x = xloc;
 	    this.y = yloc;
 	    this.z = zloc;
 	}
-
+	
 	// Viewing Window Prototype
 	// objects created by:
 	//     var imgpt = new Vieww( <image-point>, <xs>, <ys>, <zs>);
-	
 	function Vieww( imgpnt, xs, ys, zs) {
 	    this.imgpnt = imgpnt;
 	    this.xs = xs;
@@ -62,7 +60,6 @@ function ImageViewer(MetaX, MetaY,instanceID){
 	// Image Patch Prototype
 	// objects created by:
 	//     var ptch = new SVImagePatch( <image>, <x>, <y>, <z>, <zoom>);
-	
 	function SVImagePatch( img, xind, yind, zind, zoom) {
 	    this.image = img;
 	    this.xind = xind;
@@ -74,7 +71,6 @@ function ImageViewer(MetaX, MetaY,instanceID){
 	// Image Patch Point Prototype
 	// objects created by:
 	//     var ptch = new PatchPoint( <patch>, <x>, <y>);
-	
 	function PatchPoint( patch, xloc, yloc) {
 	    this.patch = patch;
 	    this.x = xloc;
@@ -84,14 +80,13 @@ function ImageViewer(MetaX, MetaY,instanceID){
 	// Viewing Window Point Prototype
 	// objects created by:
 	//     var imgpt = new ViewPoint( <view-wnd>, <x>, <y>);
-	
 	function ViewPoint( vw, xloc, yloc) {
 	    this.vw = vw;
 	    this.x = xloc;
 	    this.y = yloc;
 	}
 	
-	// Initilizations 
+	// Initializations 
 	var image = new SVImage;
 	image.xs=0;
 	image.ys=0;
@@ -114,175 +109,173 @@ function ImageViewer(MetaX, MetaY,instanceID){
 	patch.xind = 1;
 	patch.yind = 1;
 	
-	var patchSize=256;
-	imageSize= Math.pow(2, zoomlevel)*patchSize;
-	var height=0;
-	var width=0;
+	var patchSize = 256;
+	imageSize =  Math.pow(2, zoomlevel)*patchSize;
+	var height = 0;
+	var width = 0;
 	
-	var zIndex=0;
-	var zoomlevel = 2;
+	var zIndex = 0;
+	var zoomlevel  =  2;
 	var MaxZoom = 4; /*  0,1,2,3,4*/
-	var MaxzIndex=4;
-	var row=0;
-	var col=0;
-	var number=0;
-	//var head="Test%20Images/foo."; /*File name operation */
+	var MaxzIndex = 4;
+	var row = 0;
+	var col = 0;
+	var number = 0;
+	//var head = Test%20Images/foo."; /*File name operation */
 	//var tail = ".jpeg";
 	
-	var haut = 0;  // top is a reserved word in Chrome and Opera, changed from top to haut 
-	/*the visible window that cropped, its size affects the Zoomoffset function*/
-	var right = 0;
-	var bottom = 0;
+	// top is a reserved word in Chrome and Opera, changed from top to haut 
+	var haut  =  0; 
+	var right  =  0;
+	var bottom  =  0;
 	var left = 0;
 	
 	var dx = 0;
 	var dy = 0;
-	var MaxZoom=4;
+	var MaxZoom = 4;
 	var YGridNumber = 1; 
 	var XGridNumber = 1;
 	
-	// style parameters
-	
-	//document.body.appendChild(this.VW);	
+	// style parameters	
 	this.patchGrid = document.createElement("table");
 	
-	this.patchGrid.VW=document.createElement('div');
-	this.patchGrid.VW.style.position='absolute';
-	this.patchGrid.VW.style.width=500+'px';
-	this.patchGrid.VW.style.height=401+'px';
-	this.patchGrid.VW.style.left=MetaX+'px';
-	this.patchGrid.VW.style.top=MetaY+'px';
-	this.patchGrid.VW.style.border='thin #FF00FF solid';
-	this.patchGrid.VW.id=+ instanceID + "VW";
-	this.patchGrid.VW.resizeFlag=0;
-	this.patchGrid.style.cursor="crosshair";
+	this.patchGrid.VW = document.createElement('div');
+	this.patchGrid.VW.style.position = absolute';
+	this.patchGrid.VW.style.width = 500+'px';
+	this.patchGrid.VW.style.height = 401+'px';
+	this.patchGrid.VW.style.left = MetaX+'px';
+	this.patchGrid.VW.style.top = MetaY+'px';
+	this.patchGrid.VW.style.border = thin #FF00FF solid';
+	this.patchGrid.VW.id =+ instanceID + "VW";
+	this.patchGrid.VW.resizeFlag = 0;
+	this.patchGrid.style.cursor = crosshair";
 	document.body.appendChild(this.patchGrid.VW);
 	
-	this.patchGrid.inputX=document.createElement('input');
-	this.patchGrid.inputX.style.position='absolute';
-	this.patchGrid.inputX.style.width=40+'px';
-	this.patchGrid.inputX.style.height=10+'px';
-	this.patchGrid.inputX.style.left=MetaX-20+'px';
-	this.patchGrid.inputX.style.top=MetaY-15+'px';
-	this.patchGrid.inputX.id=+ instanceID + "inputX";
-	this.patchGrid.inputX.instanceID=instanceID; 
-	this.patchGrid.inputX.value=0;
+	this.patchGrid.inputX = document.createElement('input');
+	this.patchGrid.inputX.style.position = absolute';
+	this.patchGrid.inputX.style.width = 40+'px';
+	this.patchGrid.inputX.style.height = 10+'px';
+	this.patchGrid.inputX.style.left = MetaX-20+'px';
+	this.patchGrid.inputX.style.top = MetaY-15+'px';
+	this.patchGrid.inputX.id =  instanceID + "inputX";
+	this.patchGrid.inputX.instanceID = instanceID; 
+	this.patchGrid.inputX.value = 0;
 	document.body.appendChild(this.patchGrid.inputX);
 	
-	this.patchGrid.inputY=document.createElement('input');
-	this.patchGrid.inputY.style.position='absolute';
-	this.patchGrid.inputY.style.width=40+'px';
-	this.patchGrid.inputY.style.height=10+'px';
-	this.patchGrid.inputY.style.left=MetaX+30+'px';
-	this.patchGrid.inputY.style.top=MetaY-15+'px';
-	this.patchGrid.inputY.id=+ instanceID + "inputY";
-	this.patchGrid.inputY.instanceID=instanceID; 
-	this.patchGrid.inputY.value=0;
+	this.patchGrid.inputY = document.createElement('input');
+	this.patchGrid.inputY.style.position = absolute';
+	this.patchGrid.inputY.style.width = 40+'px';
+	this.patchGrid.inputY.style.height = 10+'px';
+	this.patchGrid.inputY.style.left = MetaX+30+'px';
+	this.patchGrid.inputY.style.top = MetaY-15+'px';
+	this.patchGrid.inputY.id =  instanceID + "inputY";
+	this.patchGrid.inputY.instanceID = instanceID; 
+	this.patchGrid.inputY.value = 0;
 	document.body.appendChild(this.patchGrid.inputY);
 	
-	this.patchGrid.inputWidth=document.createElement('input');
-	this.patchGrid.inputWidth.style.position='absolute';
-	this.patchGrid.inputWidth.style.width=40+'px';
-	this.patchGrid.inputWidth.style.height=10+'px';
-	this.patchGrid.inputWidth.style.left=MetaX+80+'px';
-	this.patchGrid.inputWidth.style.top=MetaY-15+'px';
-	this.patchGrid.inputWidth.id=+ instanceID + "inputWidth";
-	this.patchGrid.inputWidth.instanceID=instanceID; 
-	this.patchGrid.inputWidth.value=parseInt(this.patchGrid.VW.style.width);
+	this.patchGrid.inputWidth = document.createElement('input');
+	this.patchGrid.inputWidth.style.position = absolute';
+	this.patchGrid.inputWidth.style.width = 40+'px';
+	this.patchGrid.inputWidth.style.height = 10+'px';
+	this.patchGrid.inputWidth.style.left = MetaX+80+'px';
+	this.patchGrid.inputWidth.style.top = MetaY-15+'px';
+	this.patchGrid.inputWidth.id =  instanceID + "inputWidth";
+	this.patchGrid.inputWidth.instanceID = instanceID; 
+	this.patchGrid.inputWidth.value = parseInt(this.patchGrid.VW.style.width);
 	document.body.appendChild(this.patchGrid.inputWidth);
 	
-	this.patchGrid.inputHeight=document.createElement('input');
-	this.patchGrid.inputHeight.style.position='absolute';
-	this.patchGrid.inputHeight.style.width=40+'px';
-	this.patchGrid.inputHeight.style.height=10+'px';
-	this.patchGrid.inputHeight.style.left=MetaX+130+'px';
-	this.patchGrid.inputHeight.style.top=MetaY-15+'px';
-	this.patchGrid.inputHeight.id=+ instanceID + "inputHeight";
-	this.patchGrid.inputHeight.instanceID=instanceID; 
-	this.patchGrid.inputHeight.value=parseInt(this.patchGrid.VW.style.height);
+	this.patchGrid.inputHeight = document.createElement('input');
+	this.patchGrid.inputHeight.style.position = absolute';
+	this.patchGrid.inputHeight.style.width = 40+'px';
+	this.patchGrid.inputHeight.style.height = 10+'px';
+	this.patchGrid.inputHeight.style.left = MetaX+130+'px';
+	this.patchGrid.inputHeight.style.top = MetaY-15+'px';
+	this.patchGrid.inputHeight.id =  instanceID + "inputHeight";
+	this.patchGrid.inputHeight.instanceID = instanceID; 
+	this.patchGrid.inputHeight.value = parseInt(this.patchGrid.VW.style.height);
 	document.body.appendChild(this.patchGrid.inputHeight);
 	
-	this.patchGrid.ZoomIn=document.createElement('input');
-	this.patchGrid.ZoomIn.type='button';
-	this.patchGrid.ZoomIn.value='ZoomIn';
-	this.patchGrid.ZoomIn.style.position='absolute';
-	this.patchGrid.ZoomIn.style.width=70+'px';
-	this.patchGrid.ZoomIn.style.height=20+'px';
-	this.patchGrid.ZoomIn.style.left=MetaX+180+'px';
-	this.patchGrid.ZoomIn.style.top=MetaY-20+'px';
-	this.patchGrid.ZoomIn.id=+ instanceID + "ZoomIn";
-	this.patchGrid.ZoomIn.instanceID=instanceID; 
+	this.patchGrid.ZoomIn = document.createElement('input');
+	this.patchGrid.ZoomIn.type = button';
+	this.patchGrid.ZoomIn.value = ZoomIn';
+	this.patchGrid.ZoomIn.style.position = absolute';
+	this.patchGrid.ZoomIn.style.width = 70+'px';
+	this.patchGrid.ZoomIn.style.height = 20+'px';
+	this.patchGrid.ZoomIn.style.left = MetaX+180+'px';
+	this.patchGrid.ZoomIn.style.top = MetaY-20+'px';
+	this.patchGrid.ZoomIn.id =  instanceID + "ZoomIn";
+	this.patchGrid.ZoomIn.instanceID = instanceID; 
 	document.body.appendChild(this.patchGrid.ZoomIn);
 	
-	this.patchGrid.ZoomOut=document.createElement('input');
-	this.patchGrid.ZoomOut.type='button';
-	this.patchGrid.ZoomOut.value='ZoomOut';
-	this.patchGrid.ZoomOut.style.position='absolute';
-	this.patchGrid.ZoomOut.style.width=70+'px';
-	this.patchGrid.ZoomOut.style.height=20+'px';
-	this.patchGrid.ZoomOut.style.left=MetaX+250+'px';
-	this.patchGrid.ZoomOut.style.top=MetaY-20+'px';
-	this.patchGrid.ZoomOut.id=+ instanceID + "ZoomOut";
-	this.patchGrid.ZoomOut.instanceID=instanceID; 
+	this.patchGrid.ZoomOut = document.createElement('input');
+	this.patchGrid.ZoomOut.type = button';
+	this.patchGrid.ZoomOut.value = ZoomOut';
+	this.patchGrid.ZoomOut.style.position = absolute';
+	this.patchGrid.ZoomOut.style.width = 70+'px';
+	this.patchGrid.ZoomOut.style.height = 20+'px';
+	this.patchGrid.ZoomOut.style.left = MetaX+250+'px';
+	this.patchGrid.ZoomOut.style.top = MetaY-20+'px';
+	this.patchGrid.ZoomOut.id =  instanceID + "ZoomOut";
+	this.patchGrid.ZoomOut.instanceID = instanceID; 
 	document.body.appendChild(this.patchGrid.ZoomOut);
 	
-	this.patchGrid.id=+ instanceID + "patchGrid"
-	this.patchGrid.image=image;
-	this.patchGrid.instanceID=instanceID;  // Dr.Alberto suggested this quick & dirty trick
-	this.patchGrid.vw=vw;
-	this.patchGrid.patch=patch;
-	this.patchGrid.zIndex=zIndex;
-	this.patchGrid.zoomlevel=zoomlevel;
-	this.patchGrid.MaxZoom=MaxZoom;
-	this.patchGrid.MaxzIndex=MaxzIndex;
-	this.patchGrid.row=row;
-	this.patchGrid.col=col;
-	this.patchGrid.number=number;
-	this.patchGrid.haut=haut;
-	this.patchGrid.right=right
-	this.patchGrid.bottom=bottom;
-	this.patchGrid.left=left;
-	this.patchGrid.dx=dx;
-	this.patchGrid.dy=dy;
-	this.patchGrid.patchSize=patchSize
-	this.patchGrid.style.left=MetaX+'px';
-	this.patchGrid.style.top=MetaY+'px';
+	this.patchGrid.id =  instanceID + "patchGrid"
+	this.patchGrid.image = image;
+	this.patchGrid.instanceID = instanceID;  // Dr.Alberto suggested this quick & dirty trick
+	this.patchGrid.vw = vw;
+	this.patchGrid.patch = patch;
+	this.patchGrid.zIndex = zIndex;
+	this.patchGrid.zoomlevel = zoomlevel;
+	this.patchGrid.MaxZoom = MaxZoom;
+	this.patchGrid.MaxzIndex = MaxzIndex;
+	this.patchGrid.row = row;
+	this.patchGrid.col = col;
+	this.patchGrid.number = number;
+	this.patchGrid.haut = haut;
+	this.patchGrid.right = right
+	this.patchGrid.bottom = bottom;
+	this.patchGrid.left = left;
+	this.patchGrid.dx = dx;
+	this.patchGrid.dy = dy;
+	this.patchGrid.patchSize = patchSize
+	this.patchGrid.style.left = MetaX+'px';
+	this.patchGrid.style.top = MetaY+'px';
 	
-	this.patchGrid.MetaX=MetaX+'px';
-	this.patchGrid.MetaY=MetaY+'px';
+	this.patchGrid.MetaX = MetaX+'px';
+	this.patchGrid.MetaY = MetaY+'px';
 	
-	this.patchGrid.style.overflow='hidden';
-	this.patchGrid.style.position='absolute';
-	//this.patchGrid.style.border='thin #FF00FF solid';
-	this.patchGrid.cellPadding=0;  // cell"P"adding in JS, cellpadding in HTML
-	this.patchGrid.cellSpacing=0;
+	this.patchGrid.style.overflow = hidden';
+	this.patchGrid.style.position = absolute';
+	//this.patchGrid.style.border = thin #FF00FF solid';
+	this.patchGrid.cellPadding = 0;  // cell"P"adding in JS, cellpadding in HTML
+	this.patchGrid.cellSpacing = 0;
 	document.body.appendChild(this.patchGrid);
 	
-	this.patchGrid.row=0
-	this.patchGrid.col=0; // Fixed number of grids, but load according to the size of viewing window
+	this.patchGrid.row = 0
+	this.patchGrid.col = 0; // Fixed number of grids, but load according to the size of viewing window
 	
-	this.patchGrid.style.height=row*patchSize;
-	this.patchGrid.style.width=col*patchSize;
+	this.patchGrid.style.height = row*patchSize;
+	this.patchGrid.style.width = col*patchSize;
 	
 	// action initilization
-	this.patchGrid.inputX.onchange=ImageViewer.prototype.InputMove;
-	this.patchGrid.inputY.onchange=ImageViewer.prototype.InputMove;
-	this.patchGrid.inputWidth.onchange=ImageViewer.prototype.ResizeVW;
-	this.patchGrid.inputHeight.onchange=ImageViewer.prototype.ResizeVW;
+	this.patchGrid.inputX.onchange = ImageViewer.prototype.InputMove;
+	this.patchGrid.inputY.onchange = ImageViewer.prototype.InputMove;
+	this.patchGrid.inputWidth.onchange = ImageViewer.prototype.ResizeVW;
+	this.patchGrid.inputHeight.onchange = ImageViewer.prototype.ResizeVW;
 	
-	this.patchGrid.onmousedown=ImageViewer.prototype.omniDrag;	
-	this.patchGrid.onmousemove=ImageViewer.prototype.cursorMonitor;	
+	this.patchGrid.onmousedown = ImageViewer.prototype.omniDrag;	
+	this.patchGrid.onmousemove = ImageViewer.prototype.cursorMonitor;	
 	
-	this.patchGrid.CommitMove=ImageViewer.prototype.CommitMove;
-	this.patchGrid.PanOutsideLoading=ImageViewer.prototype.PanOutsideLoading;
-	this.patchGrid.onmousewheel=ImageViewer.prototype.zIndexChanging;
-	this.patchGrid.resetGrid=ImageViewer.prototype.resetGrid;
-	this.patchGrid.gridFormation=ImageViewer.prototype.gridFormation;
-	this.patchGrid.InitforFireFoxWheel=ImageViewer.prototype.InitforFireFoxWheel;
-	this.patchGrid.ResizeVW=ImageViewer.prototype.ResizeVW;
+	this.patchGrid.CommitMove = ImageViewer.prototype.CommitMove;
+	this.patchGrid.PanOutsideLoading = ImageViewer.prototype.PanOutsideLoading;
+	this.patchGrid.onmousewheel = ImageViewer.prototype.zIndexChanging;
+	this.patchGrid.resetGrid = ImageViewer.prototype.resetGrid;
+	this.patchGrid.gridFormation = ImageViewer.prototype.gridFormation;
+	this.patchGrid.InitforFireFoxWheel = ImageViewer.prototype.InitforFireFoxWheel;
+	this.patchGrid.ResizeVW = ImageViewer.prototype.ResizeVW;
 	
-	this.patchGrid.ZoomIn.onclick=ImageViewer.prototype.ZoomIn;
-	this.patchGrid.ZoomOut.onclick=ImageViewer.prototype.ZoomOut;
+	this.patchGrid.ZoomIn.onclick = ImageViewer.prototype.ZoomIn;
+	this.patchGrid.ZoomOut.onclick = ImageViewer.prototype.ZoomOut;
 	
 	// Layout,and FireFox wheel initilization 
 	this.patchGrid.ResizeVW();
@@ -305,51 +298,52 @@ ImageViewer.prototype.ZoomIn = function ZoomIn(){
 	//CenterOffsetIn();
 }
 
-ImageViewer.prototype.ZoomOut=function ZoomOut(){
+ImageViewer.prototype.ZoomOut = function ZoomOut(){
 	ele = document.getElementById(+this.instanceID + "patchGrid");
 	if (ele.zoomlevel < ele.MaxZoom && ele.zoomlevel >= 0) {
 		ele.zoomlevel = ele.zoomlevel - 1;
 	}
 	ele.resetGrid();
 
-	GlobalCol=ele.col;
-	GlobalRow= ele.row;
-	GinstanceID=ele.instanceID;
-	Gzoomlevel=ele.zoomlevel;
+	GlobalCol = ele.col;
+	GlobalRow =  ele.row;
+	GinstanceID = ele.instanceID;
+	Gzoomlevel = ele.zoomlevel;
 	CreatePatchLoadingProcess();
 	//CenterOffsetOut();
 }
 
 ImageViewer.prototype.InputMove = function InputMove(){
-	X=parseInt(document.getElementById(+this.instanceID+"patchGrid").inputX.value);  //Display for the sake of debug
-	Y=parseInt(document.getElementById(+this.instanceID+"patchGrid").inputY.value);
+	// Display for the sake of debugging
+	X = parseInt(document.getElementById(+this.instanceID+"patchGrid").inputX.value);  
+	Y = parseInt(document.getElementById(+this.instanceID+"patchGrid").inputY.value);
 
-	vwimgpntx=document.getElementById(+this.instanceID+"patchGrid").vw.imgpnt.x;
-	vwimgpnty=document.getElementById(+this.instanceID+"patchGrid").vw.imgpnt.y;
+	vwimgpntx = document.getElementById(+this.instanceID+"patchGrid").vw.imgpnt.x;
+	vwimgpnty = document.getElementById(+this.instanceID+"patchGrid").vw.imgpnt.y;
 
-	zoomlevel=document.getElementById(+this.instanceID+"patchGrid").zoomlevel;
-	dx=-(X-vwimgpntx);
-	dy=-(Y-vwimgpnty); 
-	document.getElementById(+this.instanceID+"patchGrid").dx=dx;
-	document.getElementById(+this.instanceID+"patchGrid").dy=dy;
+	zoomlevel = document.getElementById(+this.instanceID+"patchGrid").zoomlevel;
+	dx = X-vwimgpntx);
+	dy = Y-vwimgpnty); 
+	document.getElementById(+this.instanceID+"patchGrid").dx = dx;
+	document.getElementById(+this.instanceID+"patchGrid").dy = dy;
 
-	width=document.getElementById(+this.instanceID+"patchGrid").VW.style.width;
-	height=document.getElementById(+this.instanceID+"patchGrid").VW.style.height;
-	patchSize=document.getElementById(+this.instanceID+"patchGrid").patchSize;
-	row=document.getElementById(+this.instanceID+"patchGrid").row;
-	col=document.getElementById(+this.instanceID+"patchGrid").col;
+	width = document.getElementById(+this.instanceID+"patchGrid").VW.style.width;
+	height = document.getElementById(+this.instanceID+"patchGrid").VW.style.height;
+	patchSize = document.getElementById(+this.instanceID+"patchGrid").patchSize;
+	row = document.getElementById(+this.instanceID+"patchGrid").row;
+	col = document.getElementById(+this.instanceID+"patchGrid").col;
 
 	if((vwimgpntx - dx)<0){  //Dr.Alberto mentioned that we shall to so
-		dx=0;
+		dx = 0;
 	}    
 	if((vwimgpnty - dy)<0){
-		dy=0;
+		dy = 0;
 	}
 	if((vwimgpntx-dx+width)>patchSize*Math.pow(2, zoomlevel)){
-		dx=0;
+		dx = 0;
 	}
 	if((vwimgpnty-dy+height)>patchSize*Math.pow(2, zoomlevel)){
-		dy=0;
+		dy = 0;
 	}
 	document.getElementById(+this.instanceID+"patchGrid").CommitMove();
 
@@ -369,15 +363,15 @@ ImageViewer.prototype.InitforFireFoxWheel = function InitforFireFoxWheel (){
 ImageViewer.prototype.zIndexChanging = function zIndexChanging(){
 	var event = window.event || arguments[0]; // FireFox event parameter passing solution
 
-	//zIndex=parseInt(document.getElementById("zIndex").value);
+	//zIndex = parseInt(document.getElementById("zIndex").value);
 
 	//event.detail  FireFox
 	if ((event.wheelDelta > 0||event.detail<0 )&& this.zIndex< this.MaxzIndex&& this.zIndex>= 0){ /* Zoom limit */
-		this.zIndex= this.zIndex+ 1;/* ZoomIn, load images */
-		//document.getElementById("zIndex").value=zIndex;
+		this.zIndex = this.zIndex+ 1;/* ZoomIn, load images */
+		//document.getElementById("zIndex").value = zIndex;
 
-		GinstanceID=this.instanceID;
-		GzIndex=this.zIndex;
+		GinstanceID = this.instanceID;
+		GzIndex = this.zIndex;
 		this.resetGrid();
 
 		CreatePatchLoadingProcess();
@@ -386,12 +380,12 @@ ImageViewer.prototype.zIndexChanging = function zIndexChanging(){
 			event.preventDefault();
 		}	
 	}
-	/* ZoomOut, clearOut images */
+	// ZoomOut, clearOut images
 	if ((event.wheelDelta < 0||event.detail>0 )&& this.zIndex<=  this.MaxzIndex&&this.zIndex> 0 ){ 
-		this.zIndex= this.zIndex- 1;
-		//document.getElementById("zIndex").value=zIndex;	
-		GinstanceID=this.instanceID;
-		GzIndex=this.zIndex;
+		this.zIndex = this.zIndex- 1;
+		//document.getElementById("zIndex").value = zIndex;	
+		GinstanceID = this.instanceID;
+		GzIndex = this.zIndex;
 		this.resetGrid();
 		CreatePatchLoadingProcess();
 		if (event.preventDefault){
@@ -403,32 +397,31 @@ ImageViewer.prototype.zIndexChanging = function zIndexChanging(){
 	}	
 }
 
-ImageViewer.prototype.resetGrid=function resetGrid(){
+ImageViewer.prototype.resetGrid = function resetGrid(){
 	// A priori number set
 	for (i=1; i<=20; i++){
 		for (j=1; j<=20; j++){
-			document.getElementById(+this.instanceID+"img["+i+"]["+j+"]").style.display="none";//hide contents;
+			document.getElementById(+this.instanceID+"img["+i+"]["+j+"]").style.display = none";//hide contents;
 		}
 	}
 }
-
-//this.patchGrid.onmousemove=ImageViewer.prototype.cursorMonitor;	
-ImageViewer.prototype.cursorMonitor=function cursorMonitor(){
-	ele=document.getElementById(+this.instanceID+"patchGrid");
+	
+ImageViewer.prototype.cursorMonitor = function cursorMonitor(){
+	ele = document.getElementById(+this.instanceID+"patchGrid");
 	ele.event = window.event || arguments[0];
 
-	X=parseInt(ele.MetaX);  // Private variables
-	Y=parseInt(ele.MetaY);
-	width=parseInt(ele.VW.style.width);
-	height=parseInt(ele.VW.style.height);
+	X = parseInt(ele.MetaX);  // Private variables
+	Y = parseInt(ele.MetaY);
+	width = parseInt(ele.VW.style.width);
+	height = parseInt(ele.VW.style.height);
 	//alert(ele.event.clientX);
 	if  (ele.event.clientX>(X+width-10)&&ele.event.clientY>(height+Y-10)){
-		ele.style.cursor="se-resize";
-		ele.VW.resizeFlag=1;
+		ele.style.cursor = se-resize";
+		ele.VW.resizeFlag = 1;
 	}
 	if  (ele.event.clientX<(X+width-10)||ele.event.clientY<(height+Y-10)){
-		ele.style.cursor="crosshair";
-		//ele.VW.resizeFlag=0;
+		ele.style.cursor = crosshair";
+		//ele.VW.resizeFlag = 0;
 	}
 }
 
@@ -437,14 +430,14 @@ ImageViewer.prototype.omniDrag = function omniDrag(){
 	// event.dataTransfer.effectAllowed = "none"; // do not allow copy
 	// var event = window.event || arguments.callee.caller.arguments[0]; 
 	this.event = window.event || arguments[0]; // FireFox  compatibility
-	// or attach event fucntion like this onmousedown=function blah(this event)
+	// or attach event fucntion like this onmousedown = function blah(this event)
 	// anyhow FireFox needs a event parameter passed, unlike in IE event is a global parameter  
 	CooX0 = this.event.clientX;
 	CooY0 = this.event.clientY;
 	
 	document.onmouseup = function voidDrag(){
 		this.onmousemove = null;
-		ele.VW.resizeFlag=0;
+		ele.VW.resizeFlag = 0;
 	}
 	
 	if (this.event.preventDefault){
@@ -462,21 +455,19 @@ ImageViewer.prototype.omniDrag = function omniDrag(){
 		CooX1 = this.event.clientX;
 		CooY1 = this.event.clientY;
 
-		// document.body.style.cursor="crosshair";
-
 		ele.dx = (CooX1 - CooX0); //Instead of ele.patchGrid.dx
 		ele.dy = (CooY1 - CooY0);
-		CooX0 = CooX1; /*update frame*/
+		CooX0 = CooX1; //update frame
 		CooY0 = CooY1;
 
 		if(ele.VW.resizeFlag==1){
-			ele.inputWidth.value=parseInt(ele.inputWidth.value)+ele.dx;
-			ele.inputHeight.value=parseInt(ele.inputHeight.value)+ele.dy;
+			ele.inputWidth.value = parseInt(ele.inputWidth.value)+ele.dx;
+			ele.inputHeight.value = parseInt(ele.inputHeight.value)+ele.dy;
 			ele.ResizeVW();
 		}
 
 		if(ele.VW.resizeFlag==0){
-			//Dr.Alberto mentioned that we shall to do so
+			// Dr. Alberto mentioned that we shall to do so
 			if ((ele.vw.imgpnt.x - ele.dx) < 0){
 				ele.dx = 0;
 			}
@@ -499,13 +490,13 @@ ImageViewer.prototype.omniDrag = function omniDrag(){
 	}
 }
 
-ImageViewer.prototype.CommitMove=function CommitMove(){
+ImageViewer.prototype.CommitMove = function CommitMove(){
 	this.vw.imgpnt.x = this.vw.imgpnt.x - this.dx; // Update coordinates of view windox x,y changes with zooming
 	this.vw.imgpnt.y = this.vw.imgpnt.y - this.dy;     //panning within the buffer zone
-	this.inputX.value=this.vw.imgpnt.x;  //Display for the sake of debug
-	this.inputY.value=this.vw.imgpnt.y;
-	// document.getElementById("DiagX").value=vw.imgpnt.x+width;
-	// document.getElementById("DiagY").value=vw.imgpnt.y+height;
+	this.inputX.value = this.vw.imgpnt.x;  //Display for the sake of debug
+	this.inputY.value = this.vw.imgpnt.y;
+	// document.getElementById("DiagX").value = vw.imgpnt.x+width;
+	// document.getElementById("DiagY").value = vw.imgpnt.y+height;
 
 	this.right = this.right - this.dx; 
 	this.left = this.left - this.dx;
@@ -520,86 +511,86 @@ ImageViewer.prototype.CommitMove=function CommitMove(){
 	this.style.clip = "rect(" + this.haut + "px " + this.right + "px " + this.bottom + "px " + this.left + "px)";
 
 	this.dx = 0;// Attention !!!
-	this.dy = 0;//  Attention !!! It was moved from ondragend() 
+	this.dy = 0;// Attention !!! This was moved from ondragend() 
 }
 
-//change happens to viewing window and grid patches.
-ImageViewer.prototype.ResizeVW=function ResizeVW(){   
-	ele=document.getElementById(+this.instanceID+"patchGrid");
-	height=parseInt(document.getElementById(+this.instanceID+"patchGrid").inputHeight.value);// property of viewing window
-	width=parseInt(document.getElementById(+this.instanceID+"patchGrid").inputWidth.value); // fixed, once given
-	// zoomlevel=document.getElementById("Zoomlevel").value;
-	vwimgpnty=document.getElementById(+this.instanceID+"patchGrid").vw.imgpnt.y;
-	vwimgpntx=document.getElementById(+this.instanceID+"patchGrid").vw.imgpnt.x;
-	patchSize=document.getElementById(+this.instanceID+"patchGrid").patchSize;
-	zoomlevel=document.getElementById(+this.instanceID+"patchGrid").zoomlevel;
+// the viewing window and grid patches are changed
+ImageViewer.prototype.ResizeVW = function ResizeVW(){   
+	ele = document.getElementById(+this.instanceID+"patchGrid");
+	height = parseInt(document.getElementById(+this.instanceID+"patchGrid").inputHeight.value);// property of viewing window
+	width = parseInt(document.getElementById(+this.instanceID+"patchGrid").inputWidth.value); // fixed, once given
+	// zoomlevel = document.getElementById("Zoomlevel").value;
+	vwimgpnty = document.getElementById(+this.instanceID+"patchGrid").vw.imgpnt.y;
+	vwimgpntx = document.getElementById(+this.instanceID+"patchGrid").vw.imgpnt.x;
+	patchSize = document.getElementById(+this.instanceID+"patchGrid").patchSize;
+	zoomlevel = document.getElementById(+this.instanceID+"patchGrid").zoomlevel;
 
-	var boundaryCheckY=vwimgpnty+ height-patchSize*Math.pow(2, zoomlevel);
-	var boundaryCheckX=vwimgpntx+ width-patchSize*Math.pow(2, zoomlevel);
+	var boundaryCheckY = vwimgpnty+ height-patchSize*Math.pow(2, zoomlevel);
+	var boundaryCheckX = vwimgpntx+ width-patchSize*Math.pow(2, zoomlevel);
 	//resize on the edge of boundary
 	if(boundaryCheckX>0&&(vwimgpntx-boundaryCheckX>0)) {
-		ele.dx=boundaryCheckX; ele.dy=0; CommitMove();
+		ele.dx = boundaryCheckX; ele.dy = 0; CommitMove();
 	}
 	if( boundaryCheckY>0&&(vwimgpnty-boundaryCheckY>0)){
-		ele.dx=0; ele.dy=boundaryCheckY;CommitMove();
+		ele.dx = 0; ele.dy = boundaryCheckY;CommitMove();
 	}
 
-	ele.VW.style.height=height+"px";
-	ele.VW.style.width=width+"px";
+	ele.VW.style.height = height+"px";
+	ele.VW.style.width = width+"px";
 
-	ele.right=ele.left+ width;
-	ele.bottom=ele.haut+ height;
-	ele.style.clip="rect(" + ele.haut + "px " + ele.right + "px " + ele.bottom + "px " + ele.left + "px)";
+	ele.right = ele.left+ width;
+	ele.bottom = ele.haut+ height;
+	ele.style.clip = rect(" + ele.haut + "px " + ele.right + "px " + ele.bottom + "px " + ele.left + "px)";
 }
 
-ImageViewer.prototype.gridFormation=function gridFormation(){
-	this.patchGrid.row=20;
-	this.patchGrid.col=20; // Fixed number of grids, but load according to the size of viewing window
-	//row=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
-	//col=Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
-	//X=parseInt(document.getElementById("inputX").value);  //Initial offset
-	//Y=parseInt(document.getElementById("inputY").value);
-	//dx=-(X-vw.imgpnt.x);
-	//dy=-(Y-vw.imgpnt.y);
+ImageViewer.prototype.gridFormation = function gridFormation(){
+	this.patchGrid.row = 20;
+	this.patchGrid.col = 20; // Fixed number of grids, but load according to the size of viewing window
+	//row = Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
+	//col = Math.ceil((vw.imgpnt.x-dx+width)/patchSize)+1;
+	//X = parseInt(document.getElementById("inputX").value);  //Initial offset
+	//Y = parseInt(document.getElementById("inputY").value);
+	//dx = X-vw.imgpnt.x);
+	//dy = Y-vw.imgpnt.y);
 	//this.CommitMove();
-	//zoomlevel=document.getElementById("Zoomlevel").value;
-	//zIndex=document.getElementById("zIndex").value;
+	//zoomlevel = document.getElementById("Zoomlevel").value;
+	//zIndex = document.getElementById("zIndex").value;
 
-	this.patchGrid.style.height=this.patchGrid.row*this.patchGrid.patchSize+'px';
-	this.patchGrid.style.width=this.patchGrid.col*this.patchGrid.patchSize+'px';
+	this.patchGrid.style.height = this.patchGrid.row*this.patchGrid.patchSize+'px';
+	this.patchGrid.style.width = this.patchGrid.col*this.patchGrid.patchSize+'px';
 
 	for (i = 1; i <= this.patchGrid.row; i++) {
 		var tr = document.createElement("tr");
 		tr.height = this.patchGrid.patchSize ;
 		tr.width = this.patchGrid.col*this.patchGrid.patchSize;
-		tr.id="tr1";
+		tr.id = tr1";
 		this.patchGrid.appendChild(tr);
 		for(j=1;j<=this.patchGrid.col;j++){
-			dummy=document.createElement("td");
-			dummy.height=this.patchGrid.patchSize;
-			dummy.width=this.patchGrid.patchSize;
-			img=document.createElement("img");
-			img.id=+this.patchGrid.instanceID+"img["+i+"]["+j+"]"; //instanceID
-			img.style.display="none";
-			img.unselectable="on";  
-			// img.style.draggable="true" 
+			dummy = document.createElement("td");
+			dummy.height = this.patchGrid.patchSize;
+			dummy.width = this.patchGrid.patchSize;
+			img = document.createElement("img");
+			img.id = this.patchGrid.instanceID+"img["+i+"]["+j+"]"; //instanceID
+			img.style.display = none";
+			img.unselectable = on";  
+			// img.style.draggable = true" 
 			dummy.appendChild(img);
 			tr.appendChild(dummy);		
 		}
 	}
 }
 
-var GinstanceID=0
-var GlobalRow=0;
-var GlobalCol=0;
-var Gzoomlevel=0;
-var GzIndex=0;
+var GinstanceID = 0
+var GlobalRow = 0;
+var GlobalCol = 0;
+var Gzoomlevel = 0;
+var GzIndex = 0;
 
 ImageViewer.prototype.PanOutsideLoading = function PanOutsideLoading(){ 
 	this.col = Math.ceil((this.vw.imgpnt.x - this.dx + parseInt(this.VW.style.width)) / this.patchSize) + 1;
 	this.row = Math.ceil((this.vw.imgpnt.y - this.dy + parseInt(this.VW.style.height)) / this.patchSize) + 1;
-	//zoomlevel=document.getElementById("Zoomlevel").value;
-	//zIndex=document.getElementById("zIndex").value;
+	//zoomlevel = document.getElementById("Zoomlevel").value;
+	//zIndex = document.getElementById("zIndex").value;
 
 	if (this.row > Math.pow(2, this.zoomlevel)) {
 		this.row = Math.pow(2, this.zoomlevel);
@@ -608,11 +599,11 @@ ImageViewer.prototype.PanOutsideLoading = function PanOutsideLoading(){
 		this.col = Math.pow(2, this.zoomlevel);
 	}
 
-	GlobalCol= this.col;
-	GlobalRow= this.row;
-	GinstanceID=this.instanceID;
-	Gzoomlevel=this.zoomlevel;
-	GzIndex=this.zIndex;
+	GlobalCol = this.col;
+	GlobalRow =  this.row;
+	GinstanceID = this.instanceID;
+	Gzoomlevel = this.zoomlevel;
+	GzIndex = this.zIndex;
 	CreatePatchLoadingProcess();
 }
  
@@ -648,7 +639,7 @@ function PatchLoadingX(){
 	//clearTimeout;
 }
 
-var clickMonitor=0;// 0, windows, 2 windows, 4 windows
+var clickMonitor = 0;// 0, windows, 2 windows, 4 windows
 // logic to control the viewing windows
 function trial(){
 	if (clickMonitor == 0) {
@@ -661,29 +652,29 @@ function trial(){
 	}
 
 	if (clickMonitor==2){
-		intermedT=document.getElementById('3patchGrid');
-		intermedV=document.getElementById('3VW');
+		intermedT = document.getElementById('3patchGrid');
+		intermedV = document.getElementById('3VW');
 		document.body.removeChild(intermedT);
 		document.body.removeChild(intermedV);
-		intermedT=document.getElementById('4patchGrid');
-		intermedV=document.getElementById('4VW');
+		intermedT = document.getElementById('4patchGrid');
+		intermedV = document.getElementById('4VW');
 		document.body.removeChild(intermedT);
 		document.body.removeChild(intermedV);
 
 	}
-	clickMonitor=1;
+	clickMonitor = 1;
 }
 
 function trial2(){
 	if (clickMonitor==1){
-		c=new ImageViewer(50,500,3);
-		c.patchGrid.VW.style.width=500+'px';
+		c = new ImageViewer(50,500,3);
+		c.patchGrid.VW.style.width = 500+'px';
 		c.patchGrid.ResizeVW();
-		d=new ImageViewer(600,500,4);
-		d.patchGrid.VW.style.width=500+'px';
+		d = new ImageViewer(600,500,4);
+		d.patchGrid.VW.style.width = 500+'px';
 		d.patchGrid.ResizeVW();
-		//var b=30;
-		clickMonitor=2;
+		//var b = 30;
+		clickMonitor = 2;
 	}
 
 	if (clickMonitor==0){
@@ -694,13 +685,13 @@ function trial2(){
 		b.patchGrid.VW.style.width = 500 + 'px';
 		b.patchGrid.ResizeVW();
 
-		c=new ImageViewer(50,500,3);
-		c.patchGrid.VW.style.width=500+'px';
+		c = new ImageViewer(50,500,3);
+		c.patchGrid.VW.style.width = 500+'px';
 		c.patchGrid.ResizeVW();
-		d=new ImageViewer(600,500,4);
-		d.patchGrid.VW.style.width=500+'px';
+		d = new ImageViewer(600,500,4);
+		d.patchGrid.VW.style.width = 500+'px';
 		d.patchGrid.ResizeVW();
-		clickMonitor=2;
+		clickMonitor = 2;
 	}
 }
 
