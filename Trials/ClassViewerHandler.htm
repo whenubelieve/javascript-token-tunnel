@@ -358,8 +358,6 @@ ImageViewer.prototype.InputMove = function InputMove(){
 	}
 }
 
-
-
 ImageViewer.prototype.InitforFireFoxWheel = function InitforFireFoxWheel (){
 	// for mouse scrolling in Firefox
 	var elem = this.patchGrid;
@@ -367,7 +365,6 @@ ImageViewer.prototype.InitforFireFoxWheel = function InitforFireFoxWheel (){
 		elem.addEventListener ("DOMMouseScroll", this.zIndexChanging, false);    
 	} 
 }
-
 
 ImageViewer.prototype.zIndexChanging = function zIndexChanging(){
 	var event = window.event || arguments[0]; // FireFox event parameter passing solution
@@ -526,8 +523,8 @@ ImageViewer.prototype.CommitMove=function CommitMove(){
 	this.dy = 0;//  Attention !!! It was moved from ondragend() 
 }
 
-ImageViewer.prototype.ResizeVW=function ResizeVW() //change happens to viewing window and grid patches.
-{   
+//change happens to viewing window and grid patches.
+ImageViewer.prototype.ResizeVW=function ResizeVW(){   
 	ele=document.getElementById(+this.instanceID+"patchGrid");
 	height=parseInt(document.getElementById(+this.instanceID+"patchGrid").inputHeight.value);// property of viewing window
 	width=parseInt(document.getElementById(+this.instanceID+"patchGrid").inputWidth.value); // fixed, once given
@@ -624,6 +621,7 @@ function CreatePatchLoadingProcess(){
 	PatchLoadingX();
 	//setTimeout("PatchLoadingX()", 90);
 }
+
 // cannot use word "this"
 function PatchLoadingX(){
 	for (I = 1; I <= GlobalRow; I++){
