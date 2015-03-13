@@ -1,0 +1,1 @@
+The goal of the project is to learn JavaScript and AJAX in order to create a high resolution image viewer.
